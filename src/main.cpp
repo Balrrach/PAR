@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
 		return 1;
 
 	//arma_rng::set_seed(1);
-	int seed = 1;										//>1
+	int seed = 1;
 	int iters = 100;
 
 	auto begin = std::chrono::high_resolution_clock::now();
@@ -49,8 +49,8 @@ int main(int argc, char** argv) {
 
 	default:
 		cout << "Wrong algorith selection:" << endl;
-		cout << "1 ------ COPKM" << endl;
-		cout << "2 ------ COPKM" << endl;
+		cout << "1 ------ COPKM"	<< endl;
+		cout << "2 ------ BL"		<< endl;
 		break;
 	}
 
