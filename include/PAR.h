@@ -1,5 +1,4 @@
 #pragma once
-
 #include <functional>
 #include <algorithm>
 #include <random>
@@ -25,6 +24,7 @@ void calculateLowestInfeasibilityClusters(int p, vector<int> & liClusters, const
 
 	for (int k = 0; k < K; k++) {
 		clusterIfs = 0;
+		int a = restrictionsMap[p].size();
 		for (int r = 0; r < restrictionsMap[p].size(); r++) {
 			if (restrictionsMap[p][r].first == -1)
 				if (k == shaping[restrictionsMap[p][r].second])
@@ -124,8 +124,6 @@ void initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, int see
 		//-----Checking that all clusters are associated with at least one point-----
 		for (int i = 0; i < K; i++)
 			if (clusters[i].getClusterSize() < 1) {
-				cout << "Culpable: " << i << endl;
-
 				repeat = true;
 				clusters.clear();
 				for (int j = 0; j < shaping.size(); j++)
