@@ -20,5 +20,5 @@ void COPKM(int seed, int iters){
 
 	initializeClusters(clusters, shaping, seed);
 
-	printSolution(clusters);
+	printSolution(shaping, clusters);
 }

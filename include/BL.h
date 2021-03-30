@@ -19,5 +19,4 @@ void BL(int seed, int iters) {
 
 	//initializeClusters(clusters, seed);
 
-	printSolution(clusters);
 }

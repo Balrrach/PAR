@@ -19,40 +19,6 @@ extern int dimension;
 extern int K;
 
 
-//Prints the final solution
-void printSolution(const vector<Cluster>& clusters) {
-	int total_points = g_points.size();
-
-	for (int i = 0; i < K; i++) {
-		//Print cluster centroid
-		clusters[i].printClusterCentroid();
-		//Print cluster points
-		clusters[i].printClusterPoints();
-	}
-	cout << endl;
-
-	/*
-	//Print solution
-	cout << "########################################################################################################################" << endl << endl;
-	cout << "Vector solution: (";
-	for (int i = 0; i < total_points - 1; i++)
-		cout << g_points[i].getCluster() << ", ";
-
-	cout << all_points[total_points - 1].getCluster() << ")" << endl;
-
-	float lambda = calculateLambda(all_points, dimension, restrictions.size());
-	float generalDeviation = calculateGeneralDeviation(clusters, K, dimension);
-	int infeasibility = calculateSystemInfeasibility(all_points, restrictions);
-
-	cout << "General deviation: " << generalDeviation << endl;
-	cout << "Infeasibility: " << infeasibility << endl;
-	cout << "Lambda: " << lambda << endl;
-	cout << "Fitness: " << generalDeviation + infeasibility * lambda << endl;
-	cout << "########################################################################################################################" << endl;
-	cout << endl;
-	*/
-}
-
 void calculateLowestInfeasibilityClusters(int p, vector<int> & liClusters, const vector<int> & shaping){
 	int lifs = INT_MAX, ifs = 0;
 
@@ -170,8 +136,94 @@ void initializeClusters(vector<Cluster> & clusters, vector<int> & shaping, int s
 
 	//-----Recalculating the center of each cluster-----
 	for (int i = 0; i < K; i++)
-		clusters[i].recalculateCentroid();
+		clusters[i].calculateCentroid();
 
 	cout << "Clusters initialized = " << clusters.size() << endl << endl;
 
+}
+
+
+//Calculates infeasibility of a given shaping
+int calculateShapingInfeasibility(vector<int> shaping) {
+	int sifs = 0;
+	for (int i = 0; i < restrictionsList.size(); i++) {
+		if (restrictionsList[i][0] == -1)
+			if (shaping[restrictionsList[i][1]] == shaping[restrictionsList[i][2]])
+				sifs++;
+
+		if (restrictionsList[i][0] == 1)
+			if (shaping[restrictionsList[i][1]] != shaping[restrictionsList[i][2]])
+				sifs++;
+	}
+
+	return sifs;
+}
+
+
+//Calculates general deviation
+double calculateGeneralDeviation(const vector<Cluster> & clusters) {
+	double aux = 0;
+	for (int i = 0; i < K; i++)
+		aux += clusters[i].calculateIntraClusterMeanDeviation(clusters[i]);
+
+	return aux / K;
+}
+
+
+//Calculates lambda value
+double calculateLambda(){
+	//Maximum distance calculation
+	double max = 0.0, sum = 0.0, dist;
+
+	for (int i = 0; i < g_points.size(); i++) {
+		for (int j = 0; j < g_points.size(); j++) {
+			if (j > i) {
+				for (int d = 0; d < dimension; d++) {
+					sum += pow(g_points[i][d] - g_points[j][d], 2.0);
+				}
+
+				dist = sqrt(sum);
+
+				if (max < dist)
+					max = dist;
+
+				sum = 0;
+			}
+		}
+	}
+
+	return max / restrictionsList.size();
+}
+
+
+//Prints the final solution
+void printSolution(const vector<int> & shaping, const vector<Cluster> & clusters) {
+	int total_points = g_points.size();
+
+	for (int i = 0; i < K; i++) {
+		//Print cluster centroid
+		clusters[i].printClusterCentroid();
+		//Print cluster points
+		clusters[i].printClusterPoints();
+	}
+	cout << endl;
+
+	//Print solution
+	cout << "########################################################################################################################" << endl << endl;
+	cout << "Vector solution: (";
+	for (int i = 0; i < total_points - 1; i++)
+		cout << shaping[i] << ", ";
+
+	cout << shaping[total_points - 1] << ")" << endl;
+
+	double lambda = calculateLambda();
+	double generalDeviation = calculateGeneralDeviation(clusters);
+	int infeasibility = calculateShapingInfeasibility(shaping);
+
+	cout << "General deviation: " << generalDeviation << endl;
+	cout << "Infeasibility: " << infeasibility << endl;
+	cout << "Lambda: " << lambda << endl;
+	cout << "Fitness: " << generalDeviation + infeasibility * lambda << endl;
+	cout << "########################################################################################################################" << endl;
+	cout << endl;
 }
