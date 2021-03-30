@@ -6,8 +6,7 @@ using namespace std;
 
 
 template<typename T>
-void printVectorElements(vector<T>& vec)
-{
+void printVectorElements(vector<T>& vec){
 	for (auto i = 0; i < vec.size(); ++i) {
 		cout << vec.at(i) << "; ";
 	}

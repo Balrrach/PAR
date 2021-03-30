@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
 	if (readData(points_file, restrictions_file) == 1)
 		return 1;
 
-	//arma_rng::set_seed(1);
+
 	int seed = 1;
 	int iters = 100;
 
