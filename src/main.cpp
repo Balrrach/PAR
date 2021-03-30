@@ -37,7 +37,6 @@ int main(int argc, char** argv) {
 	int seed = 1;
 	int iters = 100;
 
-	auto begin = std::chrono::high_resolution_clock::now();
 	switch (atoi(argv[3]))
 	{
 	case 1:
@@ -56,9 +55,6 @@ int main(int argc, char** argv) {
 		cout << "2 ------ BL"		<< endl;
 		break;
 	}
-
-	auto end = std::chrono::high_resolution_clock::now();
-	std::cout << "Tiempo con Chrono: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
 
 	return 0;
 }
