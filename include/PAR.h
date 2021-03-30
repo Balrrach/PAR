@@ -96,56 +96,6 @@ bool realocatePointToBestCluster(int p, vector<Cluster> & clusters, vector<int> 
 }
 
 
-void initializeClusters(vector<Cluster> & clusters, vector<int> & shaping, int seed) {
-
-	bool repeat = true;
-	vector<double> centroide(dimension);
-	vector<int> index;
-	initializeUniformInt(index, 0, g_points.size());
-	shuffle(index.begin(), index.end(), std::default_random_engine(seed));
-
-	while (repeat) {
-		repeat = false;
-
-		//-----Calculate clusters center randomly-----
-		for (int i = 0; i < K; i++) {
-			for (int j = 0; j < dimension; j++) {
-				centroide[j] = Rand();
-			}
-
-			Cluster c(centroide);
-			clusters.push_back(c);
-		}
-
-		//-----Asociate each point to its best Cluster-----
-		for (int p = 0; p < g_points.size(); p++)
-			realocatePointToBestCluster(index[p], clusters, shaping, true);
-
-		//-----Checking that all clusters are associated with at least one point-----
-		for (int i = 0; i < K; i++)
-			if (clusters[i].getClusterSize() < 1) {
-				repeat = true;
-				clusters.clear();
-				for (int j = 0; j < shaping.size(); j++)
-					shaping[j] = -1;
-				shuffle(index.begin(), index.end(), std::default_random_engine(seed));
-				break;
-			}
-
-		//-----Reset-----
-		//printVectorElements(index);			
-		//for (int i = 0; i < g_points.size(); i++)
-			//clusters[i];
-	}
-
-	//-----Recalculating the center of each cluster-----
-	for (int i = 0; i < K; i++)
-		clusters[i].calculateClusterCentroid();
-
-	cout << "Clusters initialized = " << clusters.size() << endl << endl;
-}
-
-
 //Calculates infeasibility of a given shaping
 int calculateShapingInfeasibility(const vector<int> & shaping) {
 	int sifs = 0;
