@@ -20,7 +20,7 @@ extern int K;
 void initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, int seed) {
 
 	bool repeat = true;
-	vector<double> centroide(dimension);
+	vector<float> centroide(dimension);
 	vector<int> index;
 	initializeUniformInt(index, 0, g_points.size());
 	shuffle(index.begin(), index.end(), std::default_random_engine(seed));

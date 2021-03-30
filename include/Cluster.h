@@ -9,13 +9,13 @@ class Cluster {
 
 private:
 	int clusterId;
-	vector<double> centroid;
+	vector<float> centroid;
 	set<int> clusterPoints;
 	static int nextId;
 
 public:
 	//Constructor
-	Cluster(vector<double> centroid) {
+	Cluster(vector<float> centroid) {
 		this->clusterId = nextId++;
 
 		for (int i = 0; i < centroid.size(); i++) {
@@ -62,13 +62,16 @@ public:
 		return clusterPoints.size();
 	}
 
-
-	//Setters
-	double getCentroidByPos(int pos) const {
+	float getCentroidByPos(int pos) const {
 		return centroid[pos];
 	}
 
-	void setCentroidByPos(int pos, double val) {
+	vector<float> getCentroid() const {
+		return centroid;
+	}
+
+	//Setters
+	void setCentroidByPos(int pos, float val) {
 		this->centroid[pos] = val;
 	}
 
@@ -76,7 +79,7 @@ public:
 	//Others
 	void calculateClusterCentroid() {
 		for (int c = 0; c < dimension; c++) {
-			double sum = 0.0;
+			float sum = 0.0;
 			for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++)
 				sum += g_points[*it][c];
 
@@ -85,8 +88,8 @@ public:
 	}
 
 	//Calculates intra cluster mean deviation
-	double calculateIntraClusterMeanDeviation() const {
-		double meanDeviation = 0, sum = 0;
+	float calculateIntraClusterMeanDeviation() const {
+		float meanDeviation = 0, sum = 0;
 		for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++) {
 			sum = 0;
 			for (int c = 0; c < dimension; c++) {

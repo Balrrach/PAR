@@ -51,7 +51,7 @@ void initializeClusters(vector<Cluster>& clusters, vector<int> & shaping) {
 	}
 
 	//-----Initializing clusters-----
-	vector<double> centroid(dimension, 0);
+	vector<float> centroid(dimension, 0);
 	for (int i = 0; i < K; i++)
 		clusters.push_back(Cluster (centroid));
 
@@ -67,12 +67,57 @@ void initializeClusters(vector<Cluster>& clusters, vector<int> & shaping) {
 }
 
 
+void findBestNeighbour(vector<Cluster> & clusters, vector<int> & shaping, vector<int> & index, vector<pair<int, int>> & neighbourhood, int seed, int & iters) {
+	vector<int> shapingCopy(shaping);
+	int point, newCluster, currentCluster, currentIfs, newIfs;
+	float currentDistance, newDistance;
+
+	shuffle(index.begin(), index.end(), std::default_random_engine(seed));
+	for (int i = 0; i < index.size(); i++) {
+		iters++;
+		point = neighbourhood[index[i]].first;
+		currentCluster = shaping[point];
+		newCluster = neighbourhood[index[i]].second;
+
+		if (clusters[currentCluster].getClusterSize() > 1) {
+			currentIfs = calculateIncrementInfeseability(point, currentCluster, shaping);
+			newIfs = calculateIncrementInfeseability(point, newCluster, shaping);
+
+			if (newIfs < currentIfs) {
+				currentDistance = calculateDistance(g_points[point], clusters[currentCluster].getCentroid());
+				newDistance = calculateDistance(g_points[point], clusters[newCluster].getCentroid());
+				if ((newIfs + newDistance) < (currentDistance + currentIfs)) {
+					shaping[point] = newCluster;
+					clusters[currentCluster].removePoint(point);
+					clusters[newCluster].addPoint(point);
+					break;
+				}
+			}
+		}
+	}
+}
+
+
 void BL(int seed, int iters) {
+	iters = 100000;
 	vector<Cluster> clusters;
 	vector<int> shaping(g_points.size());
 	initializeClusters(clusters, shaping);
 
-	//bestNeighbour(cluster, shaping);
+	vector<pair<int, int>> neighbourhood;
+	for (int p = 0; p < g_points.size(); p++)
+		for (int k = 0; k < K; k++)
+			if (k != shaping[p]) {
+				neighbourhood.push_back(pair<int, int>{p, k});
+			}
+
+	vector<int> index;
+	initializeUniformInt(index, 0, neighbourhood.size());
+	
+	int i = 0;
+	while (i < iters) {
+		findBestNeighbour(clusters, shaping, index, neighbourhood, seed, i);
+	}
 
 	printSolution(clusters, shaping);
 }

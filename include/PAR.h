@@ -18,21 +18,39 @@ extern int dimension;
 extern int K;
 
 
+float calculateDistance(vector<float> a, vector<float> b) {
+	float sum = 0;
+	for (int c = 0; c < dimension; c++) {
+		sum += pow(a[c] - b[c], 2.0);
+	}
+
+	float distance = sqrt(sum);
+	return distance;
+}
+
+
+int calculateIncrementInfeseability(int p, int k, vector<int> shaping) {
+	int incrementIfs = 0; 
+
+	for (int r = 0; r < restrictionsMap[p].size(); r++) {
+		if (restrictionsMap[p][r].first == -1)
+			if (k == shaping[restrictionsMap[p][r].second])
+				incrementIfs++;
+		if (restrictionsMap[p][r].first == 1)
+			if (k != shaping[restrictionsMap[p][r].second])
+				incrementIfs++;
+	}
+
+	return incrementIfs;
+}
+
+
 void calculateLowestInfeasibilityClusters(int p, vector<int> & liClusters, const vector<int> & shaping, bool start){
 	int lifs = INT_MAX, clusterIfs = 0;
 	//vector<int> index;
 
 	for (int k = 0; k < K; k++) {
-		clusterIfs = 0;
-		int a = restrictionsMap[p].size();
-		for (int r = 0; r < restrictionsMap[p].size(); r++) {
-			if (restrictionsMap[p][r].first == -1)
-				if (k == shaping[restrictionsMap[p][r].second])
-					clusterIfs++;
-			if (restrictionsMap[p][r].first == 1)
-				if (k != shaping[restrictionsMap[p][r].second])
-					clusterIfs++;
-		}
+		clusterIfs = calculateIncrementInfeseability(p, k, shaping);
 
 		if (clusterIfs < lifs) {
 			lifs = clusterIfs;
@@ -47,7 +65,7 @@ void calculateLowestInfeasibilityClusters(int p, vector<int> & liClusters, const
 
 
 int calculateClosestCluster(int p, const vector<int> & liClusters, const vector<Cluster> & clusters) {
-	double sum = 0.0, dist = 0.0, ldist = DBL_MAX;
+	float sum = 0.0, dist = 0.0, ldist = DBL_MAX;
 	int closestCluster = -1;
 	for (int i = 0; i < liClusters.size(); i++) {
 		sum = 0.0;
@@ -114,8 +132,8 @@ int calculateShapingInfeasibility(const vector<int> & shaping) {
 
 
 //Calculates general deviation
-double calculateGeneralDeviation(const vector<Cluster> & clusters) {
-	double aux = 0;
+float calculateGeneralDeviation(const vector<Cluster> & clusters) {
+	float aux = 0;
 	for (int i = 0; i < K; i++)
 		aux += clusters[i].calculateIntraClusterMeanDeviation();
 
@@ -124,9 +142,9 @@ double calculateGeneralDeviation(const vector<Cluster> & clusters) {
 
 
 //Calculates lambda value
-double calculateLambda(){
+float calculateLambda(){
 	//Maximum distance calculation
-	double max = 0.0, sum = 0.0, dist;
+	float max = 0.0, sum = 0.0, dist;
 
 	for (int i = 0; i < g_points.size(); i++) {
 		for (int j = 0; j < g_points.size(); j++) {
@@ -169,8 +187,8 @@ void printSolution(const vector<Cluster>& clusters, const vector<int> & shaping)
 
 	cout << shaping[total_points - 1] << ")" << endl;
 
-	double lambda = calculateLambda();
-	double generalDeviation = calculateGeneralDeviation(clusters);
+	float lambda = calculateLambda();
+	float generalDeviation = calculateGeneralDeviation(clusters);
 	int infeasibility = calculateShapingInfeasibility(shaping);
 
 	cout << "General deviation: " << generalDeviation << endl;
