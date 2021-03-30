@@ -85,7 +85,7 @@ public:
 	}
 
 	//Calculates intra cluster mean deviation
-	double calculateIntraClusterMeanDeviation(const Cluster& c) const {
+	double calculateIntraClusterMeanDeviation() const {
 		double meanDeviation = 0, sum = 0;
 		for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++) {
 			sum = 0;
@@ -96,7 +96,7 @@ public:
 			meanDeviation += sqrt(sum);
 		}
 
-		return meanDeviation / c.getClusterSize();
+		return meanDeviation / getClusterSize();
 	}
 
 
@@ -115,8 +115,6 @@ public:
 		}
 		cout << endl << endl;
 	}
-
-
 };
 
 int Cluster::nextId = 0;
