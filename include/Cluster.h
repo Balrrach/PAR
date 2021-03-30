@@ -15,7 +15,7 @@ private:
 
 public:
 	//Constructor
-	Cluster(vector<float> centroid) {
+	Cluster(vector<double> centroid) {
 		this->clusterId = nextId++;
 
 		for (int i = 0; i < centroid.size(); i++) {
@@ -33,7 +33,7 @@ public:
 			cout << "Beware: Inserctions" << endl;
 	}
 
-	bool removePoint(int pointId) {
+	void removePoint(int pointId) {
 		set<int>::iterator it = clusterPoints.find(pointId);
 		if (it == clusterPoints.end())
 			cout << "Beware: Removals" << endl;
@@ -74,7 +74,7 @@ public:
 
 
 	//Others
-	void calculateCentroid() {
+	void calculateClusterCentroid() {
 		for (int c = 0; c < dimension; c++) {
 			double sum = 0.0;
 			for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++)
