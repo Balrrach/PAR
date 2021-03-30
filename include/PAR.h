@@ -150,7 +150,7 @@ double calculateLambda(){
 
 
 //Prints the final solution
-void printSolution(const vector<int> & shaping, const vector<Cluster> & clusters) {
+void printSolution(const vector<Cluster>& clusters, const vector<int> & shaping) {
 	int total_points = g_points.size();
 
 	for (int i = 0; i < K; i++) {

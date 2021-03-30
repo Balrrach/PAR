@@ -74,7 +74,6 @@ void COPKM(int seed, int iters){
 	bool key;
 	//vector<int> index;
 	//initializeUniformInt(index, 0, g_points.size());
-	Set_random(seed);
 
 	initializeClusters(clusters, shaping, seed);
 
@@ -104,6 +103,6 @@ void COPKM(int seed, int iters){
 	cout << "Clustering completed in iteration : " << iter << endl << endl;
 
 	auto end = std::chrono::high_resolution_clock::now();
-	printSolution(shaping, clusters);
+	printSolution(clusters, shaping);
 	std::cout << "Tiempo con Chrono: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
 }
