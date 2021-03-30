@@ -19,44 +19,44 @@ extern int dimension;
 extern int K;
 
 
-void calculateLowestInfeasibilityClusters(int p, vector<int> & liClusters, const vector<int> & shaping){
-	int lifs = INT_MAX, ifs = 0;
+void calculateLowestInfeasibilityClusters(int p, vector<int> & liClusters, const vector<int> & shaping, bool start){
+	int lifs = INT_MAX, clusterIfs = 0;
+	//vector<int> index;
 
-	for (int i = 0; i < K; i++) {
-		ifs = 0;
-		for (int j = 0; j < restrictionsMap[p].size(); j++) {
-			if (restrictionsMap[p][j].first == -1)
-				if (shaping[restrictionsMap[p][j].second] == i)
-					ifs++;
-			if (restrictionsMap[p][j].first == 1)
-				if (shaping[restrictionsMap[p][j].second] != i)
-					ifs++;
+	for (int k = 0; k < K; k++) {
+		clusterIfs = 0;
+		for (int r = 0; r < restrictionsMap[p].size(); r++) {
+			if (restrictionsMap[p][r].first == -1)
+				if (k == shaping[restrictionsMap[p][r].second])
+					clusterIfs++;
+			if (restrictionsMap[p][r].first == 1)
+				if (k != shaping[restrictionsMap[p][r].second])
+					clusterIfs++;
 		}
 
-		if (ifs < lifs) {
-			lifs = ifs;
+		if (clusterIfs < lifs) {
+			lifs = clusterIfs;
 			liClusters.clear();
-			liClusters.push_back(i);
+			liClusters.push_back(k);
 		}
 
-		else if(ifs == lifs)
-			liClusters.push_back(i);
+		else if (clusterIfs == lifs)
+			liClusters.push_back(k);
 	}
 }
 
 
 int calculateClosestCluster(int p, const vector<int> & liClusters, const vector<Cluster> & clusters) {
-	double dist = 0.0, ldist = DBL_MAX;
-	int closestCluster;
-
+	double sum = 0.0, dist = 0.0, ldist = DBL_MAX;
+	int closestCluster = -1;
 	for (int i = 0; i < liClusters.size(); i++) {
-		dist = 0.0;
+		sum = 0.0;
 
 		for (int j = 0; j < dimension; j++) {
-			dist += pow(clusters[i].getCentroidByPos(j) - g_points[p][j], 2.0);
+			sum += pow(clusters[liClusters[i]].getCentroidByPos(j) - g_points[p][j], 2.0);
 		}
 
-		dist = sqrt(dist);
+		dist = sqrt(sum);
 
 		if (dist < ldist){
 			ldist = dist;
@@ -67,43 +67,51 @@ int calculateClosestCluster(int p, const vector<int> & liClusters, const vector<
 	return closestCluster;
 }
 
-void realocatePointToBestCluster(int p, vector<Cluster> & clusters, vector<int> & shaping){
+bool realocatePointToBestCluster(int p, vector<Cluster> & clusters, vector<int> & shaping, bool start){
 	vector<int> liClusters;
-	int bestCluster;
+	int bestCluster = -1, currentCluster = shaping[p];
 
-	if (shaping[p] == -1) {
-		calculateLowestInfeasibilityClusters(p, liClusters, shaping);
+	if (currentCluster == -1) {
+		calculateLowestInfeasibilityClusters(p, liClusters, shaping, start);
 		bestCluster = calculateClosestCluster(p, liClusters, clusters);
 		clusters[bestCluster].addPoint(p);
 		shaping[p] = bestCluster;
+		return true;
 	}
 
 	else {
 		if (clusters[shaping[p]].getClusterSize() > 1) {
-			calculateLowestInfeasibilityClusters(p, shaping, liClusters);
+			calculateLowestInfeasibilityClusters(p, liClusters, shaping, start);
 			bestCluster = calculateClosestCluster(p, liClusters, clusters);
-			if (shaping[p] != bestCluster) {
+			if (currentCluster != bestCluster) {
+				clusters[currentCluster].removePoint(p);
 				clusters[bestCluster].addPoint(p);
 				shaping[p] = bestCluster;
+				return true;
 			}
 		}
 	}
+
+	return false;
 }
 
-void initializeClusters(vector<Cluster> & clusters, vector<int> & shaping, int seed){
+
+void initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, int seed) {
 
 	bool repeat = true;
-	vector<float> centroide(dimension);
+	vector<double> centroide(dimension);
 	vector<int> index;
 	initializeUniformInt(index, 0, g_points.size());
+	shuffle(index.begin(), index.end(), std::default_random_engine(seed));
 
 	while (repeat) {
 		repeat = false;
 
 		//-----Calculate clusters center randomly-----
 		for (int i = 0; i < K; i++) {
-			for (int j = 0; j < dimension; j++)
+			for (int j = 0; j < dimension; j++) {
 				centroide[j] = Rand();
+			}
 
 			Cluster c(centroide);
 			clusters.push_back(c);
@@ -111,14 +119,12 @@ void initializeClusters(vector<Cluster> & clusters, vector<int> & shaping, int s
 
 		//-----Asociate each point to its best Cluster-----
 		for (int p = 0; p < g_points.size(); p++)
-			realocatePointToBestCluster(index[p], clusters, shaping);
-
-		//printVectorElements(shaping);
+			realocatePointToBestCluster(index[p], clusters, shaping, true);
 
 		//-----Checking that all clusters are associated with at least one point-----
 		for (int i = 0; i < K; i++)
 			if (clusters[i].getClusterSize() < 1) {
-				//cout << "Culpable: " << i << endl;
+				cout << "Culpable: " << i << endl;
 
 				repeat = true;
 				clusters.clear();
@@ -136,15 +142,14 @@ void initializeClusters(vector<Cluster> & clusters, vector<int> & shaping, int s
 
 	//-----Recalculating the center of each cluster-----
 	for (int i = 0; i < K; i++)
-		clusters[i].calculateCentroid();
+		clusters[i].calculateClusterCentroid();
 
 	cout << "Clusters initialized = " << clusters.size() << endl << endl;
-
 }
 
 
 //Calculates infeasibility of a given shaping
-int calculateShapingInfeasibility(vector<int> shaping) {
+int calculateShapingInfeasibility(const vector<int> & shaping) {
 	int sifs = 0;
 	for (int i = 0; i < restrictionsList.size(); i++) {
 		if (restrictionsList[i][0] == -1)
