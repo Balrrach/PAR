@@ -96,7 +96,7 @@ bool realocatePointToBestCluster(int p, vector<Cluster> & clusters, vector<int> 
 }
 
 
-void initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, int seed) {
+void initializeClusters(vector<Cluster> & clusters, vector<int> & shaping, int seed) {
 
 	bool repeat = true;
 	vector<double> centroide(dimension);
@@ -167,7 +167,7 @@ int calculateShapingInfeasibility(const vector<int> & shaping) {
 double calculateGeneralDeviation(const vector<Cluster> & clusters) {
 	double aux = 0;
 	for (int i = 0; i < K; i++)
-		aux += clusters[i].calculateIntraClusterMeanDeviation(clusters[i]);
+		aux += clusters[i].calculateIntraClusterMeanDeviation();
 
 	return aux / K;
 }

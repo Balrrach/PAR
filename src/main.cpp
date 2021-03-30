@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
 		return 1;
 
 
-	int seed = 1;
+	int seed = 2;
 	int iters = 100;
 
 	switch (atoi(argv[3]))
