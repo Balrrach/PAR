@@ -80,6 +80,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <ExecutablePath>$(VC_ExecutablePath_x86);$(CommonExecutablePath);$(SolutionDir)src\</ExecutablePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)include\</IncludePath>
+    <OutDir>$(SolutionDir)bin\</OutDir>
+    <IntDir>$(SolutionDir)bin\intermediates\</IntDir>
+    <TargetName>PAR</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -149,7 +154,7 @@
     <ClInclude Include="include\COPKM.h" />
     <ClInclude Include="include\CSV.h" />
     <ClInclude Include="include\PAR.h" />
-    <ClInclude Include="include\Random.h" />
+    <ClInclude Include="include\random.h" />
     <ClInclude Include="include\VectorUtilities.h" />
   </ItemGroup>
   <ItemGroup>

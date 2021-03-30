@@ -27,7 +27,7 @@
     <ClInclude Include="include\PAR.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Random.h">
+    <ClInclude Include="include\random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\VectorUtilities.h">

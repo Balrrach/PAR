@@ -1,6 +1,9 @@
+#include <iostream>
 #include <Chrono>
 #include <utility>
+#include <vector>
 #include <map>
+
 #include "CSV.h"
 #include "COPKM.h"
 #include "BL.h"

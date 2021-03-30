@@ -4,11 +4,19 @@
 #include <algorithm>
 #include <random>
 #include <vector>
+#include <limits.h>
 
-#include "Random.h"
+#include "random.h"
+#include "Cluster.h"
 #include "VectorUtilities.h"
 
 using namespace std;
+
+extern vector<vector<float> > g_points;
+extern map<int, vector <pair<int, int> > > restrictionsMap;
+extern vector<vector<int> > restrictionsList;
+extern int dimension;
+extern int K;
 
 
 //Prints the final solution
@@ -45,12 +53,78 @@ void printSolution(const vector<Cluster>& clusters) {
 	*/
 }
 
+void calculateLowestInfeasibilityClusters(int p, vector<int> & liClusters, const vector<int> & shaping){
+	int lifs = INT_MAX, ifs = 0;
 
-void realocatePointToBestCluster(int p, vector<Cluster>& clusters){
-	clusters[p % K].addPoint(p);
+	for (int i = 0; i < K; i++) {
+		ifs = 0;
+		for (int j = 0; j < restrictionsMap[p].size(); j++) {
+			if (restrictionsMap[p][j].first == -1)
+				if (shaping[restrictionsMap[p][j].second] == i)
+					ifs++;
+			if (restrictionsMap[p][j].first == 1)
+				if (shaping[restrictionsMap[p][j].second] != i)
+					ifs++;
+		}
+
+		if (ifs < lifs) {
+			lifs = ifs;
+			liClusters.clear();
+			liClusters.push_back(i);
+		}
+
+		else if(ifs == lifs)
+			liClusters.push_back(i);
+	}
 }
 
-void initializeClusters(vector<Cluster> & clusters, int seed){
+
+int calculateClosestCluster(int p, const vector<int> & liClusters, const vector<Cluster> & clusters) {
+	double dist = 0.0, ldist = DBL_MAX;
+	int closestCluster;
+
+	for (int i = 0; i < liClusters.size(); i++) {
+		dist = 0.0;
+
+		for (int j = 0; j < dimension; j++) {
+			dist += pow(clusters[i].getCentroidByPos(j) - g_points[p][j], 2.0);
+		}
+
+		dist = sqrt(dist);
+
+		if (dist < ldist){
+			ldist = dist;
+			closestCluster = liClusters[i];
+		}
+	}
+
+	return closestCluster;
+}
+
+void realocatePointToBestCluster(int p, vector<Cluster> & clusters, vector<int> & shaping){
+	vector<int> liClusters;
+	int bestCluster;
+
+	if (shaping[p] == -1) {
+		calculateLowestInfeasibilityClusters(p, liClusters, shaping);
+		bestCluster = calculateClosestCluster(p, liClusters, clusters);
+		clusters[bestCluster].addPoint(p);
+		shaping[p] = bestCluster;
+	}
+
+	else {
+		if (clusters[shaping[p]].getClusterSize() > 1) {
+			calculateLowestInfeasibilityClusters(p, shaping, liClusters);
+			bestCluster = calculateClosestCluster(p, liClusters, clusters);
+			if (shaping[p] != bestCluster) {
+				clusters[bestCluster].addPoint(p);
+				shaping[p] = bestCluster;
+			}
+		}
+	}
+}
+
+void initializeClusters(vector<Cluster> & clusters, vector<int> & shaping, int seed){
 
 	bool repeat = true;
 	vector<float> centroide(dimension);
@@ -58,8 +132,7 @@ void initializeClusters(vector<Cluster> & clusters, int seed){
 	initializeUniformInt(index, 0, g_points.size());
 
 	while (repeat) {
-		shuffle(index.begin(), index.end(), std::default_random_engine(seed));
-		clusters.clear();
+		repeat = false;
 
 		//-----Calculate clusters center randomly-----
 		for (int i = 0; i < K; i++) {
@@ -72,20 +145,27 @@ void initializeClusters(vector<Cluster> & clusters, int seed){
 
 		//-----Asociate each point to its best Cluster-----
 		for (int p = 0; p < g_points.size(); p++)
-			realocatePointToBestCluster(index[p], clusters);
+			realocatePointToBestCluster(index[p], clusters, shaping);
+
+		//printVectorElements(shaping);
 
 		//-----Checking that all clusters are associated with at least one point-----
-		repeat = false;
-		for (int i = 0; i < clusters.size(); i++)
+		for (int i = 0; i < K; i++)
 			if (clusters[i].getClusterSize() < 1) {
+				//cout << "Culpable: " << i << endl;
+
 				repeat = true;
+				clusters.clear();
+				for (int j = 0; j < shaping.size(); j++)
+					shaping[j] = -1;
+				shuffle(index.begin(), index.end(), std::default_random_engine(seed));
 				break;
 			}
 
 		//-----Reset-----
 		//printVectorElements(index);			
-			//for (int i = 0; i < g_points.size(); i++)									ESTO DEBERIA SER UN DESTROY
-				//clusters[all_points[i].getCluster()].forceRemovePoint(all_points[i]);
+		//for (int i = 0; i < g_points.size(); i++)
+			//clusters[i];
 	}
 
 	//-----Recalculating the center of each cluster-----

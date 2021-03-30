@@ -5,6 +5,8 @@
 #include <sstream>
 #include <vector>
 
+#include <map>
+
 using namespace std;
 
 extern vector<vector<float> > g_points;
