@@ -5,6 +5,16 @@
 using namespace std;
 
 
+float calculateDistance(const vector<float> & a, const vector<float> & b) {
+	float sum = 0;
+	for (int c = 0; c < dimension; c++) {
+		sum += pow(a[c] - b[c], 2.0);
+	}
+
+	return sqrt(sum);
+}
+
+
 class Cluster {
 
 private:
@@ -89,15 +99,9 @@ public:
 
 	//Calculates intra cluster mean deviation
 	float calculateIntraClusterMeanDeviation() const {
-		float meanDeviation = 0, sum = 0;
-		for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++) {
-			sum = 0;
-			for (int c = 0; c < dimension; c++) {
-				sum += pow(g_points[*it][c] - getCentroidByPos(c), 2.0);
-			}
-
-			meanDeviation += sqrt(sum);
-		}
+		float meanDeviation = 0;
+		for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++)
+			meanDeviation += calculateDistance(g_points[*it], getCentroid());
 
 		return meanDeviation / getClusterSize();
 	}
