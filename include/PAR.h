@@ -20,7 +20,7 @@ extern float lambda;
 
 
 //Calculates infeseability of a given point in a given cluster k under a certain configuration shaping
-int calculateIncrementInfeseability(int p, int k, vector<int> shaping) {
+int calculateIncrementInfeseability(int p, int k, const vector<int> & shaping) {
 	int incrementIfs = 0; 
 
 	for (int r = 0; r < restrictionsMap[p].size(); r++) {
@@ -37,7 +37,7 @@ int calculateIncrementInfeseability(int p, int k, vector<int> shaping) {
 
 
 //Returns true if the shaping is valid
-bool checkShaping(const vector<int>& shaping) {
+bool checkShaping(const vector<int> & shaping) {
 	set<int> aux;
 	for (int i = 0; i < K; i++)
 		aux.insert(i);
