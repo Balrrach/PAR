@@ -59,7 +59,21 @@ void assignPointToCluster(int point, int newCluster, vector<int> & shaping, vect
 	clusters[newCluster].calculateClusterCentroid();
 }
 
-void localSearch(vector<Cluster> & clusters, vector<int> & shaping, vector<int> & index, vector<pair<int, int>> & neighbourhood, int seed, int & iters){
+
+//
+int localSearch(vector<Cluster> & clusters, vector<int> & shaping, int seed){
+	vector<pair<int, int>> neighbourhood;
+	for (int p = 0; p < g_points.size(); p++)
+		for (int k = 0; k < K; k++)
+			if (k != shaping[p]) {
+				neighbourhood.push_back(pair<int, int>{p, k});
+			}
+
+	vector<int> index;
+	initializeUniformInt(index, 0, neighbourhood.size());
+
+	int iters = 0;
+
 	int point, newCluster, currentCluster;
 	float currentFitness = calculateAggregate(clusters, shaping);
 	float newFitness, generalDeviation;
@@ -105,6 +119,8 @@ void localSearch(vector<Cluster> & clusters, vector<int> & shaping, vector<int> 
 		if(!betterNeighbourFound)
 			bestNeightbourFound = true;
 	}
+
+	return iters;
 }
 
 
@@ -115,19 +131,8 @@ void BL(int seed, int iters) {
 	vector<Cluster> clusters;
 	vector<int> shaping(g_points.size());
 	initializeClusters(clusters, shaping);
-
-	vector<pair<int, int>> neighbourhood;
-	for (int p = 0; p < g_points.size(); p++)
-		for (int k = 0; k < K; k++)
-			if (k != shaping[p]) {
-				neighbourhood.push_back(pair<int, int>{p, k});
-			}
-
-	vector<int> index;
-	initializeUniformInt(index, 0, neighbourhood.size());
 	
-	int i = 0;
-	localSearch(clusters, shaping, index, neighbourhood, seed, i);
+	iters = localSearch(clusters, shaping, seed);
 
 	auto end = std::chrono::high_resolution_clock::now();
 	printSolution(clusters, shaping);
