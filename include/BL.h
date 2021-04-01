@@ -15,6 +15,7 @@ extern vector<vector<int> > restrictionsList;
 extern int dimension;
 extern int K;
 
+
 //Returns true if the shaping is valid
 bool checkShaping(const vector<int> & shaping){
 	set<int> aux;
@@ -67,38 +68,68 @@ void initializeClusters(vector<Cluster>& clusters, vector<int> & shaping) {
 }
 
 
-void findBestNeighbour(vector<Cluster> & clusters, vector<int> & shaping, vector<int> & index, vector<pair<int, int>> & neighbourhood, int seed, int & iters) {
+void findBestNeighbour(vector<Cluster> & clusters, vector<int> & shaping, vector<int> & index, vector<pair<int, int>> & neighbourhood, int seed, int & iters, float lambda) {
 	vector<int> shapingCopy(shaping);
-	int point, newCluster, currentCluster, currentIfs, newIfs;
-	float currentDistance, newDistance;
+	int point, newCluster, currentCluster;
+	//float currentDistance, newDistance;
+	float currentFitness = calculateAggregate(clusters, shaping);
+	float newFitness, generalDeviation;
+	float currentIfs = calculateShapingInfeasibility(shaping), newIfs;
+	float currentPointIfs, newPointIfs;
+	bool bestNeightbourFound = false, betterNeighbourFound = false;
+	
 
-	shuffle(index.begin(), index.end(), std::default_random_engine(seed));
-	for (int i = 0; i < index.size(); i++) {
-		iters++;
-		point = neighbourhood[index[i]].first;
-		currentCluster = shaping[point];
-		newCluster = neighbourhood[index[i]].second;
+	while (iters < 100000 && !bestNeightbourFound) {
+		shuffle(index.begin(), index.end(), std::default_random_engine(seed + iters));
+		betterNeighbourFound = false;
 
-		if (clusters[currentCluster].getClusterSize() > 1) {
-			currentIfs = calculateIncrementInfeseability(point, currentCluster, shaping);
-			newIfs = calculateIncrementInfeseability(point, newCluster, shaping);
+		for (int i = 0; i < index.size(); i++) {
+			iters++;
 
-			if (newIfs < currentIfs) {
-				currentDistance = calculateDistance(g_points[point], clusters[currentCluster].getCentroid());
-				newDistance = calculateDistance(g_points[point], clusters[newCluster].getCentroid());
-				if ((newIfs + newDistance) < (currentDistance + currentIfs)) {
-					shaping[point] = newCluster;
-					clusters[currentCluster].removePoint(point);
-					clusters[newCluster].addPoint(point);
+			//cout << currentFitness << endl;
+			point = neighbourhood[index[i]].first;
+			currentCluster = shaping[point];
+			newCluster = neighbourhood[index[i]].second;
+
+			if (clusters[currentCluster].getClusterSize() > 1) {
+				currentPointIfs = calculateIncrementInfeseability(point, currentCluster, shaping);
+				newPointIfs = calculateIncrementInfeseability(point, newCluster, shaping);
+				shaping[point] = newCluster;
+				clusters[currentCluster].removePoint(point);
+				clusters[currentCluster].calculateClusterCentroid();
+				clusters[newCluster].addPoint(point);
+				clusters[newCluster].calculateClusterCentroid();
+				generalDeviation = calculateGeneralDeviation(clusters);
+				newIfs = currentIfs + newPointIfs - currentPointIfs;
+				newFitness = generalDeviation + (newIfs*lambda);
+				//newFitness = calculateAggregate(clusters, shaping);
+
+				if (newFitness < currentFitness) {
+					currentIfs = newIfs;
+					currentFitness = newFitness;
+					neighbourhood[index[i]].second = currentCluster;
+					betterNeighbourFound = true;
 					break;
+				}
+				else {
+					shaping[point] = currentCluster;
+					clusters[currentCluster].addPoint(point);
+					clusters[currentCluster].calculateClusterCentroid();
+					clusters[newCluster].removePoint(point);
+					clusters[newCluster].calculateClusterCentroid();
+
 				}
 			}
 		}
+		if(!betterNeighbourFound)
+			bestNeightbourFound = true;
 	}
 }
 
 
 void BL(int seed, int iters) {
+	auto begin = std::chrono::high_resolution_clock::now();
+
 	iters = 100000;
 	vector<Cluster> clusters;
 	vector<int> shaping(g_points.size());
@@ -115,9 +146,11 @@ void BL(int seed, int iters) {
 	initializeUniformInt(index, 0, neighbourhood.size());
 	
 	int i = 0;
-	while (i < iters) {
-		findBestNeighbour(clusters, shaping, index, neighbourhood, seed, i);
-	}
+	float lambda = calculateLambda();
+	findBestNeighbour(clusters, shaping, index, neighbourhood, seed, i, lambda);
 
+	auto end = std::chrono::high_resolution_clock::now();
 	printSolution(clusters, shaping);
+	std::cout << "Tiempo con Chrono: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
+	cout << "Numero de iteraciones: " << iters << endl;
 }
