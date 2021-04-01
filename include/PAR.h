@@ -18,17 +18,6 @@ extern int dimension;
 extern int K;
 
 
-float calculateDistance(vector<float> a, vector<float> b) {
-	float sum = 0;
-	for (int c = 0; c < dimension; c++) {
-		sum += pow(a[c] - b[c], 2.0);
-	}
-
-	float distance = sqrt(sum);
-	return distance;
-}
-
-
 int calculateIncrementInfeseability(int p, int k, vector<int> shaping) {
 	int incrementIfs = 0; 
 
@@ -144,26 +133,29 @@ float calculateGeneralDeviation(const vector<Cluster> & clusters) {
 //Calculates lambda value
 float calculateLambda(){
 	//Maximum distance calculation
-	float max = 0.0, sum = 0.0, dist;
+	float max = 0.0, dist;
 
 	for (int i = 0; i < g_points.size(); i++) {
 		for (int j = 0; j < g_points.size(); j++) {
 			if (j > i) {
-				for (int d = 0; d < dimension; d++) {
-					sum += pow(g_points[i][d] - g_points[j][d], 2.0);
-				}
-
-				dist = sqrt(sum);
+				dist = calculateDistance(g_points[i], g_points[j]);;
 
 				if (max < dist)
 					max = dist;
-
-				sum = 0;
 			}
 		}
 	}
 
 	return max / restrictionsList.size();
+}
+
+
+float calculateAggregate(const vector<Cluster>& clusters, const vector<int>& shaping) {
+	float lambda = calculateLambda();
+	float generalDeviation = calculateGeneralDeviation(clusters);
+	int infeasibility = calculateShapingInfeasibility(shaping);
+
+	return generalDeviation + infeasibility * lambda;
 }
 
 
@@ -184,7 +176,6 @@ void printSolution(const vector<Cluster>& clusters, const vector<int> & shaping)
 	cout << "Vector solution: (";
 	for (int i = 0; i < total_points - 1; i++)
 		cout << shaping[i] << ", ";
-
 	cout << shaping[total_points - 1] << ")" << endl;
 
 	float lambda = calculateLambda();
