@@ -49,6 +49,16 @@ void initializeClusters(vector<Cluster>& clusters, vector<int> & shaping) {
 }
 
 
+//Assigns a point to a cluster removing it from its current cluster and updating centroids
+void assignPointToCluster(int point, int newCluster, vector<int> & shaping, vector<Cluster> & clusters) {
+	int currentCluster = shaping[point];
+	shaping[point] = newCluster;
+	clusters[currentCluster].removePoint(point);
+	clusters[newCluster].addPoint(point);
+	clusters[currentCluster].calculateClusterCentroid();
+	clusters[newCluster].calculateClusterCentroid();
+}
+
 void localSearch(vector<Cluster> & clusters, vector<int> & shaping, vector<int> & index, vector<pair<int, int>> & neighbourhood, int seed, int & iters){
 	int point, newCluster, currentCluster;
 	float currentFitness = calculateAggregate(clusters, shaping);
@@ -71,15 +81,13 @@ void localSearch(vector<Cluster> & clusters, vector<int> & shaping, vector<int> 
 			newCluster = neighbourhood[index[i]].second;
 
 			if (clusters[currentCluster].getClusterSize() > 1) {
+				assignPointToCluster(point, newCluster, shaping, clusters);
+
 				currentPointIfs = calculateIncrementInfeseability(point, currentCluster, shaping);
 				newPointIfs = calculateIncrementInfeseability(point, newCluster, shaping);
-				shaping[point] = newCluster;
-				clusters[currentCluster].removePoint(point);
-				clusters[currentCluster].calculateClusterCentroid();
-				clusters[newCluster].addPoint(point);
-				clusters[newCluster].calculateClusterCentroid();
 				generalDeviation = calculateGeneralDeviation(clusters);
 				newIfs = currentIfs + newPointIfs - currentPointIfs;
+				
 				newFitness = generalDeviation + (newIfs*lambda);
 
 				if (newFitness < currentFitness) {
@@ -89,14 +97,9 @@ void localSearch(vector<Cluster> & clusters, vector<int> & shaping, vector<int> 
 					betterNeighbourFound = true;
 					break;
 				}
-				else {
-					shaping[point] = currentCluster;
-					clusters[currentCluster].addPoint(point);
-					clusters[currentCluster].calculateClusterCentroid();
-					clusters[newCluster].removePoint(point);
-					clusters[newCluster].calculateClusterCentroid();
 
-				}
+				else
+					assignPointToCluster(point, currentCluster, shaping, clusters);
 			}
 		}
 		if(!betterNeighbourFound)
