@@ -126,6 +126,73 @@ int localSearch(vector<Cluster> & clusters, vector<int> & shaping, int seed){
 }
 
 
+//int localSearch(vector<Cluster>& clusters, vector<int>& shaping, int seed) {
+//	vector<int> index;
+//	vector<int> clustersShuffled;
+//	initializeUniformInt(index, 0, g_points.size());
+//	initializeUniformInt(clustersShuffled, 0, K);
+//
+//	int iters = 0;
+//
+//	int point, newCluster, currentCluster;
+//	float currentFitness = calculateAggregate(clusters, shaping);
+//	float newFitness, generalDeviation;
+//	float currentIfs = calculateShapingInfeasibility(shaping), newIfs;
+//	float currentPointIfs, newPointIfs;
+//	bool bestNeightbourFound = false, betterNeighbourFound = false;
+//
+//
+//	while (iters < 100000 && !bestNeightbourFound) {
+//		shuffle(index.begin(), index.end(), std::default_random_engine(seed + iters));
+//		betterNeighbourFound = false;
+//
+//		for (int i = 0; i < index.size(); i++) {
+//			shuffle(clustersShuffled.begin(), clustersShuffled.end(), std::default_random_engine(seed + iters));
+//
+//			point = index[i];
+//			currentCluster = shaping[point];
+//			currentPointIfs = calculateIncrementInfeseability(point, currentCluster, shaping);
+//
+//			if (clusters[currentCluster].getClusterSize() > 1) {
+//				for (int k = 0; k < K; k++) {
+//					newCluster = clustersShuffled[k];
+//					if (iters == 100000)
+//						break;
+//					iters++;
+//
+//					//cout << currentFitness << endl;
+//
+//					if (newCluster != currentCluster) {
+//						assignPointToCluster(point, newCluster, shaping, clusters);
+//
+//						newPointIfs = calculateIncrementInfeseability(point, newCluster, shaping);
+//						generalDeviation = calculateGeneralDeviation(clusters);
+//						newIfs = currentIfs + newPointIfs - currentPointIfs;
+//
+//						newFitness = generalDeviation + (newIfs * lambda);
+//
+//						if (newFitness < currentFitness) {
+//							currentIfs = newIfs;
+//							currentFitness = newFitness;
+//							betterNeighbourFound = true;
+//							break;
+//						}
+//
+//						else
+//							assignPointToCluster(point, currentCluster, shaping, clusters);
+//					}
+//				}
+//			}
+//			if (betterNeighbourFound)
+//				break;
+//		}
+//		if (!betterNeighbourFound)
+//			bestNeightbourFound = true;
+//	}
+//
+//	return iters;
+//}
+
 void BL(int seed, int iters) {
 	auto begin = std::chrono::high_resolution_clock::now();
 
