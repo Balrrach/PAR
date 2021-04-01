@@ -4,6 +4,8 @@
 
 #include "VectorUtilities.h"
 
+extern vector<vector<float> > g_points;
+
 using namespace std;
 
 
