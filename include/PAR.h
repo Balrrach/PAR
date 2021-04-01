@@ -16,6 +16,7 @@ extern map<int, vector <pair<int, int> > > restrictionsMap;
 extern vector<vector<int> > restrictionsList;
 extern int dimension;
 extern int K;
+extern float lambda;
 
 
 int calculateIncrementInfeseability(int p, int k, vector<int> shaping) {
@@ -34,72 +35,23 @@ int calculateIncrementInfeseability(int p, int k, vector<int> shaping) {
 }
 
 
-void calculateLowestInfeasibilityClusters(int p, vector<int> & liClusters, const vector<int> & shaping, bool start){
-	int lifs = INT_MAX, clusterIfs = 0;
-	//vector<int> index;
+//Returns true if the shaping is valid
+bool checkShaping(const vector<int>& shaping) {
+	set<int> aux;
+	for (int i = 0; i < K; i++)
+		aux.insert(i);
 
-	for (int k = 0; k < K; k++) {
-		clusterIfs = calculateIncrementInfeseability(p, k, shaping);
-
-		if (clusterIfs < lifs) {
-			lifs = clusterIfs;
-			liClusters.clear();
-			liClusters.push_back(k);
-		}
-
-		else if (clusterIfs == lifs)
-			liClusters.push_back(k);
-	}
-}
-
-
-int calculateClosestCluster(int p, const vector<int> & liClusters, const vector<Cluster> & clusters) {
-	float sum = 0.0, dist = 0.0, ldist = DBL_MAX;
-	int closestCluster = -1;
-	for (int i = 0; i < liClusters.size(); i++) {
-		sum = 0.0;
-
-		for (int j = 0; j < dimension; j++) {
-			sum += pow(clusters[liClusters[i]].getCentroidByPos(j) - g_points[p][j], 2.0);
-		}
-
-		dist = sqrt(sum);
-
-		if (dist < ldist){
-			ldist = dist;
-			closestCluster = liClusters[i];
-		}
+	set<int>::iterator it;
+	for (int i = 0; i < shaping.size(); i++) {
+		it = aux.find(shaping[i]);
+		if (it != aux.end())
+			aux.erase(it);
 	}
 
-	return closestCluster;
-}
-
-bool realocatePointToBestCluster(int p, vector<Cluster> & clusters, vector<int> & shaping, bool start){
-	vector<int> liClusters;
-	int bestCluster = -1, currentCluster = shaping[p];
-
-	if (currentCluster == -1) {
-		calculateLowestInfeasibilityClusters(p, liClusters, shaping, start);
-		bestCluster = calculateClosestCluster(p, liClusters, clusters);
-		clusters[bestCluster].addPoint(p);
-		shaping[p] = bestCluster;
+	if (aux.size() > 0)
+		return false;
+	else
 		return true;
-	}
-
-	else {
-		if (clusters[shaping[p]].getClusterSize() > 1) {
-			calculateLowestInfeasibilityClusters(p, liClusters, shaping, start);
-			bestCluster = calculateClosestCluster(p, liClusters, clusters);
-			if (currentCluster != bestCluster) {
-				clusters[currentCluster].removePoint(p);
-				clusters[bestCluster].addPoint(p);
-				shaping[p] = bestCluster;
-				return true;
-			}
-		}
-	}
-
-	return false;
 }
 
 
@@ -130,28 +82,7 @@ float calculateGeneralDeviation(const vector<Cluster> & clusters) {
 }
 
 
-//Calculates lambda value
-float calculateLambda(){
-	//Maximum distance calculation
-	float max = 0.0, dist;
-
-	for (int i = 0; i < g_points.size(); i++) {
-		for (int j = 0; j < g_points.size(); j++) {
-			if (j > i) {
-				dist = calculateDistance(g_points[i], g_points[j]);;
-
-				if (max < dist)
-					max = dist;
-			}
-		}
-	}
-
-	return max / restrictionsList.size();
-}
-
-
 float calculateAggregate(const vector<Cluster>& clusters, const vector<int>& shaping) {
-	float lambda = calculateLambda();
 	float generalDeviation = calculateGeneralDeviation(clusters);
 	int infeasibility = calculateShapingInfeasibility(shaping);
 
@@ -178,7 +109,6 @@ void printSolution(const vector<Cluster>& clusters, const vector<int> & shaping)
 		cout << shaping[i] << ", ";
 	cout << shaping[total_points - 1] << ")" << endl;
 
-	float lambda = calculateLambda();
 	float generalDeviation = calculateGeneralDeviation(clusters);
 	int infeasibility = calculateShapingInfeasibility(shaping);
 

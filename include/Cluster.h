@@ -2,17 +2,9 @@
 
 #include <set>
 
+#include "VectorUtilities.h"
+
 using namespace std;
-
-
-float calculateDistance(const vector<float> & a, const vector<float> & b) {
-	float sum = 0;
-	for (int c = 0; c < dimension; c++) {
-		sum += pow(a[c] - b[c], 2.0);
-	}
-
-	return sqrt(sum);
-}
 
 
 class Cluster {

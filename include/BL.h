@@ -14,26 +14,7 @@ extern map<int, vector <pair<int, int> > > restrictionsMap;
 extern vector<vector<int> > restrictionsList;
 extern int dimension;
 extern int K;
-
-
-//Returns true if the shaping is valid
-bool checkShaping(const vector<int> & shaping){
-	set<int> aux;
-	for (int i = 0; i < K; i++)
-		aux.insert(i);
-
-	set<int>::iterator it;
-	for (int i = 0; i < shaping.size(); i++) {
-		it = aux.find(shaping[i]);
-		if (it != aux.end())
-			aux.erase(it);
-	}
-	
-	if (aux.size() > 0)
-		return false;
-	else
-		return true;
-}
+extern float lambda;
 
 
 void initializeClusters(vector<Cluster>& clusters, vector<int> & shaping) {
@@ -68,10 +49,8 @@ void initializeClusters(vector<Cluster>& clusters, vector<int> & shaping) {
 }
 
 
-void findBestNeighbour(vector<Cluster> & clusters, vector<int> & shaping, vector<int> & index, vector<pair<int, int>> & neighbourhood, int seed, int & iters, float lambda) {
-	vector<int> shapingCopy(shaping);
+void localSearch(vector<Cluster> & clusters, vector<int> & shaping, vector<int> & index, vector<pair<int, int>> & neighbourhood, int seed, int & iters){
 	int point, newCluster, currentCluster;
-	//float currentDistance, newDistance;
 	float currentFitness = calculateAggregate(clusters, shaping);
 	float newFitness, generalDeviation;
 	float currentIfs = calculateShapingInfeasibility(shaping), newIfs;
@@ -102,7 +81,6 @@ void findBestNeighbour(vector<Cluster> & clusters, vector<int> & shaping, vector
 				generalDeviation = calculateGeneralDeviation(clusters);
 				newIfs = currentIfs + newPointIfs - currentPointIfs;
 				newFitness = generalDeviation + (newIfs*lambda);
-				//newFitness = calculateAggregate(clusters, shaping);
 
 				if (newFitness < currentFitness) {
 					currentIfs = newIfs;
@@ -146,8 +124,7 @@ void BL(int seed, int iters) {
 	initializeUniformInt(index, 0, neighbourhood.size());
 	
 	int i = 0;
-	float lambda = calculateLambda();
-	findBestNeighbour(clusters, shaping, index, neighbourhood, seed, i, lambda);
+	localSearch(clusters, shaping, index, neighbourhood, seed, i);
 
 	auto end = std::chrono::high_resolution_clock::now();
 	printSolution(clusters, shaping);

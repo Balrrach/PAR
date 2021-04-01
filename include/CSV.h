@@ -4,8 +4,9 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-
 #include <map>
+
+#include "VectorUtilities.h"
 
 using namespace std;
 
@@ -14,6 +15,27 @@ extern map<int, vector <pair<int, int> > > restrictionsMap;
 extern vector<vector<int> > restrictionsList;
 extern int dimension;
 extern int K;
+extern float lambda;
+
+
+//Calculates lambda value
+float calculateLambda() {
+    //Maximum distance calculation
+    float max = 0.0, dist;
+
+    for (int i = 0; i < g_points.size(); i++) {
+        for (int j = 0; j < g_points.size(); j++) {
+            if (j > i) {
+                dist = calculateDistance(g_points[i], g_points[j]);;
+
+                if (max < dist)
+                    max = dist;
+            }
+        }
+    }
+
+    return max / restrictionsList.size();
+}
 
 
 /*
@@ -121,6 +143,8 @@ int fetchRestrictions(string filename) {
 
     cout << "Number of restrictions: " << restrictionsList.size() << endl;
     
+    lambda = calculateLambda();
+
     /*
     int k = 0, l = 0;
     for (int c = 0; c < restrictionsList.size(); c++) {

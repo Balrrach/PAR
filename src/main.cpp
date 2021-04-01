@@ -15,6 +15,7 @@ map<int, vector <pair<int, int> > > restrictionsMap;
 vector<vector<int>> restrictionsList;
 int dimension;
 int K;
+float lambda;
 
 
 int main(int argc, char** argv) {
