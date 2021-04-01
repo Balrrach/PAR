@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
 		return 1;
 
 
-	int seed = 3;
+	int seed = 1;
 	int iters = 100;
 
 	Set_random(seed);

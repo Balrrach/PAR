@@ -87,6 +87,8 @@ int localSearch(vector<Cluster> & clusters, vector<int> & shaping, int seed){
 		betterNeighbourFound = false;
 
 		for (int i = 0; i < index.size(); i++) {
+			if (iters == 100000)
+				break;
 			iters++;
 
 			//cout << currentFitness << endl;
