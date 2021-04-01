@@ -19,6 +19,7 @@ extern int K;
 extern float lambda;
 
 
+//Calculates infeseability of a given point in a given cluster k under a certain configuration shaping
 int calculateIncrementInfeseability(int p, int k, vector<int> shaping) {
 	int incrementIfs = 0; 
 
