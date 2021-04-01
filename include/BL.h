@@ -26,10 +26,9 @@ void initializeClusters(vector<Cluster>& clusters, vector<int> & shaping) {
 			shaping[p] = Randint(0, K-1);
 
 		//-----Checking that all clusters are associated with at least one point-----
-		for (int i = 0; i < K; i++)
-			if (checkShaping(shaping)) {
-				repeat = false;
-			}
+		if (checkShaping(shaping)) {
+			repeat = false;
+		}
 	}
 
 	//-----Initializing clusters-----
@@ -193,10 +192,11 @@ int localSearch(vector<Cluster> & clusters, vector<int> & shaping, int seed){
 //	return iters;
 //}
 
-void BL(int seed, int iters) {
+string BL(int seed, int iters) {
 	auto begin = std::chrono::high_resolution_clock::now();
 
 	iters = 100000;
+	Set_random(seed);
 	vector<Cluster> clusters;
 	vector<int> shaping(g_points.size());
 	initializeClusters(clusters, shaping);
@@ -207,4 +207,6 @@ void BL(int seed, int iters) {
 	printSolution(clusters, shaping);
 	std::cout << "Tiempo con Chrono: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
 	cout << "Numero de iteraciones: " << iters << endl;
+
+	return createOutput(clusters, shaping, std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
 }
