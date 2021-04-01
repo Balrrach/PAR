@@ -69,6 +69,7 @@ void initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, int see
 
 void COPKM(int seed, int iters){
 	auto begin = std::chrono::high_resolution_clock::now();
+
 	vector<Cluster> clusters;
 	vector<int> shaping(g_points.size(), -1);
 	bool key;
