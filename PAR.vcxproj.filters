@@ -36,6 +36,9 @@
     <ClInclude Include="include\BL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Benchmark.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">

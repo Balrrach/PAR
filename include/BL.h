@@ -192,7 +192,7 @@ int localSearch(vector<Cluster> & clusters, vector<int> & shaping, int seed){
 //	return iters;
 //}
 
-string BL(int seed, int iters) {
+vector<float> BL(int seed, int iters) {
 	auto begin = std::chrono::high_resolution_clock::now();
 
 	iters = 100000;
@@ -204,9 +204,10 @@ string BL(int seed, int iters) {
 	iters = localSearch(clusters, shaping, seed);
 
 	auto end = std::chrono::high_resolution_clock::now();
-	printSolution(clusters, shaping);
+	//printSolution(clusters, shaping);
 	std::cout << "Tiempo con Chrono: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
 	cout << "Numero de iteraciones: " << iters << endl;
 
+	createOutput(clusters, shaping, std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()).size();
 	return createOutput(clusters, shaping, std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
 }

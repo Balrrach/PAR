@@ -17,6 +17,7 @@ extern vector<vector<int> > restrictionsList;
 extern int dimension;
 extern int K;
 extern float lambda;
+extern float optimumDistance;
 
 
 //Calculates infeseability of a given point in a given cluster k under a certain configuration shaping
@@ -88,6 +89,12 @@ float calculateAggregate(const vector<Cluster>& clusters, const vector<int>& sha
 	int infeasibility = calculateShapingInfeasibility(shaping);
 
 	return generalDeviation + infeasibility * lambda;
+}
+
+
+//Calculates Error_distance
+float calculateErrorDistance(const vector<Cluster>& clusters) {
+	return abs(calculateGeneralDeviation(clusters) - optimumDistance);
 }
 
 

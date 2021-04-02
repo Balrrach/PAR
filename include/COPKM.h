@@ -7,6 +7,7 @@
 
 #include "Cluster.h"
 #include "PAR.h"
+#include "CSV.h"
 
 using namespace std;
 
@@ -137,9 +138,10 @@ void initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, int see
 }
 
 
-void COPKM(int seed, int iters){
+vector<float> COPKM(int seed, int iters){
 	auto begin = std::chrono::high_resolution_clock::now();
 
+	Set_random(seed);
 	vector<Cluster> clusters;
 	vector<int> shaping(g_points.size(), -1);
 	bool key;
@@ -174,6 +176,8 @@ void COPKM(int seed, int iters){
 	cout << "Clustering completed in iteration : " << iter << endl << endl;
 
 	auto end = std::chrono::high_resolution_clock::now();
-	printSolution(clusters, shaping);
+	//printSolution(clusters, shaping);
 	std::cout << "Tiempo con Chrono: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
+
+	return createOutput(clusters, shaping, std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
 }

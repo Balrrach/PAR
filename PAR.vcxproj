@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\Benchmark.h" />
     <ClInclude Include="include\BL.h" />
     <ClInclude Include="include\Cluster.h" />
     <ClInclude Include="include\COPKM.h" />
