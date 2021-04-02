@@ -30,8 +30,8 @@ int benchmark() {
 	//string COPKM_20 = ";;;; Resultados obtenidos por el algoritmo COPKM en el PAR con 20 % de restricciones;;;;;;;;";
 	//string BL_10 = ";;;; Resultados obtenidos por el algoritmo BL en el PAR con 10 % de restricciones;;;;;;;;";
 	//string BL_20 = ";;;; Resultados obtenidos por el algoritmo BL en el PAR con 10 % de restricciones;;;;;;;;";
-	string dataset = ";Zoo;;;;Glass;;;;Bupa;;;";
-	string headers = ";Infeasable;Error_Dist;Aggregate;Time;Infeasable;Error_Dist;Aggregate;Time;Infeasable;Error_Dist;Aggregate;Time";
+	string dataset = ",Zoo,,,,Glass,,,,Bupa,,,";
+	string headers = ", Infeasable , Error_Dist , Aggregate , Time , Infeasable , Error_Dist , Aggregate , Time , Infeasable , Error_Dist , Aggregate , Time ";
 	vector<string> table_COPKM_10(5, "Ejecucion"), table_BL_10(5, "Ejecucion"), table_COPKM_20(5, "Ejecucion"), table_BL_20(5, "Ejecucion");
 	
 	for (int i = 0; i < nexe; i++) {

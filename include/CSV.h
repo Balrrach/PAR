@@ -321,5 +321,5 @@ vector<float> createOutput(const vector<Cluster>& clusters, const vector<int>& s
 
 
 string outpputToString(vector<float> results) {
-	return ";" + to_string((int)results[0]) + ";" + to_string(results[1]) + ";" + to_string(results[2]) + ";" + to_string((int)results[3]);
+	return "," + to_string((int)results[0]) + "," + to_string(results[1]) + "," + to_string(results[2]) + "," + to_string((int)results[3]);
 }

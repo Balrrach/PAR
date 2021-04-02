@@ -1,4 +1,4 @@
-;Zoo;;;;Glass;;;;Bupa;;;
-;Infeasable;Error_Dist;Aggregate;Time;Infeasable;Error_Dist;Aggregate;Time;Infeasable;Error_Dist;Aggregate;Time
-COPKM;4;0.035668;0.970779;5;16;0.018565;0.398993;21;31;0.007174;0.230543;164
-BL;15;0.241371;0.778609;690;30;0.139688;0.254714;1856;134;0.115741;0.149632;14147
+,Zoo,,,,Glass,,,,Bupa,,,
+, Infeasable , Error_Dist , Aggregate , Time , Infeasable , Error_Dist , Aggregate , Time , Infeasable , Error_Dist , Aggregate , Time 
+COPKM,4,0.035668,0.970779,5,16,0.018565,0.398993,16,31,0.007174,0.230543,161
+BL,15,0.241371,0.778609,684,30,0.139688,0.254714,1864,134,0.115741,0.149632,14114
