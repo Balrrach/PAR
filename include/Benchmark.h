@@ -33,6 +33,7 @@ int benchmark() {
 	string dataset = ";Zoo;;;;Glass;;;;Bupa;;;";
 	string headers = ";Infeasable;Error_Dist;Aggregate;Time;Infeasable;Error_Dist;Aggregate;Time;Infeasable;Error_Dist;Aggregate;Time";
 	vector<string> table_COPKM_10(5, "Ejecucion"), table_BL_10(5, "Ejecucion"), table_COPKM_20(5, "Ejecucion"), table_BL_20(5, "Ejecucion");
+	
 	for (int i = 0; i < nexe; i++) {
 		table_COPKM_10[i] += " " + to_string(i+1);
 		table_COPKM_20[i] += " " + to_string(i+1);
