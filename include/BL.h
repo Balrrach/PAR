@@ -59,14 +59,18 @@ void assignPointToCluster(int point, int newCluster, vector<int> & shaping, vect
 }
 
 
-//
-int localSearch(vector<Cluster> & clusters, vector<int> & shaping, int seed){
-	vector<pair<int, int>> neighbourhood;
+void generateNeighbourhood(vector<pair<int, int>> & neighbourhood, const vector<int>& shaping) {
 	for (int p = 0; p < g_points.size(); p++)
 		for (int k = 0; k < K; k++)
-			if (k != shaping[p]) {
+			if (k != shaping[p])
 				neighbourhood.push_back(pair<int, int>{p, k});
-			}
+}
+
+
+//Local search algorithm
+int localSearch(vector<Cluster> & clusters, vector<int> & shaping, int seed, int maxIter){
+	vector<pair<int, int>> neighbourhood;
+	generateNeighbourhood(neighbourhood, shaping);
 
 	vector<int> index;
 	initializeUniformInt(index, 0, neighbourhood.size());
@@ -74,19 +78,19 @@ int localSearch(vector<Cluster> & clusters, vector<int> & shaping, int seed){
 	int iters = 0;
 
 	int point, newCluster, currentCluster;
-	float currentFitness = calculateAggregate(clusters, shaping);
+	float currentFitness = calculateFitness(clusters, shaping);
 	float newFitness, generalDeviation;
 	float currentIfs = calculateShapingInfeasibility(shaping), newIfs;
 	float currentPointIfs, newPointIfs;
 	bool bestNeightbourFound = false, betterNeighbourFound = false;
 	
 
-	while (iters < 100000 && !bestNeightbourFound) {
+	while (iters < maxIter && !bestNeightbourFound) {
 		shuffle(index.begin(), index.end(), std::default_random_engine(seed + iters));
 		betterNeighbourFound = false;
 
 		for (int i = 0; i < index.size(); i++) {
-			if (iters == 100000)
+			if (iters == maxIter)
 				break;
 			iters++;
 
@@ -192,22 +196,21 @@ int localSearch(vector<Cluster> & clusters, vector<int> & shaping, int seed){
 //	return iters;
 //}
 
-vector<float> BL(int seed, int iters) {
+vector<float> BL(int seed, int maxIters) {
 	auto begin = std::chrono::high_resolution_clock::now();
 
-	iters = 100000;
+	int iters;
 	Set_random(seed);
 	vector<Cluster> clusters;
 	vector<int> shaping(g_points.size());
 	initializeClusters(clusters, shaping);
 	
-	iters = localSearch(clusters, shaping, seed);
+	iters = localSearch(clusters, shaping, seed, maxIters);
 
 	auto end = std::chrono::high_resolution_clock::now();
-	//printSolution(clusters, shaping);
+	printSolution(clusters, shaping);
 	std::cout << "Tiempo con Chrono: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
 	cout << "Numero de iteraciones: " << iters << endl;
 
-	createOutput(clusters, shaping, std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count()).size();
 	return createOutput(clusters, shaping, std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
 }

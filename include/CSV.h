@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include <iomanip>
 
 #include "VectorUtilities.h"
 #include "Cluster.h"
@@ -76,6 +77,7 @@ void split(const string& s, char c, vector<string>& v) {
 }
 
 
+//Reads point data from a file in CSV format
 int fetchPoints(string filename) {
 	//Open file for fetching points
 	cout << "Filename: " << filename << endl;
@@ -118,6 +120,7 @@ int fetchPoints(string filename) {
 }
 
 
+//Reads restrictions data from a file in CSV format
 int fetchRestrictions(string filename) {
 	//Open file for fetching restrictions
 	cout << "Filename: " << filename << endl;
@@ -183,6 +186,7 @@ int fetchRestrictions(string filename) {
 }
 
 
+//Reads all data that algorithms need to work
 int readData(const string& points_file, const string& restrictions_file) {
 	cleanGlobals();
 
@@ -314,12 +318,14 @@ vector<float> createOutput(const vector<Cluster>& clusters, const vector<int>& s
 	vector<float> sol;
 	sol.push_back((float)calculateShapingInfeasibility(shaping));
 	sol.push_back(calculateErrorDistance(clusters));
-	sol.push_back(calculateAggregate(clusters, shaping));
+	sol.push_back(calculateFitness(clusters, shaping));
 	sol.push_back(time);
 	return sol;
 }
 
 
-string outpputToString(vector<float> results) {
-	return "," + to_string((int)results[0]) + "," + to_string(results[1]) + "," + to_string(results[2]) + "," + to_string((int)results[3]);
+//Turns output data into an string
+string outputToString(vector<float> results) {
+	return "," + to_string((int)results[0]) + "," + to_string_with_precision(results[1], 5) + 
+			"," + to_string_with_precision(results[2], 5) + "," + to_string((int)results[3]);
 }

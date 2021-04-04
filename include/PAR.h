@@ -84,7 +84,8 @@ float calculateGeneralDeviation(const vector<Cluster> & clusters) {
 }
 
 
-float calculateAggregate(const vector<Cluster>& clusters, const vector<int>& shaping) {
+//Calculates fitness of a given shaping
+float calculateFitness(const vector<Cluster>& clusters, const vector<int>& shaping) {
 	float generalDeviation = calculateGeneralDeviation(clusters);
 	int infeasibility = calculateShapingInfeasibility(shaping);
 

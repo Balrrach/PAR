@@ -21,6 +21,7 @@ float optimumDistance;
 
 
 int main(int argc, char** argv) {
+
 	if (string(argv[1]) == "B") {
 		benchmark();
 		return 0;
@@ -44,10 +45,9 @@ int main(int argc, char** argv) {
 
 
 		int seed = 4;
-		int iters = 100;
+		int iters = 100000;
 
-		switch (atoi(argv[3]))
-		{
+		switch (atoi(argv[3])){
 		case 1:
 			//Running COPKM Clustering
 			COPKM(seed, iters);

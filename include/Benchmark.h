@@ -19,20 +19,56 @@ extern int K;
 extern float lambda;
 
 
+//Encapsulates the execution of a given algorithm and dataset nexe times keeping the structure needed
+//to export the results to a csv file
+void operate(int seed, int nexe, int iters, int estadisticos, 
+			vector<float>& result_COPKM, vector<float>& result_BL,
+			vector<string>& table_COPKM, vector<string>& table_BL, 
+			vector<float>& media_COPKM, vector<float>& media_BL,
+			string& string_Media_COPKM, string& string_Media_BL)
+{
+	for (int i = 0; i < nexe; i++) {
+		result_COPKM = COPKM(i + seed, iters);
+		result_BL = BL(i + seed, iters);
+		table_COPKM[i] += outputToString(result_COPKM);
+		table_BL[i] += outputToString(result_BL);
+		for (int j = 0; j < estadisticos; j++) {
+			media_COPKM[j] += result_COPKM[j] / nexe;
+			media_BL[j] += result_BL[j] / nexe;
+		}
+	}
+	string_Media_COPKM += outputToString(media_COPKM);
+	string_Media_BL += outputToString(media_BL);
+	fill(media_COPKM.begin(), media_COPKM.end(), 0);
+	fill(media_BL.begin(), media_BL.end(), 0);
+}
+
+
+//Writes the results of a given algorithm and dataset to a given file
+void writeOutput(const string& fileName, const string& headers, int nexe, const vector<string>& table, const string& string_Media) {
+	ofstream myfile;
+	myfile.open(fileName);
+	//myfile << dataset << endl;
+	myfile << headers << endl;
+	for (int i = 0; i < nexe; i++)
+		myfile << table[i] << endl;
+	myfile << "Media" + string_Media << endl;
+	myfile.close();
+}
+
+
+//Benchmark function
 int benchmark() {
-	int iters = 100;
+	int iters = 100000;
 	int seed = 4, nexe = 5, estadisticos = 4;
 	string points_file, restrictions_file;
 	string fileName;
 	vector<float> result_COPKM, result_BL, media_COPKM_10(4, 0), media_BL_10(4, 0), media_COPKM_20(4, 0), media_BL_20(4, 0);
-	string string_Media_COPKM_10, string_Media_BL_10, string_Media_COPKM_20, string_Media_BL_20;;
-	//string COPKM_10 = ";;;; Resultados obtenidos por el algoritmo COPKM en el PAR con 10 % de restricciones;;;;;;;;";
-	//string COPKM_20 = ";;;; Resultados obtenidos por el algoritmo COPKM en el PAR con 20 % de restricciones;;;;;;;;";
-	//string BL_10 = ";;;; Resultados obtenidos por el algoritmo BL en el PAR con 10 % de restricciones;;;;;;;;";
-	//string BL_20 = ";;;; Resultados obtenidos por el algoritmo BL en el PAR con 10 % de restricciones;;;;;;;;";
-	string dataset = ",Zoo,,,,Glass,,,,Bupa,,,";
-	string headers = ", Infeasable , Error_Dist , Aggregate , Time , Infeasable , Error_Dist , Aggregate , Time , Infeasable , Error_Dist , Aggregate , Time ";
-	vector<string> table_COPKM_10(5, "Ejecucion"), table_BL_10(5, "Ejecucion"), table_COPKM_20(5, "Ejecucion"), table_BL_20(5, "Ejecucion");
+	string string_Media_COPKM_10, string_Media_BL_10, string_Media_COPKM_20, string_Media_BL_20;
+	//string dataset = ",Zoo,,,,Glass,,,,Bupa,,,";
+	string headers = ",Inf,Error,Fitness,Time,Inf,Error,Fitness,Time,Inf,Error,Fitness,Time";
+	vector<string> table_COPKM_10(5, "Exe"), table_BL_10(5, "Exe"), table_COPKM_20(5, "Exe"), table_BL_20(5, "Exe");
+	string path = ".\\results\\";
 	
 	for (int i = 0; i < nexe; i++) {
 		table_COPKM_10[i] += " " + to_string(i+1);
@@ -47,40 +83,16 @@ int benchmark() {
 	restrictions_file = "10";
 	if (readData(points_file, restrictions_file) == 1)
 		return 1;
-	for (int i = 0; i < nexe; i++) {
-		result_COPKM = COPKM(i + seed, iters);
-		result_BL = BL(i + seed, iters);
-		table_COPKM_10[i] += outpputToString(result_COPKM);
-		table_BL_10[i] += outpputToString(result_BL);
-		for (int j = 0; j < estadisticos; j++) {
-			media_COPKM_10[j] += result_COPKM[j]/nexe;
-			media_BL_10[j] += result_BL[j]/nexe;
-		}
-	}
-	string_Media_COPKM_10 += outpputToString(media_COPKM_10);
-	string_Media_BL_10 += outpputToString(media_BL_10);
-	fill(media_COPKM_10.begin(), media_COPKM_10.end(), 0);
-	fill(media_BL_10.begin(), media_BL_10.end(), 0);
+	operate(seed, nexe, iters, estadisticos, result_COPKM, result_BL, table_COPKM_10, table_BL_10,
+			media_COPKM_10, media_BL_10, string_Media_COPKM_10, string_Media_BL_10);
 
 
 	//zoo_20
 	restrictions_file = "20";
 	if (readData(points_file, restrictions_file) == 1)
 		return 1;
-	for (int i = 0; i < nexe; i++) {
-		result_COPKM = COPKM(i + seed, iters);
-		result_BL = BL(i + seed, iters);
-		table_COPKM_20[i] += outpputToString(result_COPKM);
-		table_BL_20[i] += outpputToString(result_BL);
-		for (int j = 0; j < estadisticos; j++) {
-			media_COPKM_20[j] += result_COPKM[j] / nexe;
-			media_BL_20[j] += result_BL[j] / nexe;
-		}
-	}
-	string_Media_COPKM_20 += outpputToString(media_COPKM_20);
-	string_Media_BL_20 += outpputToString(media_BL_20);
-	fill(media_COPKM_20.begin(), media_COPKM_20.end(), 0);
-	fill(media_BL_20.begin(), media_BL_20.end(), 0);
+	operate(seed, nexe, iters, estadisticos, result_COPKM, result_BL, table_COPKM_20, table_BL_20,
+		media_COPKM_20, media_BL_20, string_Media_COPKM_20, string_Media_BL_20);
 
 
 
@@ -89,40 +101,16 @@ int benchmark() {
 	restrictions_file = "10";
 	if (readData(points_file, restrictions_file) == 1)
 		return 1;
-	for (int i = 0; i < nexe; i++) {
-		result_COPKM = COPKM(i + seed, iters);
-		result_BL = BL(i + seed, iters);
-		table_COPKM_10[i] += outpputToString(result_COPKM);
-		table_BL_10[i] += outpputToString(result_BL);
-		for (int j = 0; j < estadisticos; j++) {
-			media_COPKM_10[j] += result_COPKM[j] / nexe;
-			media_BL_10[j] += result_BL[j] / nexe;
-		}
-	}
-	string_Media_COPKM_10 += outpputToString(media_COPKM_10);
-	string_Media_BL_10 += outpputToString(media_BL_10);
-	fill(media_COPKM_10.begin(), media_COPKM_10.end(), 0);
-	fill(media_BL_10.begin(), media_BL_10.end(), 0);
+	operate(seed, nexe, iters, estadisticos, result_COPKM, result_BL, table_COPKM_10, table_BL_10,
+		media_COPKM_10, media_BL_10, string_Media_COPKM_10, string_Media_BL_10);
 
 
 	//glass_20
 	restrictions_file = "20";
 	if (readData(points_file, restrictions_file) == 1)
 		return 1;
-	for (int i = 0; i < nexe; i++) {
-		result_COPKM = COPKM(i + seed, iters);
-		result_BL = BL(i + seed, iters);
-		table_COPKM_20[i] += outpputToString(result_COPKM);
-		table_BL_20[i] += outpputToString(result_BL);
-		for (int j = 0; j < estadisticos; j++) {
-			media_COPKM_20[j] += result_COPKM[j] / nexe;
-			media_BL_20[j] += result_BL[j] / nexe;
-		}
-	}
-	string_Media_COPKM_20 += outpputToString(media_COPKM_20);
-	string_Media_BL_20 += outpputToString(media_BL_20);
-	fill(media_COPKM_20.begin(), media_COPKM_20.end(), 0);
-	fill(media_BL_20.begin(), media_BL_20.end(), 0);
+	operate(seed, nexe, iters, estadisticos, result_COPKM, result_BL, table_COPKM_20, table_BL_20,
+		media_COPKM_20, media_BL_20, string_Media_COPKM_20, string_Media_BL_20);
 
 
 
@@ -131,101 +119,54 @@ int benchmark() {
 	restrictions_file = "10";
 	if (readData(points_file, restrictions_file) == 1)
 		return 1;
-	for (int i = 0; i < nexe; i++) {
-		result_COPKM = COPKM(i + seed, iters);
-		result_BL = BL(i + seed, iters);
-		table_COPKM_10[i] += outpputToString(result_COPKM);
-		table_BL_10[i] += outpputToString(result_BL);
-		for (int j = 0; j < estadisticos; j++) {
-			media_COPKM_10[j] += result_COPKM[j] / nexe;
-			media_BL_10[j] += result_BL[j] / nexe;
-		}
-	}
-	string_Media_COPKM_10 += outpputToString(media_COPKM_10);
-	string_Media_BL_10 += outpputToString(media_BL_10);
-	fill(media_COPKM_10.begin(), media_COPKM_10.end(), 0);
-	fill(media_BL_10.begin(), media_BL_10.end(), 0);
+	operate(seed, nexe, iters, estadisticos, result_COPKM, result_BL, table_COPKM_10, table_BL_10,
+		media_COPKM_10, media_BL_10, string_Media_COPKM_10, string_Media_BL_10);
 
 
 	//bupa_20
 	restrictions_file = "20";
 	if (readData(points_file, restrictions_file) == 1)
 		return 1;
-	for (int i = 0; i < nexe; i++) {
-		result_COPKM = COPKM(i + seed, iters);
-		result_BL = BL(i + seed, iters);
-		table_COPKM_20[i] += outpputToString(result_COPKM);
-		table_BL_20[i] += outpputToString(result_BL);
-		for (int j = 0; j < estadisticos; j++) {
-			media_COPKM_20[j] += result_COPKM[j] / nexe;
-			media_BL_20[j] += result_BL[j] / nexe;
-		}
-	}
-	string_Media_COPKM_20 += outpputToString(media_COPKM_20);
-	string_Media_BL_20 += outpputToString(media_BL_20);
-	fill(media_COPKM_20.begin(), media_COPKM_20.end(), 0);
-	fill(media_BL_20.begin(), media_BL_20.end(), 0);
+	operate(seed, nexe, iters, estadisticos, result_COPKM, result_BL, table_COPKM_20, table_BL_20,
+		media_COPKM_20, media_BL_20, string_Media_COPKM_20, string_Media_BL_20);
 
 
 
 	//Printing charts
-	ofstream myfile;
 
 	//Chart for COPKM_10
-	fileName = ".\\results\\COPKM_10.csv";
-	myfile.open(fileName);
-	myfile << dataset << endl;
-	myfile << headers << endl;
-	for (int i = 0; i < nexe; i++)
-		myfile << table_COPKM_10[i] << endl;
-	myfile << "Media" + string_Media_COPKM_10 << endl;
-	myfile.close();
+	fileName = path + "COPKM_10.csv";
+	writeOutput(fileName, headers, nexe, table_COPKM_10, string_Media_COPKM_10);
 
 	//Chart for COPKM_20
-	fileName = ".\\results\\COPKM_20.csv";
-	myfile.open(fileName);
-	myfile << dataset << endl;
-	myfile << headers << endl;
-	for (int i = 0; i < nexe; i++)
-		myfile << table_COPKM_20[i] << endl;
-	myfile << "Media" + string_Media_COPKM_20 << endl;
-	myfile.close();
+	fileName = path + "COPKM_20.csv";
+	writeOutput(fileName, headers, nexe, table_COPKM_20, string_Media_COPKM_20);
 
 	//Chart for BL_10
-	fileName = ".\\results\\BL_10.csv";
-	myfile.open(fileName);
-	myfile << dataset << endl;
-	myfile << headers << endl;
-	for (int i = 0; i < nexe; i++)
-		myfile << table_BL_10[i] << endl;
-	myfile << "Media" + string_Media_BL_10 << endl;
-	myfile.close();
+	fileName = path + "BL_10.csv";
+	writeOutput(fileName, headers, nexe, table_BL_10, string_Media_BL_10);
 
 	//Chart for BL_20
-	fileName = ".\\results\\BL_20.csv";
-	myfile.open(fileName);
-	myfile << dataset << endl;
-	myfile << headers << endl;
-	for (int i = 0; i < nexe; i++)
-		myfile << table_BL_20[i] << endl;
-	myfile << "Media" + string_Media_BL_20 << endl;
-	myfile.close();
+	fileName = path + "BL_20.csv";
+	writeOutput(fileName, headers, nexe, table_BL_20, string_Media_BL_20);
 
 
+	//Global results
+	ofstream myfile;
+	
 	//Chart for global 10%
-	fileName = ".\\results\\Golbal_10.csv";
+	fileName = path + "Global_10.csv";
 	myfile.open(fileName);
-	myfile << dataset << endl;
+	//myfile << dataset << endl;
 	myfile << headers << endl;
 	myfile << "COPKM" + string_Media_COPKM_10 << endl;
 	myfile << "BL" + string_Media_BL_10 << endl;
 	myfile.close();
 
-
 	//Chart for global 20%
-	fileName = ".\\results\\Golbal_20.csv";
+	fileName = path + "Global_20.csv";
 	myfile.open(fileName);
-	myfile << dataset << endl;
+	//myfile << dataset << endl;
 	myfile << headers << endl;
 	myfile << "COPKM" + string_Media_COPKM_20 << endl;
 	myfile << "BL" + string_Media_BL_20 << endl;

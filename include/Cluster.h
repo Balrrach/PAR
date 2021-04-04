@@ -22,9 +22,8 @@ public:
 	Cluster(vector<float> centroid) {
 		this->clusterId = nextId++;
 
-		for (int i = 0; i < centroid.size(); i++) {
+		for (int i = 0; i < centroid.size(); i++)
 			this->centroid.push_back(centroid[i]);
-		}
 	}
 
 
