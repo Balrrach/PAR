@@ -44,19 +44,6 @@ void operate(int seed, int nexe, int iters, int estadisticos,
 }
 
 
-//Writes the results of a given algorithm and dataset to a given file
-void writeOutput(const string& fileName, const string& headers, int nexe, const vector<string>& table, const string& string_Media) {
-	ofstream myfile;
-	myfile.open(fileName);
-	//myfile << dataset << endl;
-	myfile << headers << endl;
-	for (int i = 0; i < nexe; i++)
-		myfile << table[i] << endl;
-	myfile << "Media" + string_Media << endl;
-	myfile.close();
-}
-
-
 //Benchmark function
 int benchmark() {
 	int iters = 100000;
