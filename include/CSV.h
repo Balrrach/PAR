@@ -329,3 +329,42 @@ string outputToString(vector<float> results) {
 	return "," + to_string((int)results[0]) + "," + to_string_with_precision(results[1], 5) + 
 			"," + to_string_with_precision(results[2], 5) + "," + to_string((int)results[3]);
 }
+
+
+//Writes the results of a given algorithm and dataset to a given file
+void writeOutput(const string& fileName, const string& headers, int nexe, const vector<string>& table, const string& string_Media) {
+	ofstream myfile;
+	myfile.open(fileName);
+	//myfile << dataset << endl;
+	myfile << headers << endl;
+	for (int i = 0; i < nexe; i++)
+		myfile << table[i] << endl;
+	myfile << "Media" + string_Media << endl;
+	myfile.close();
+}
+
+
+//
+void toBoxplot(const vector<Cluster>& clusters) {
+	ofstream myfile;
+	string fileName;
+
+	if (dimension == 16)
+		fileName = "..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\zoo.csv";
+
+	else if (dimension == 9)
+		fileName = "..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\glass.csv";
+
+	else
+		fileName = "..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\bupa.csv";
+
+	myfile.open(fileName);
+	for (int i = 0; i < K; i++) {
+		for (int j = 0; j < dimension-1; j++)
+			myfile << clusters[i].getCentroidByPos(j) << ", ";
+
+		myfile << clusters[i].getCentroidByPos(dimension - 1) <<endl;
+	}
+
+	myfile.close();
+}
