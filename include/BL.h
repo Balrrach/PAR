@@ -17,37 +17,6 @@ extern int K;
 extern float lambda;
 
 
-void initializeClusters(vector<Cluster>& clusters, vector<int> & shaping) {
-
-	bool repeat = true;
-	while (repeat) {
-		//-----Asociate each point to a random Cluster-----
-		for (int p = 0; p < g_points.size(); p++)
-			shaping[p] = Randint(0, K-1);
-
-		//-----Checking that all clusters are associated with at least one point-----
-		if (checkShaping(shaping)) {
-			repeat = false;
-		}
-	}
-
-	//-----Initializing clusters-----
-	vector<float> centroid(dimension, 0);
-	for (int i = 0; i < K; i++)
-		clusters.push_back(Cluster (centroid));
-
-	//-----Adding points to clusters-----
-	for (int p = 0; p < g_points.size(); p++)
-		clusters[shaping[p]].addPoint(p);
-
-	//-----Recalculating the center of each cluster-----
-	for (int i = 0; i < K; i++)
-		clusters[i].calculateClusterCentroid();
-
-	cout << "Clusters initialized = " << clusters.size() << endl << endl;
-}
-
-
 //Assigns a point to a cluster removing it from its current cluster and updating centroids
 void assignPointToCluster(int point, int newCluster, vector<int> & shaping, vector<Cluster> & clusters) {
 	int currentCluster = shaping[point];
@@ -129,6 +98,37 @@ int localSearch(vector<Cluster> & clusters, vector<int> & shaping, int seed, int
 }
 
 
+void initializeClusters(vector<Cluster>& clusters, vector<int>& shaping) {
+
+	bool repeat = true;
+	while (repeat) {
+		//-----Asociate each point to a random Cluster-----
+		for (int p = 0; p < g_points.size(); p++)
+			shaping[p] = Randint(0, K - 1);
+
+		//-----Checking that all clusters are associated with at least one point-----
+		if (checkShaping(shaping)) {
+			repeat = false;
+		}
+	}
+
+	//-----Initializing clusters-----
+	vector<float> centroid(dimension, 0);
+	for (int i = 0; i < K; i++)
+		clusters.push_back(Cluster(centroid, i));
+
+	//-----Adding points to clusters-----
+	for (int p = 0; p < g_points.size(); p++)
+		clusters[shaping[p]].addPoint(p);
+
+	//-----Recalculating the center of each cluster-----
+	for (int i = 0; i < K; i++)
+		clusters[i].calculateClusterCentroid();
+
+	cout << "Clusters initialized = " << clusters.size() << endl << endl;
+}
+
+
 //Local Search Algorithm
 vector<float> BL(int seed, int maxIters) {
 	auto begin = std::chrono::high_resolution_clock::now();
@@ -143,7 +143,7 @@ vector<float> BL(int seed, int maxIters) {
 
 	auto end = std::chrono::high_resolution_clock::now();
 	printSolution(clusters, shaping);
-	std::cout << "Tiempo con Chrono: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
+	std::cout << "Tiempo de ejecucion: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
 	cout << "Numero de iteraciones: " << iters << endl;
 
 	//toBoxplot(clusters);

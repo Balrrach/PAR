@@ -105,8 +105,7 @@ void initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, int see
 				centroide[j] = Rand();
 			}
 
-			Cluster c(centroide);
-			clusters.push_back(c);
+			clusters.push_back(Cluster(centroide, i));
 		}
 
 		//-----Asociate each point to its best Cluster-----
@@ -176,8 +175,8 @@ vector<float> COPKM(int seed, int iters){
 	cout << "Clustering completed in iteration : " << iter << endl << endl;
 
 	auto end = std::chrono::high_resolution_clock::now();
-	//printSolution(clusters, shaping);
-	std::cout << "Tiempo con Chrono: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
+	printSolution(clusters, shaping);
+	std::cout << "Tiempo de ejecucion: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
 
 	return createOutput(clusters, shaping, std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
 }

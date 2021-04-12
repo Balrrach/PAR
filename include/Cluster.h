@@ -15,12 +15,12 @@ private:
 	int clusterId;
 	vector<float> centroid;
 	set<int> clusterPoints;
-	static int nextId;
+	//static int nextId;
 
 public:
 	//Constructor
-	Cluster(vector<float> centroid) {
-		this->clusterId = nextId++;
+	Cluster(vector<float> centroid, int clusterId) {
+		this->clusterId = clusterId;
 
 		for (int i = 0; i < centroid.size(); i++)
 			this->centroid.push_back(centroid[i]);
@@ -102,7 +102,7 @@ public:
 
 	//Printers
 	void printClusterCentroid() const {
-		cout << "Cluster " << getClusterId() << ": " << endl << "Centroid: ";
+		cout << "Cluster " << getClusterId()+1 << ": " << endl << "Centroid: ";
 		for (int i = 0; i < dimension; i++)
 			cout << getCentroidByPos(i) << " ";
 		cout << endl;
@@ -117,4 +117,4 @@ public:
 	}
 };
 
-int Cluster::nextId = 0;
+//int Cluster::nextId = 0;
