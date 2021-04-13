@@ -194,7 +194,7 @@ int readData(const string& points_file, const string& restrictions_file) {
 		K = 7;
 		optimumDistance = 0.904799856193481;
 
-		if (fetchPoints(".\\datos\\zoo_set.dat") == 0)
+		if (fetchPoints("..\\datos\\zoo_set.dat") == 0)
 			cout << "Points fetched successfully!" << endl << endl;
 		else {
 			cout << "Error: Failed to open points file" << endl;
@@ -202,7 +202,7 @@ int readData(const string& points_file, const string& restrictions_file) {
 		}
 
 		if (restrictions_file == to_string(10)) {
-			if (fetchRestrictions(".\\datos\\zoo_set_const_10.const") == 0)
+			if (fetchRestrictions("..\\datos\\zoo_set_const_10.const") == 0)
 				cout << "Restrictions fetched successfully!" << endl << endl;
 			else {
 				cout << "Error: Failed to open restrictions file" << endl;
@@ -211,7 +211,7 @@ int readData(const string& points_file, const string& restrictions_file) {
 		}
 
 		else if (restrictions_file == to_string(20)) {
-			if (fetchRestrictions(".\\datos\\zoo_set_const_20.const") == 0)
+			if (fetchRestrictions("..\\datos\\zoo_set_const_20.const") == 0)
 				cout << "Restrictions fetched successfully!" << endl << endl;
 			else {
 				cout << "Error: Failed to open restrictions file" << endl;
@@ -230,7 +230,7 @@ int readData(const string& points_file, const string& restrictions_file) {
 		K = 7;
 		optimumDistance = 0.364290281975566;
 
-		if (fetchPoints(".\\datos\\glass_set.dat") == 0)
+		if (fetchPoints("..\\datos\\glass_set.dat") == 0)
 			cout << "Points fetched successfully!" << endl << endl;
 		else {
 			cout << "Error: Failed to open points file" << endl;
@@ -238,7 +238,7 @@ int readData(const string& points_file, const string& restrictions_file) {
 		}
 
 		if (restrictions_file == to_string(10)) {
-			if (fetchRestrictions(".\\datos\\glass_set_const_10.const") == 0)
+			if (fetchRestrictions("..\\datos\\glass_set_const_10.const") == 0)
 				cout << "Restrictions fetched successfully!" << endl << endl;
 			else {
 				cout << "Error: Failed to open restrictions file" << endl;
@@ -247,7 +247,7 @@ int readData(const string& points_file, const string& restrictions_file) {
 		}
 
 		else if (restrictions_file == to_string(20)) {
-			if (fetchRestrictions(".\\datos\\glass_set_const_20.const") == 0)
+			if (fetchRestrictions("..\\datos\\glass_set_const_20.const") == 0)
 				cout << "Restrictions fetched successfully!" << endl << endl;
 			else {
 				cout << "Error: Failed to open restrictions file" << endl;
@@ -266,7 +266,7 @@ int readData(const string& points_file, const string& restrictions_file) {
 		K = 16;
 		optimumDistance = 0.229248049533093;
 
-		if (fetchPoints(".\\datos\\bupa_set.dat") == 0)
+		if (fetchPoints("..\\datos\\bupa_set.dat") == 0)
 			cout << "Points fetched successfully!" << endl << endl;
 		else {
 			cout << "Error: Failed to open points file" << endl;
@@ -274,7 +274,7 @@ int readData(const string& points_file, const string& restrictions_file) {
 		}
 
 		if (restrictions_file == to_string(10)) {
-			if (fetchRestrictions(".\\datos\\bupa_set_const_10.const") == 0)
+			if (fetchRestrictions("..\\datos\\bupa_set_const_10.const") == 0)
 				cout << "Restrictions fetched successfully!" << endl << endl;
 			else {
 				cout << "Error: Failed to open restrictions file" << endl;
@@ -283,7 +283,7 @@ int readData(const string& points_file, const string& restrictions_file) {
 		}
 
 		else if (restrictions_file == to_string(20)) {
-			if (fetchRestrictions(".\\datos\\bupa_set_const_20.const") == 0)
+			if (fetchRestrictions("..\\datos\\bupa_set_const_20.const") == 0)
 				cout << "Restrictions fetched successfully!" << endl << endl;
 			else {
 				cout << "Error: Failed to open restrictions file" << endl;
@@ -344,19 +344,19 @@ void writeOutput(const string& fileName, const string& headers, int nexe, const 
 }
 
 
-//
+//Writes the clusters coordenates
 void toBoxplot(const vector<Cluster>& clusters) {
 	ofstream myfile;
 	string fileName;
 
 	if (dimension == 16)
-		fileName = "..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\zoo.csv";
+		fileName = "..\\..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\zoo.csv";
 
 	else if (dimension == 9)
-		fileName = "..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\glass.csv";
+		fileName = "..\\..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\glass.csv";
 
 	else
-		fileName = "..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\bupa.csv";
+		fileName = "..\\..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\bupa.csv";
 
 	myfile.open(fileName);
 	for (int i = 0; i < K; i++) {

@@ -4,6 +4,7 @@
 #include <Chrono>
 #include <vector>
 #include <map>
+#include <cfloat>
 
 #include "Cluster.h"
 #include "PAR.h"

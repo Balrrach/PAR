@@ -55,7 +55,7 @@ int benchmark() {
 	//string dataset = ",Zoo,,,,Glass,,,,Bupa,,,";
 	string headers = ",Inf,Error,Fitness,Time,Inf,Error,Fitness,Time,Inf,Error,Fitness,Time";
 	vector<string> table_COPKM_10(5, "Exe"), table_BL_10(5, "Exe"), table_COPKM_20(5, "Exe"), table_BL_20(5, "Exe");
-	string path = ".\\results\\";
+	string path = "..\\results\\";
 	
 	for (int i = 0; i < nexe; i++) {
 		table_COPKM_10[i] += " " + to_string(i+1);
