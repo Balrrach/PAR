@@ -21,30 +21,52 @@ float optimumDistance;
 
 int main(int argc, char** argv) {
 
+	int seed = 4;
+	int iters = 100000;
+
+	if(argc < 2){
+		cout << "Error: command-line argument count mismatch" << endl;
+		return 1;
+	}
+
+	//Benchmark execution
 	if (string(argv[1]) == "B") {
-		benchmark();
+		if (argc == 2)
+			benchmark(seed);
+		
+		else if(argc == 3)
+			benchmark(atoi(argv[2]));
+		
+		else{
+			cout << "Error: command-line argument count mismatch" << endl;
+			return 1;
+		}
+
 		return 0;
 	}
 
+	//Regular execution
 	else {
 		cout << argv[1];
 		//Need 3 arguments (Points file, Restrictions file, Number of Clusters) to run, else exit
-		if (argc != 4) {
-			cout << "Error: command-line argument count mismatch";
+		if (argc < 4) {
+			cout << "Error: command-line argument count mismatch" << endl;
 			return 1;
 		}
+
+		//Update the seed
+		if (argc == 5)
+			seed = atoi(argv[4]);
 
 		//Fetching data from files
 		string points_file = argv[1];
 		string restrictions_file = argv[2];
 		int K = 0;
 
+		//Incorrect file/s
 		if (readData(points_file, restrictions_file) == 1)
 			return 1;
 
-
-		int seed = 4;
-		int iters = 100000;
 
 		switch (atoi(argv[3])){
 		case 1:
@@ -58,9 +80,7 @@ int main(int argc, char** argv) {
 			break;
 
 		default:
-			cout << "Wrong algorith selection:" << endl;
-			cout << "1 ------ COPKM" << endl;
-			cout << "2 ------ BL" << endl;
+			cout << "Error: command-line argument count mismatch" << endl;
 			break;
 		}
 

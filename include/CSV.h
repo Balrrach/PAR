@@ -264,7 +264,7 @@ int readData(const string& points_file, const string& restrictions_file) {
 
 	else if (points_file == "bupa") {
 		K = 16;
-		optimumDistance = 0.229248049533093;
+		optimumDistance = 0.220423749236422;
 
 		if (fetchPoints("..\\datos\\bupa_set.dat") == 0)
 			cout << "Points fetched successfully!" << endl << endl;

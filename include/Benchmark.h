@@ -45,9 +45,9 @@ void operate(int seed, int nexe, int iters, int estadisticos,
 
 
 //Benchmark function
-int benchmark() {
+int benchmark(int s) {
 	int iters = 100000;
-	int seed = 4, nexe = 5, estadisticos = 4;
+	int seed = s, nexe = 5, estadisticos = 4;
 	string points_file, restrictions_file;
 	string fileName;
 	vector<float> result_COPKM, result_BL, media_COPKM_10(4, 0), media_BL_10(4, 0), media_COPKM_20(4, 0), media_BL_20(4, 0);
