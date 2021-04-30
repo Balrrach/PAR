@@ -6,6 +6,7 @@
 #include <map>
 #include <cfloat>
 
+#include "ExecutionParameters.h"
 #include "Cluster.h"
 #include "PAR.h"
 #include "CSV.h"
@@ -20,7 +21,7 @@ extern int K;
 extern float lambda;
 
 
-void calculateLowestInfeasibilityClusters(int p, vector<int>& liClusters, const vector<int>& shaping, bool start) {
+void calculateLowestInfeasibilityClusters(int p, vector<int>& liClusters, const vector<int>& shaping) {
 	int lifs = INT_MAX, clusterIfs = 0;
 	//vector<int> index;
 
@@ -60,32 +61,65 @@ int calculateClosestCluster(int p, const vector<int>& liClusters, const vector<C
 	return closestCluster;
 }
 
-bool realocatePointToBestCluster(int p, vector<Cluster>& clusters, vector<int>& shaping, bool start) {
+
+void transferPoint(int p, int currentCluster, int newCluster, vector<Cluster>& clusters) {
+	clusters[currentCluster].removePoint(p);
+	clusters[newCluster].addPoint(p);
+}
+
+
+void updateShapping(int p, int newCluster, vector<int>& shaping) {
+	shaping[p] = newCluster;
+}
+
+int calculateBestCluster(int p, vector<Cluster>& clusters, vector<int>& shaping) {
 	vector<int> liClusters;
-	int bestCluster = -1, currentCluster = shaping[p];
+	int bestCluster = -1;
+
+	calculateLowestInfeasibilityClusters(p, liClusters, shaping);
+	bestCluster = calculateClosestCluster(p, liClusters, clusters);
+
+	return bestCluster;
+}
+
+void assignUnclusteredPoint(int p, vector<Cluster>& clusters, vector<int>& shaping) {
+	int newCluster = -1;
+
+	newCluster = calculateBestCluster(p, clusters, shaping);
+	clusters[newCluster].addPoint(p);
+	updateShapping(p, newCluster, shaping);
+}
+
+
+bool assignClusteredPoint(int p, vector<Cluster>& clusters, vector<int>& shaping) {
+	bool altered = false;
+	vector<int> liClusters;
+	int currentCluster = shaping[p], newCluster = -1;
+
+	newCluster = calculateBestCluster(p, clusters, shaping);
+	if (currentCluster != newCluster) {
+		transferPoint(p, currentCluster, newCluster, clusters);
+		updateShapping(p, newCluster, shaping);
+		altered = true;
+	}
+
+	return altered;
+}
+
+
+bool realocatePointToBestCluster(int p, vector<Cluster>& clusters, vector<int>& shaping) {
+	bool altered = false;
+	int currentCluster = shaping[p];
 
 	if (currentCluster == -1) {
-		calculateLowestInfeasibilityClusters(p, liClusters, shaping, start);
-		bestCluster = calculateClosestCluster(p, liClusters, clusters);
-		clusters[bestCluster].addPoint(p);
-		shaping[p] = bestCluster;
-		return true;
+		assignUnclusteredPoint(p, clusters, shaping);
+		altered = true;
 	}
 
-	else {
-		if (clusters[shaping[p]].getClusterSize() > 1) {
-			calculateLowestInfeasibilityClusters(p, liClusters, shaping, start);
-			bestCluster = calculateClosestCluster(p, liClusters, clusters);
-			if (currentCluster != bestCluster) {
-				clusters[currentCluster].removePoint(p);
-				clusters[bestCluster].addPoint(p);
-				shaping[p] = bestCluster;
-				return true;
-			}
-		}
-	}
+	else if (clusters[shaping[p]].getClusterSize() > 1)
+		altered = assignClusteredPoint(p, clusters, shaping);
 
-	return false;
+	return altered;
 }
 
 
@@ -111,7 +145,7 @@ void initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, int see
 
 		//-----Asociate each point to its best Cluster-----
 		for (int p = 0; p < g_points.size(); p++)
-			realocatePointToBestCluster(index[p], clusters, shaping, true);
+			realocatePointToBestCluster(index[p], clusters, shaping);
 
 		//-----Checking that all clusters are associated with at least one point-----
 		for (int i = 0; i < K; i++)
@@ -138,17 +172,16 @@ void initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, int see
 }
 
 
-vector<float> COPKM(int seed, int iters){
+vector<float> COPKM(){
+	executionParameters ep;
 	auto begin = std::chrono::high_resolution_clock::now();
 
-	Set_random(seed);
+	Set_random(ep.seed);
 	vector<Cluster> clusters;
 	vector<int> shaping(g_points.size(), -1);
 	bool key;
-	//vector<int> index;
-	//initializeUniformInt(index, 0, g_points.size());
 
-	initializeClusters(clusters, shaping, seed);
+	initializeClusters(clusters, shaping, ep.seed);
 
 	bool repeat = true;
 	int iter = 1;
@@ -160,7 +193,7 @@ vector<float> COPKM(int seed, int iters){
 		//shuffle(index.begin(), index.end(), std::default_random_engine(seed));
 		for (int i = 0; i < g_points.size(); i++) {
 			if (clusters[shaping[i]].getClusterSize() > 1) {
-				key = realocatePointToBestCluster(i, clusters, shaping, false);
+				key = realocatePointToBestCluster(i, clusters, shaping);
 				if (key == true)
 					repeat = true;
 			}

@@ -154,6 +154,7 @@
     <ClInclude Include="include\Cluster.h" />
     <ClInclude Include="include\COPKM.h" />
     <ClInclude Include="include\CSV.h" />
+    <ClInclude Include="include\ExecutionParameters.h" />
     <ClInclude Include="include\PAR.h" />
     <ClInclude Include="include\random.h" />
     <ClInclude Include="include\VectorUtilities.h" />

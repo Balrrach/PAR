@@ -77,29 +77,31 @@ void split(const string& s, char c, vector<string>& v) {
 }
 
 
-//Reads point data from a file in CSV format
-int fetchPoints(string filename) {
-	//Open file for fetching points
+ifstream openFile(const string& filename) {
 	cout << "Filename: " << filename << endl;
+
 	ifstream infile(filename.c_str());
+	if (!infile.is_open())
+		throw "File not found!";
 
-	if (!infile.is_open()) {
-		return 1;
-	}
+	return infile;
+}
 
+
+void readPoints(ifstream & pointsFile) {
 	int pointId = 0;
 	vector<string> aux;
 	vector<float> coordenates;
 	string line;
 
-	while (getline(infile, line)) {
+	while (getline(pointsFile, line)) {
 		aux.clear();
 		coordenates.clear();
 
 		split(line, ',', aux);
-		for (unsigned int i = 0; i < aux.size(); i++) {
-			coordenates.push_back(stof(aux[i]));
-		}
+		for (auto i : aux)
+			coordenates.push_back(stof(i));
+
 		g_points.push_back(coordenates);
 
 		/*
@@ -110,42 +112,38 @@ int fetchPoints(string filename) {
 		cout << endl;
 		*/
 	}
-
 	cout << "Number of points: " << g_points.size() << endl;
-	infile.close();
 
 	dimension = g_points[0].size();
-
-	return 0;
 }
 
 
-//Reads restrictions data from a file in CSV format
-int fetchRestrictions(string filename) {
-	//Open file for fetching restrictions
-	cout << "Filename: " << filename << endl;
-	ifstream infile(filename.c_str());
+//Reads point data from a file in CSV format
+void fetchPoints(const string & pointsPath) {
+	ifstream pointsFile = openFile(pointsPath);
+	readPoints(pointsFile);
+	pointsFile.close();
+}
 
-	if (!infile.is_open()) {
-		return 1;
-	}
 
-	//Fetching restrictions from file
+void readRestrictions(ifstream& restrictionsFile) {
 	string line;
 	vector<string> aux;
 	int i = 0;
 
-	while (getline(infile, line)) {
+	while (getline(restrictionsFile, line)) {
 		aux.clear();
 		split(line, ',', aux);
 
 		for (int j = 0; j < aux.size(); j++) {
+			
 			if (i < j) {
 				if (stoi(aux[j]) == -1)
 					restrictionsList.push_back(vector<int>{-1, i, j});
 				if (stoi(aux[j]) == 1)
 					restrictionsList.push_back(vector<int>{1, i, j});
 			}
+			
 			if (i != j) {
 				if (stoi(aux[j]) == -1)
 					restrictionsMap[i].push_back(pair<int, int>{-1, j});
@@ -156,12 +154,18 @@ int fetchRestrictions(string filename) {
 
 		i++;
 	}
-	infile.close();
-
-	cout << "Number of restrictions: " << restrictionsList.size() << endl;
 	
-	lambda = calculateLambda();
+	cout << "Number of restrictions: " << restrictionsList.size() << endl;
 
+	lambda = calculateLambda();
+}
+
+
+//Reads restrictions data from a file in CSV format
+int fetchRestrictions(string restrictionsPath) {
+	ifstream restrictionsFile = openFile(restrictionsPath);
+	readRestrictions(restrictionsFile);
+	restrictionsFile.close();
 	/*
 	int k = 0, l = 0;
 	for (int c = 0; c < restrictionsList.size(); c++) {
@@ -181,122 +185,71 @@ int fetchRestrictions(string filename) {
 		for (int j = 0; j < restrictionsMap[i].size(); j++)
 			cout << "Restriccion " << j << " asociada al punto " << i << " de tipo " << restrictionsMap[i][j].first << " pareja: " << restrictionsMap[i][j].second << endl;
 	*/
-
-	return 0;
 }
 
 
-//Reads all data that algorithms need to work
-int readData(const string& points_file, const string& restrictions_file) {
-	cleanGlobals();
+class DataSets {
+protected:
+	bool fetch(const string& pointsPath, const string& restrictionsPath) {
+		fetchPoints(pointsPath);
+		fetchRestrictions(restrictionsPath);
+	}
 
-	if (points_file == "zoo") {
+	const string composePointsFile(string dataSet) {return "..\\datos\\" + dataSet + "_set.dat";};
+	const string composeRestrictionsFile(const string & dataSet, const string & restrictionsNumber) {
+		return "..\\datos\\" + dataSet + "_set_const_" + restrictionsNumber + ".const";
+	}
+
+public:
+	//DataSets() {};
+	DataSets(const string & _dataSet, const string & _restrictionsNumber){
+		string pointsPath = composePointsFile(_dataSet);
+		string restrictionsPath = composeRestrictionsFile(_dataSet, _restrictionsNumber);
+		fetch(pointsPath, restrictionsPath);
+	};
+};
+
+
+class Zoo : public DataSets{
+public:
+	//Zoo() {};
+	Zoo(string _restrictionsNumber) : DataSets("zoo", _restrictionsNumber){
 		K = 7;
 		optimumDistance = 0.904799856193481;
+	};
+};
 
-		if (fetchPoints("..\\datos\\zoo_set.dat") == 0)
-			cout << "Points fetched successfully!" << endl << endl;
-		else {
-			cout << "Error: Failed to open points file" << endl;
-			return 1;
-		}
-
-		if (restrictions_file == to_string(10)) {
-			if (fetchRestrictions("..\\datos\\zoo_set_const_10.const") == 0)
-				cout << "Restrictions fetched successfully!" << endl << endl;
-			else {
-				cout << "Error: Failed to open restrictions file" << endl;
-				return 1;
-			}
-		}
-
-		else if (restrictions_file == to_string(20)) {
-			if (fetchRestrictions("..\\datos\\zoo_set_const_20.const") == 0)
-				cout << "Restrictions fetched successfully!" << endl << endl;
-			else {
-				cout << "Error: Failed to open restrictions file" << endl;
-				return 1;
-			}
-		}
-
-		else {
-			cout << "Error: Wrong percentage of restrictions" << endl;
-			return 1;
-		}
-	}
-
-
-	else if (points_file == "glass") {
+class Glass : public DataSets {
+public:
+	//Glass() {};
+	Glass(string _restrictionsNumber) : DataSets("glass", _restrictionsNumber) {
 		K = 7;
 		optimumDistance = 0.364290281975566;
+	};
+};
 
-		if (fetchPoints("..\\datos\\glass_set.dat") == 0)
-			cout << "Points fetched successfully!" << endl << endl;
-		else {
-			cout << "Error: Failed to open points file" << endl;
-			return 1;
-		}
-
-		if (restrictions_file == to_string(10)) {
-			if (fetchRestrictions("..\\datos\\glass_set_const_10.const") == 0)
-				cout << "Restrictions fetched successfully!" << endl << endl;
-			else {
-				cout << "Error: Failed to open restrictions file" << endl;
-				return 1;
-			}
-		}
-
-		else if (restrictions_file == to_string(20)) {
-			if (fetchRestrictions("..\\datos\\glass_set_const_20.const") == 0)
-				cout << "Restrictions fetched successfully!" << endl << endl;
-			else {
-				cout << "Error: Failed to open restrictions file" << endl;
-				return 1;
-			}
-		}
-
-		else {
-			cout << "Error: Wrong percentage of restrictions" << endl;
-			return 1;
-		}
-	}
-
-
-	else if (points_file == "bupa") {
+class Bupa : public DataSets {
+public:
+	//Bupa() {};
+	Bupa(const string & _restrictionsNumber) : DataSets("bupa", _restrictionsNumber) {
 		K = 16;
 		optimumDistance = 0.220423749236422;
+	};
+};
 
-		if (fetchPoints("..\\datos\\bupa_set.dat") == 0)
-			cout << "Points fetched successfully!" << endl << endl;
-		else {
-			cout << "Error: Failed to open points file" << endl;
-			return 1;
-		}
 
-		if (restrictions_file == to_string(10)) {
-			if (fetchRestrictions("..\\datos\\bupa_set_const_10.const") == 0)
-				cout << "Restrictions fetched successfully!" << endl << endl;
-			else {
-				cout << "Error: Failed to open restrictions file" << endl;
-				return 1;
-			}
-		}
+//Reads all data that algorithms need to work
+int readData(const string& dataSet, const string & restrictions_file) {
+	cleanGlobals();
+	
+	if (dataSet == "zoo")
+		new Zoo(restrictions_file);
 
-		else if (restrictions_file == to_string(20)) {
-			if (fetchRestrictions("..\\datos\\bupa_set_const_20.const") == 0)
-				cout << "Restrictions fetched successfully!" << endl << endl;
-			else {
-				cout << "Error: Failed to open restrictions file" << endl;
-				return 1;
-			}
-		}
+	else if (dataSet == "glass")
+		new Glass(restrictions_file);
 
-		else {
-			cout << "Error: Wrong percentage of restrictions" << endl;
-			return 1;
-		}
-	}
-
+	else if (dataSet == "bupa")
+		new Bupa(restrictions_file);
 
 	else {
 		cout << "Error: Wrong file" << endl << endl;

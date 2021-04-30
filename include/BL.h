@@ -3,6 +3,7 @@
 #include <map>
 #include <set>
 
+#include "ExecutionParameters.h"
 #include "Cluster.h"
 #include "PAR.h"
 #include "random.h"
@@ -130,16 +131,17 @@ void initializeClusters(vector<Cluster>& clusters, vector<int>& shaping) {
 
 
 //Local Search Algorithm
-vector<float> BL(int seed, int maxIters) {
+vector<float> BL() {
+	executionParameters ep;
 	auto begin = std::chrono::high_resolution_clock::now();
 
 	int iters;
-	Set_random(seed);
+	Set_random(ep.seed);
 	vector<Cluster> clusters;
 	vector<int> shaping(g_points.size());
 	initializeClusters(clusters, shaping);
 	
-	iters = localSearch(clusters, shaping, seed, maxIters);
+	iters = localSearch(clusters, shaping, ep.seed, ep.iters);
 
 	auto end = std::chrono::high_resolution_clock::now();
 	printSolution(clusters, shaping);
