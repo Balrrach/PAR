@@ -6,18 +6,11 @@
 #include <map>
 
 #include "ExecutionParameters.h"
-#include "CSV.h"
+#include "DataSets.h"
 #include "COPKM.h"
 #include "BL.h"
 
 using namespace std;
-
-extern vector<vector<float>> g_points;
-extern map<int, vector <pair<int, int> > > restrictionsMap;
-extern vector<vector<int>> restrictionsList;
-extern int dimension;
-extern int K;
-extern float lambda;
 
 
 //Encapsulates the execution of a given algorithm and dataset nexe times keeping the structure needed
@@ -28,13 +21,13 @@ void operate(int nexe, int estadisticos,
 			vector<float>& media_COPKM, vector<float>& media_BL,
 			string& string_Media_COPKM, string& string_Media_BL)
 {
-	(new executionParameters())->initialize();
+	(new ExecutionParameters())->initialize();
 
 	for (int i = 0; i < nexe; i++) {
-		(new executionParameters())->seed += 1;
+		(new ExecutionParameters())->seed += 1;
 
-		result_COPKM = COPKM();
-		result_BL = BL();
+		result_COPKM = (new COPKM)->executeCOPKM();
+		result_BL = (new BL)->executeBL();
 
 		table_COPKM[i] += outputToString(result_COPKM);
 		table_BL[i] += outputToString(result_BL);

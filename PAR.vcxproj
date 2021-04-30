@@ -153,15 +153,23 @@
     <ClInclude Include="include\BL.h" />
     <ClInclude Include="include\Cluster.h" />
     <ClInclude Include="include\COPKM.h" />
-    <ClInclude Include="include\CSV.h" />
+    <ClInclude Include="include\csv.h" />
+    <ClInclude Include="include\DataSets.h" />
     <ClInclude Include="include\ExecutionParameters.h" />
     <ClInclude Include="include\PAR.h" />
     <ClInclude Include="include\random.h" />
-    <ClInclude Include="include\VectorUtilities.h" />
+    <ClInclude Include="include\utilities.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BL.cpp" />
+    <ClCompile Include="src\Cluster.cpp" />
+    <ClCompile Include="src\COPKM.cpp" />
+    <ClCompile Include="src\csv.cpp" />
+    <ClCompile Include="src\ExecutionParameters.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PAR.cpp" />
     <ClCompile Include="src\Random.cpp" />
+    <ClCompile Include="src\utilities.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

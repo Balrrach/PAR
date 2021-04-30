@@ -1,24 +1,24 @@
 #include <iostream>
 
 #include "ExecutionParameters.h"
-#include "CSV.h"
 #include "COPKM.h"
 #include "BL.h"
 #include "Benchmark.h"
+#include "DataSets.h"
 
 using namespace std;
 
 
 void algorimtSelection(int selector) {
-	(new executionParameters())->initialize();
+	(new ExecutionParameters())->initialize();
 
 	switch (selector) {
 	case 1:
-		COPKM();
+		(new COPKM)->executeCOPKM();
 		break;
 
 	case 2:
-		BL();
+		(new BL)->executeBL();
 		break;
 
 	default:
@@ -37,7 +37,7 @@ void algortimExecution(int argc, char** argv) {
 
 	//Update the seed
 	if (argc == 5)
-		(new executionParameters())->seed = atoi(argv[4]);
+		(new ExecutionParameters())->seed = atoi(argv[4]);
 
 	//Fetching data from files
 	string points_file = argv[1];
@@ -52,7 +52,7 @@ void benchmarkExecution(int argc, char** argv) {
 		benchmark();
 
 	else if (argc == 3) {
-		(new executionParameters())->seed = atoi(argv[2]);
+		(new ExecutionParameters())->seed = atoi(argv[2]);
 		benchmark();
 	}
 
@@ -63,7 +63,7 @@ void benchmarkExecution(int argc, char** argv) {
 
 
 int main(int argc, char** argv) {
-	(new executionParameters())->initialize();
+	(new ExecutionParameters())->initialize();
 
 	if(argc < 2)
 		throw "Error: command-line argument mismatch";

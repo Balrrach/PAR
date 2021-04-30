@@ -2,119 +2,40 @@
 
 #include <set>
 
-#include "VectorUtilities.h"
-
-extern vector<vector<float> > g_points;
-
-using namespace std;
+#include "utilities.h"
 
 
 class Cluster {
 
 private:
 	int clusterId;
-	vector<float> centroid;
-	set<int> clusterPoints;
-	//static int nextId;
+	std::vector<float> centroid;
+	std::set<int> clusterPoints;
 
 public:
 	//Constructor
-	Cluster(vector<float> centroid, int clusterId) {
-		this->clusterId = clusterId;
+	Cluster(std::vector<float> centroid, int clusterId);
 
-		for (int i = 0; i < centroid.size(); i++)
-			this->centroid.push_back(centroid[i]);
-	}
-
-
-	void addPoint(int pointId) {
-		set<int>::iterator it = clusterPoints.find(pointId);
-		if (it == clusterPoints.end())
-			clusterPoints.insert(pointId);
-
-		else
-			cout << "Beware: Inserctions" << endl;
-	}
-
-	void removePoint(int pointId) {
-		set<int>::iterator it = clusterPoints.find(pointId);
-		if (it == clusterPoints.end())
-			cout << "Beware: Removals" << endl;
-
-		else if (getClusterSize() > 1)
-			clusterPoints.erase(it);
-
-		else
-			cout << "Beware: Can't remove point " << pointId << "from cluster " << clusterId << "otherwise cluster would be empty" << endl;
-	}
-
+	//Point related
+	void addPoint(int pointId);
+	void removePoint(int pointId);
 
 	//Getters
-	int getClusterId() const {
-		return clusterId;
-	}
-
-	/*
-	int getPoint(int pos) const {	//CUIDADO
-		set<int>::iterator it = pos;
-		return clusterPoints[it];
-	}
-	*/
-
-	int getClusterSize() const {
-		return clusterPoints.size();
-	}
-
-	float getCentroidByPos(int pos) const {
-		return centroid[pos];
-	}
-
-	vector<float> getCentroid() const {
-		return centroid;
-	}
+	int getClusterId() const;
+	int getClusterSize() const;
+	std::vector<float> getCentroid() const;
+	float getCentroidByPos(int pos) const;
 
 	//Setters
-	void setCentroidByPos(int pos, float val) {
-		this->centroid[pos] = val;
-	}
-
-
+	void setCentroidByPos(int pos, float val);
+	
 	//Others
-	void calculateClusterCentroid() {
-		for (int c = 0; c < dimension; c++) {
-			float sum = 0.0;
-			for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++)
-				sum += g_points[*it][c];
-
-			setCentroidByPos(c, sum / getClusterSize());
-		}
-	}
+	void calculateClusterCentroid(const std::vector<std::vector<float>>& g_points);
 
 	//Calculates intra cluster mean deviation
-	float calculateIntraClusterMeanDeviation() const {
-		float meanDeviation = 0;
-		for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++)
-			meanDeviation += calculateDistance(g_points[*it], getCentroid());
-
-		return meanDeviation / getClusterSize();
-	}
-
+	float calculateIntraClusterMeanDeviation(const std::vector<std::vector<float>>& g_points) const;
 
 	//Printers
-	void printClusterCentroid() const {
-		cout << "Cluster " << getClusterId()+1 << ": " << endl << "Centroid: ";
-		for (int i = 0; i < dimension; i++)
-			cout << getCentroidByPos(i) << " ";
-		cout << endl;
-	}
-
-	void printClusterPoints() const {
-		cout << "Points: ";
-		for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++) {
-			cout << *it << " ";
-		}
-		cout << endl << endl;
-	}
+	void printClusterCentroid(const int dimension) const;
+	void printClusterPoints() const;
 };
-
-//int Cluster::nextId = 0;

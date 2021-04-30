@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\CSV.h">
+    <ClInclude Include="include\csv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\COPKM.h">
@@ -30,7 +30,7 @@
     <ClInclude Include="include\random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\VectorUtilities.h">
+    <ClInclude Include="include\utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\BL.h">
@@ -42,12 +42,36 @@
     <ClInclude Include="include\ExecutionParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\DataSets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Random.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PAR.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\COPKM.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ExecutionParameters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\csv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utilities.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Cluster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
