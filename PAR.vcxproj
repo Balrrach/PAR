@@ -112,6 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -161,10 +162,12 @@
     <ClInclude Include="include\utilities.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\benchmark.cpp" />
     <ClCompile Include="src\BL.cpp" />
     <ClCompile Include="src\Cluster.cpp" />
     <ClCompile Include="src\COPKM.cpp" />
     <ClCompile Include="src\csv.cpp" />
+    <ClCompile Include="src\DataSets.cpp" />
     <ClCompile Include="src\ExecutionParameters.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\PAR.cpp" />

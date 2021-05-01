@@ -1,10 +1,10 @@
 #include <iostream>
 
-#include "ExecutionParameters.h"
-#include "COPKM.h"
+#include "benchmark.h"
 #include "BL.h"
-#include "Benchmark.h"
+#include "COPKM.h"
 #include "DataSets.h"
+#include "ExecutionParameters.h"
 
 using namespace std;
 

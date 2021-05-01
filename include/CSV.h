@@ -4,8 +4,6 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <map>
-#include <iomanip>
 
 #include "Cluster.h"
 #include "PAR.h"

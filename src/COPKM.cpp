@@ -54,6 +54,7 @@ void COPKM::updateShapping(int p, int newCluster, vector<int>& shaping) {
 	shaping[p] = newCluster;
 }
 
+
 int COPKM::calculateBestCluster(int p, vector<Cluster>& clusters, vector<int>& shaping) {
 	vector<int> liClusters;
 	int bestCluster = -1;
@@ -63,6 +64,7 @@ int COPKM::calculateBestCluster(int p, vector<Cluster>& clusters, vector<int>& s
 
 	return bestCluster;
 }
+
 
 void COPKM::assignUnclusteredPoint(int p, vector<Cluster>& clusters, vector<int>& shaping) {
 	int newCluster = -1;

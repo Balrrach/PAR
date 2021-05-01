@@ -1,10 +1,9 @@
 #pragma once
 
-#include <iostream>
-#include <chrono>
-#include <vector>
-#include <map>
 #include <cfloat>
+#include <chrono>
+#include <iostream>
+#include <vector>
 
 #include "ExecutionParameters.h"
 #include "Cluster.h"
