@@ -69,14 +69,6 @@ void readPoints(ifstream& pointsFile) {
 			coordenates.push_back(stof(i));
 
 		(new PAR)->g_points.push_back(coordenates);
-
-		/*
-		cout << "Punto: ";
-		for (unsigned int i = 0; i < aux.size(); i++) {
-			cout << coordenates[i] << " ";
-		}
-		cout << endl;
-		*/
 	}
 	cout << "Number of points: " << (new PAR)->g_points.size() << endl;
 
@@ -102,29 +94,10 @@ void fetchPoints(const string& pointsPath) {
 }
 
 
-int fetchRestrictions(string restrictionsPath) {
+void fetchRestrictions(string restrictionsPath) {
 	ifstream restrictionsFile = openFile(restrictionsPath);
 	readRestrictions(restrictionsFile);
 	restrictionsFile.close();
-	/*
-	int k = 0, l = 0;
-	for (int c = 0; c < restrictionsList.size(); c++) {
-		if (restrictionsList[c][2] == -1) {
-			cout << "Restriccion CL numero " << i << " : (" << restrictionsList[c][0] << " , " << restrictionsList[c][1] << ")" << endl;
-			k++;
-		}
-		if (restrictionsList[c][2] == 1) {
-			cout << "Restriccion ML numero " << i << " : (" << restrictionsList[c][0] << " , " << restrictionsList[c][1] << ")" << endl;
-			l++;
-		}
-	}
-
-	cout << endl;
-
-	for (int i = 0; i < g_points.size(); i++)
-		for (int j = 0; j < restrictionsMap[i].size(); j++)
-			cout << "Restriccion " << j << " asociada al punto " << i << " de tipo " << restrictionsMap[i][j].first << " pareja: " << restrictionsMap[i][j].second << endl;
-	*/
 }
 
 

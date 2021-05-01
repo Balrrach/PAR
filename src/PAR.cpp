@@ -162,3 +162,35 @@ vector<float> PAR::createOutput(const vector<Cluster>& clusters, const vector<in
 	sol.push_back(time);
 	return sol;
 }
+
+
+void PAR::printRestrictions() {
+	int k = 0, l = 0;
+	for (int c = 0; c < restrictionsList.size(); c++) {
+		if (restrictionsList[c][2] == -1) {
+			cout << "Restriccion CL numero " << c << " : (" << restrictionsList[c][0] << " , " << restrictionsList[c][1] << ")" << endl;
+			k++;
+		}
+		if (restrictionsList[c][2] == 1) {
+			cout << "Restriccion ML numero " << c << " : (" << restrictionsList[c][0] << " , " << restrictionsList[c][1] << ")" << endl;
+			l++;
+		}
+	}
+
+	cout << endl;
+
+	for (int i = 0; i < g_points.size(); i++)
+		for (int j = 0; j < restrictionsMap[i].size(); j++)
+			cout << "Restriccion " << j << " asociada al punto " << i << " de tipo " << restrictionsMap[i][j].first << " pareja: " << restrictionsMap[i][j].second << endl;
+}
+
+
+void PAR::printPoints() {
+	for (auto i : g_points) {
+		cout << "(";
+		for (auto j: i)
+			cout << j << " ";
+
+		cout << ")" << endl;
+	}
+}

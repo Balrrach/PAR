@@ -29,7 +29,7 @@ std::ifstream openFile(const std::string& filename);
 void fetchPoints(const std::string& pointsPath);
 
 //Reads restrictions data from a file in CSV format
-int fetchRestrictions(std::string restrictionsPath);
+void fetchRestrictions(std::string restrictionsPath);
 
 //Turns output data into an string
 std::string outputToString(std::vector<float> results);

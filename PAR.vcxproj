@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\AGG.h" />
     <ClInclude Include="include\Benchmark.h" />
     <ClInclude Include="include\BL.h" />
     <ClInclude Include="include\Cluster.h" />
@@ -160,8 +161,12 @@
     <ClInclude Include="include\PAR.h" />
     <ClInclude Include="include\random.h" />
     <ClInclude Include="include\utilities.h" />
+    <ClInclude Include="include\GeneticAlgorithm.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\AGE.h" />
+    <ClCompile Include="src\AGE.cpp" />
+    <ClCompile Include="src\AGG.cpp" />
     <ClCompile Include="src\benchmark.cpp" />
     <ClCompile Include="src\BL.cpp" />
     <ClCompile Include="src\Cluster.cpp" />
@@ -169,6 +174,7 @@
     <ClCompile Include="src\csv.cpp" />
     <ClCompile Include="src\DataSets.cpp" />
     <ClCompile Include="src\ExecutionParameters.cpp" />
+    <ClCompile Include="src\GeneticAlgorithm.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\PAR.cpp" />
     <ClCompile Include="src\Random.cpp" />
