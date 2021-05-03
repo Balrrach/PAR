@@ -53,6 +53,9 @@ vector<int> GeneticAlgorithm::executeGeneticAlgoritm(int numberOfParents, int cr
 		applyPopulationReplacement();
 	}
 
+	vector<int> solution = population[findCurrentBestCromosome()];
+	printSolution(solution);
+
 	return population[0];
 }
 
@@ -91,12 +94,8 @@ void GeneticAlgorithm::getRandomCromosomes(int& first, int& second)
 //Implements Binary Tournament
 int GeneticAlgorithm::binaryTournament(int first, int second)
 {
-	vector<Cluster> clustersFirst, clustersSecond;
-	fromShappingToClusters(population[first], clustersFirst);
-	fromShappingToClusters(population[second], clustersSecond);
-
-	float firstScore = calculateFitness(clustersFirst, population[first]);
-	float secondScore = calculateFitness(clustersSecond, population[second]);
+	float firstScore = calculateShapingFitness(population[first]);
+	float secondScore = calculateShapingFitness(population[second]);
 
 	if (firstScore > secondScore)
 		return first;
@@ -117,6 +116,8 @@ void GeneticAlgorithm::addParent(vector<int> parentsNumbers, int winner)
 //Crossing operation
 void GeneticAlgorithm::applyCrossing(int crossingOperator)
 {	
+	intermediatePopulation.clear();
+
 	if (crossingOperator == 0)
 		generateIntermediatePopulation(& GeneticAlgorithm::uniformCrossingOperator);
 
@@ -127,13 +128,16 @@ void GeneticAlgorithm::applyCrossing(int crossingOperator)
 
 void GeneticAlgorithm::generateIntermediatePopulation(void (GeneticAlgorithm::*function)(int, vector<int> &))
 {
-	intermediatePopulation.clear();
 	vector<int> index(pointsSize);
 	initializeUniformInt(index, 0, pointsSize);
 
 	for (int i = 0; i < numberOfCrosses; i += 1)
 		//2i because the crossinf operator needs two cromosomes to make a cross
 		(this->*function)(2*i, index);
+
+	//Add parents until intermediate population is complete
+	for (int i = intermediatePopulation.size(); i < parentPopulation.size(); i++)
+		intermediatePopulation.push_back(parentPopulation[i]);
 }
 
 
@@ -220,6 +224,7 @@ void GeneticAlgorithm::adjustParents(int & firstParent, int & secondParent)
 }
 
 
+
 //Implemented in the inheritant class
 void GeneticAlgorithm::applyMutations() {}
 
@@ -245,7 +250,9 @@ void GeneticAlgorithm::calculatePopulationFitness(vector<float> & fitnessVector)
 
 int GeneticAlgorithm::findCurrentBestCromosome()
 {
-	int bestCromosome = -1, lowestFitness = DBL_MAX, newFitness;
+	int bestCromosome = -1;
+	float lowestFitness = DBL_MAX, newFitness;
+
 	for (int i = 0; i < populationSize; i++) {
 		newFitness = calculateShapingFitness(population[i]);
 
@@ -261,7 +268,9 @@ int GeneticAlgorithm::findCurrentBestCromosome()
 
 int GeneticAlgorithm::findCurrenIntermediateWorstCromosome()
 {
-	int worstCromosome = -1, highiestFitness = DBL_MIN, newFitness;
+	int worstCromosome = -1;
+	float highiestFitness = DBL_MIN, newFitness;
+
 	for (int i = 0; i < intermediatePopulation.size(); i++) {
 		newFitness = calculateShapingFitness(intermediatePopulation[i]);
 

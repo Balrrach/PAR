@@ -8,8 +8,6 @@ class AGE : public GeneticAlgorithm
 protected:
 	AGE();
 
-	int numberOfCrosses;
-
 	void applyMutations();
 
 	void applyPopulationReplacement();

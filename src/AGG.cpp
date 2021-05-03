@@ -6,9 +6,9 @@ using namespace std;
 AGG::AGG() : GeneticAlgorithm()
 {
 	float crossingProbability = 0.7;
-	float mutationProbability = 0.1 / pointsSize;
+	mutationProbability = 0.1 / pointsSize;
 	calculateNumberOfCrosses(crossingProbability);
-	calculateNumberOfMutations(mutationProbability);
+	calculateNumberOfMutations();
 }
 
 //Calculates the expected number of crosses
@@ -18,7 +18,7 @@ void AGG::calculateNumberOfCrosses(float crossingProbability)
 }
 
 //Calculates the expected number of mutations
-void AGG::calculateNumberOfMutations(float mutationProbability)
+void AGG::calculateNumberOfMutations()
 {
 	numberOfMutations = mutationProbability * pointsSize * populationSize;
 }

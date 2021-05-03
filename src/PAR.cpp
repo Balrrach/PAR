@@ -125,6 +125,15 @@ void PAR::printSolution(const vector<Cluster>& clusters, const vector<int>& shap
 }
 
 
+void PAR::printSolution(const std::vector<int> & shaping)
+{
+	vector<Cluster> clusters;
+	fromShappingToClusters(shaping, clusters);
+	printSolution(clusters, shaping);
+}
+
+
+
 //Cleans global variables
 void PAR::cleanGlobals() {
 	g_points.clear();

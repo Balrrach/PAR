@@ -53,6 +53,7 @@ public:
 
 	//Printers
 	void printSolution(const std::vector<Cluster>& clusters, const std::vector<int>& shaping);
+	void printSolution(const std::vector<int> & shaping);
 	std::vector<float> createOutput(const std::vector<Cluster>& clusters, const std::vector<int>& shaping, float time);
 	void printRestrictions();
 	void printPoints();
