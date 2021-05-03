@@ -5,10 +5,16 @@ using namespace std;
 map<int, vector <pair<int, int> > > PAR::restrictionsMap;
 vector<vector<int>> PAR::restrictionsList;
 vector<vector<float>> PAR::g_points;
+int PAR::pointsSize;
 float PAR::optimumDistance;
 int PAR::dimension;
 int PAR::K;
 float PAR::lambda;
+
+
+//PAR::PAR(){ Set_random((new ExecutionParameters)->seed); }
+
+vector<int> PAR::execute() { return {}; }
 
 
 //Calculates infeseability of a given point in a given cluster k under a certain configuration shaping
@@ -30,21 +36,11 @@ int PAR::calculateIncrementInfeseability(int p, int k, const vector<int>& shapin
 
 //Returns true if the shaping is valid
 bool PAR::checkShaping(const vector<int>& shaping) {
-	set<int> aux;
 	for (int i = 0; i < K; i++)
-		aux.insert(i);
+		if (find(shaping.begin(), shaping.end(), i) == shaping.end())
+			return false;
 
-	set<int>::iterator it;
-	for (int i = 0; i < shaping.size(); i++) {
-		it = aux.find(shaping[i]);
-		if (it != aux.end())
-			aux.erase(it);
-	}
-
-	if (aux.size() > 0)
-		return false;
-	else
-		return true;
+	return true;
 }
 
 
@@ -62,6 +58,14 @@ int PAR::calculateShapingInfeasibility(const vector<int>& shaping) {
 	}
 
 	return sifs;
+}
+
+
+float PAR::calculateShapingFitness(const std::vector<int> & shaping)
+{
+	vector<Cluster> clusters;
+	fromShappingToClusters(shaping, clusters);
+	return calculateFitness(clusters, shaping);
 }
 
 
@@ -156,15 +160,16 @@ void PAR::calculateLambda() {
 //Creates the output data
 vector<float> PAR::createOutput(const vector<Cluster>& clusters, const vector<int>& shaping, float time) {
 	vector<float> sol;
-	sol.push_back((float)(new PAR)->calculateShapingInfeasibility(shaping));
-	sol.push_back((new PAR)->calculateErrorDistance(clusters));
-	sol.push_back((new PAR)->calculateFitness(clusters, shaping));
+	sol.push_back((float)calculateShapingInfeasibility(shaping));
+	sol.push_back(calculateErrorDistance(clusters));
+	sol.push_back(calculateFitness(clusters, shaping));
 	sol.push_back(time);
 	return sol;
 }
 
 
-void PAR::printRestrictions() {
+void PAR::printRestrictions()
+{
 	int k = 0, l = 0;
 	for (int c = 0; c < restrictionsList.size(); c++) {
 		if (restrictionsList[c][2] == -1) {
@@ -185,12 +190,60 @@ void PAR::printRestrictions() {
 }
 
 
-void PAR::printPoints() {
+void PAR::printPoints()
+{
 	for (auto i : g_points) {
 		cout << "(";
 		for (auto j: i)
 			cout << j << " ";
 
 		cout << ")" << endl;
+	}
+}
+
+
+void PAR::printShaping(const std::vector<int>& shaping)
+{
+	for (auto i : shaping)
+		cout << i << " ";
+	cout << endl;
+}
+
+
+void PAR::transferPoint(int p, int currentCluster, int newCluster, vector<Cluster>& clusters)
+{
+	clusters[currentCluster].removePoint(p);
+	clusters[newCluster].addPoint(p);
+}
+
+
+void PAR::updateShapping(int p, int newCluster, vector<int>& shaping)
+{
+	shaping[p] = newCluster;
+}
+
+
+void PAR::fromShappingToClusters(const std::vector<int>& shapping, std::vector<Cluster>& clusters)
+{
+	createClusters(clusters);
+
+	for (int i = 0; i < pointsSize; i++)
+		clusters[shapping[i]].addPoint(i);
+
+	for (auto & c : clusters)
+		c.calculateClusterCentroid(g_points);
+}
+
+void PAR::createClusters(std::vector<Cluster> & clusters)
+{
+	clusters.clear();
+	vector<float> centroide(dimension);
+
+	for (int i = 0; i < K; i++) {
+		for (int j = 0; j < dimension; j++) {
+			centroide[j] = Rand();
+		}
+
+		clusters.push_back(Cluster(centroide, i));
 	}
 }

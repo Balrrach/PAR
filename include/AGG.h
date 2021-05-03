@@ -3,8 +3,18 @@
 #include "GeneticAlgorithm.h"
 
 
-class AGG : public GeneticAlgorithm {
-
+class AGG : public GeneticAlgorithm
+{
 protected:
-	void crossingOperator();
+	AGG();
+
+	int numberOfCrosses;
+	int numberOfMutations;
+
+	virtual void calculateNumberOfCrosses(float crossingProbability);
+	virtual void calculateNumberOfMutations(float mutationProbability);
+
+	void applyMutations();
+
+	void applyPopulationReplacement();
 };

@@ -6,7 +6,7 @@
 
 class DataSets {
 protected:
-	bool fetch(const std::string& pointsPath, const std::string& restrictionsPath);
+	void fetch(const std::string& pointsPath, const std::string& restrictionsPath);
 
 	const std::string composePointsFile(std::string dataSet);
 	const std::string composeRestrictionsFile(const std::string& dataSet, const std::string& restrictionsNumber);

@@ -3,7 +3,7 @@
 using namespace std;
 
 
-bool DataSets::fetch(const string& pointsPath, const string& restrictionsPath) {
+void DataSets::fetch(const string& pointsPath, const string& restrictionsPath) {
 	fetchPoints(pointsPath);
 	fetchRestrictions(restrictionsPath);
 }

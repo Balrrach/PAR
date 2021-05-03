@@ -22,3 +22,10 @@ float calculateDistance(const vector<float>& a, const vector<float>& b) {
 
 	return sqrt(sum);
 }
+
+
+void fillWithRandom(std::vector<int> & randomVector, int K)
+{
+	for (int & i : randomVector)
+		i = Randint(0, K-1);
+}

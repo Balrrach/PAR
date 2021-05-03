@@ -1,5 +1,8 @@
 #pragma once
 
+#include <iostream>
+#include <string>
+
 class ExecutionParameters {
 public:
 	static int seed;
@@ -7,5 +10,6 @@ public:
 
 	ExecutionParameters() {};
 	void initialize();
+	std::string algorithmError();
 };
 

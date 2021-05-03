@@ -78,14 +78,26 @@
     <ClInclude Include="include\COPKM.h">
       <Filter>Header Files\P1</Filter>
     </ClInclude>
-    <ClInclude Include="include\Benchmark.h">
+    <ClInclude Include="include\benchmark.h">
       <Filter>Header Files\General</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AGGUN.h">
+      <Filter>Header Files\P2\Genetics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AGESF.h">
+      <Filter>Header Files\P2\Genetics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AGEUN.h">
+      <Filter>Header Files\P2\Genetics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AGGSF.h">
+      <Filter>Header Files\P2\Genetics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AGE.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\AGE.h">
-      <Filter>Header Files\P2\Genetics</Filter>
-    </ClCompile>
     <ClCompile Include="src\csv.cpp">
       <Filter>Source Files\General</Filter>
     </ClCompile>
@@ -126,6 +138,18 @@
       <Filter>Source Files\P2\Genetics</Filter>
     </ClCompile>
     <ClCompile Include="src\GeneticAlgorithm.cpp">
+      <Filter>Source Files\P2\Genetics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AGGUN.cpp">
+      <Filter>Source Files\P2\Genetics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AGESF.cpp">
+      <Filter>Source Files\P2\Genetics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AGEUN.cpp">
+      <Filter>Source Files\P2\Genetics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AGGSF.cpp">
       <Filter>Source Files\P2\Genetics</Filter>
     </ClCompile>
   </ItemGroup>

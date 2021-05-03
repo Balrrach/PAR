@@ -73,6 +73,7 @@ void readPoints(ifstream& pointsFile) {
 	cout << "Number of points: " << (new PAR)->g_points.size() << endl;
 
 	(new PAR)->dimension = (new PAR)->g_points[0].size();
+	(new PAR)->pointsSize = (new PAR)->g_points.size();
 }
 
 

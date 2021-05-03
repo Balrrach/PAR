@@ -44,17 +44,6 @@ int COPKM::calculateClosestCluster(int p, const vector<int>& liClusters, const v
 }
 
 
-void COPKM::transferPoint(int p, int currentCluster, int newCluster, vector<Cluster>& clusters) {
-	clusters[currentCluster].removePoint(p);
-	clusters[newCluster].addPoint(p);
-}
-
-
-void COPKM::updateShapping(int p, int newCluster, vector<int>& shaping) {
-	shaping[p] = newCluster;
-}
-
-
 int COPKM::calculateBestCluster(int p, vector<Cluster>& clusters, vector<int>& shaping) {
 	vector<int> liClusters;
 	int bestCluster = -1;

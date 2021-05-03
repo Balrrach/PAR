@@ -1,5 +1,9 @@
 #include <iostream>
 
+#include "AGGUN.h"
+#include "AGGSF.h"
+#include "AGEUN.h"
+#include "AGESF.h"
 #include "benchmark.h"
 #include "BL.h"
 #include "COPKM.h"
@@ -10,7 +14,7 @@ using namespace std;
 
 
 void algorimtSelection(int selector) {
-	(new ExecutionParameters())->initialize();
+	(new ExecutionParameters)->initialize();
 
 	switch (selector) {
 	case 1:
@@ -21,8 +25,25 @@ void algorimtSelection(int selector) {
 		(new BL)->executeBL();
 		break;
 
+	case 3:
+		(new AGGUN)->execute();
+		break;
+
+	case 4:
+		(new AGGSF)->execute();
+		break;
+
+	case 5:
+		(new AGEUN)->execute();
+		break;
+
+	case 6:
+		(new AGESF)->execute();
+		break;
+
 	default:
-		throw "Error: command-line argument mismatch";
+		cout << (new ExecutionParameters)->algorithmError();
+		throw "Algoritm Selection Error";
 		break;
 	}
 }

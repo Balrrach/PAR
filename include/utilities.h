@@ -5,6 +5,7 @@
 #include <math.h>
 #include <vector>
 
+#include "random.h"
 
 //Ptins elements of a vector vec
 template<typename T>
@@ -28,3 +29,6 @@ std::string toStringWithPrecision(const T a_value, const int n) {
 	out << std::fixed << a_value;
 	return out.str();
 }
+
+//Fills a vector
+void fillWithRandom(std::vector<int> & randomVector, int K);
