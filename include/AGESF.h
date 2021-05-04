@@ -6,5 +6,5 @@
 class AGESF : public AGE
 {
 public:
-	std::vector<int> execute();
+	std::vector<float> execute();
 };

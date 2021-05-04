@@ -1,57 +1,20 @@
 #include <iostream>
 
+#include "BL.h"
+#include "COPKM.h"
 #include "AGGUN.h"
 #include "AGGSF.h"
 #include "AGEUN.h"
 #include "AGESF.h"
 #include "benchmark.h"
-#include "BL.h"
-#include "COPKM.h"
 #include "DataSets.h"
 #include "ExecutionParameters.h"
 
 using namespace std;
 
 
-void algorimtSelection(int selector) {
-	(new ExecutionParameters)->initialize();
-
-	switch (selector) {
-	case 1:
-		(new COPKM)->executeCOPKM();
-		break;
-
-	case 2:
-		(new BL)->executeBL();
-		break;
-
-	case 3:
-		(new AGGUN)->execute();
-		break;
-
-	case 4:
-		(new AGGSF)->execute();
-		break;
-
-	case 5:
-		(new AGEUN)->execute();
-		break;
-
-	case 6:
-		(new AGESF)->execute();
-		break;
-
-	default:
-		cout << (new ExecutionParameters)->algorithmError();
-		throw "Algoritm Selection Error";
-		break;
-	}
-}
-
 
 void algortimExecution(int argc, char** argv) {
-	int number = atoi(argv[3]);
-
 	//Need 3 arguments (Points file, Restrictions file, Number of Clusters) to run, else exit
 	if (argc < 4)
 		throw "Error: command-line argument count mismatch";
@@ -64,21 +27,26 @@ void algortimExecution(int argc, char** argv) {
 	string points_file = argv[1];
 	string restrictions_file = argv[2];
 	readData(points_file, restrictions_file);
-	algorimtSelection(number);
+	algorithmSelection(argv[3]);
 }
 
 
 void benchmarkExecution(int argc, char** argv) {
-	if (argc == 2)
-		benchmark();
+	switch (argc) {
+	case 3:
+		benchmarkSelector(stoi(argv[2]));
+		break;
 
-	else if (argc == 3) {
-		(new ExecutionParameters())->seed = atoi(argv[2]);
-		benchmark();
-	}
+	case 4:
+		(new ExecutionParameters())->seed = atoi(argv[3]);
+		benchmarkSelector(stoi(argv[2]));
+		break;
 
-	else
+	default:
+		cout << "No benchmark specified";
 		throw "Error: command-line argument mismatch";
+		break;
+	}
 }
 
 

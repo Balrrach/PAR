@@ -1,3 +1,3 @@
 #include "AGGSF.h"
 
-std::vector<int> AGGSF::execute() { return executeGeneticAlgoritm(populationSize, 1); }
+std::vector<float> AGGSF::execute() { return executeGeneticAlgoritm(populationSize, 1); }

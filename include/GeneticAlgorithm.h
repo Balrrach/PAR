@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cfloat>
 #include <vector>
 
 #include "ExecutionParameters.h"
@@ -15,7 +16,7 @@ protected:
 	std::vector<std::vector<int>> intermediatePopulation;
 	int numberOfCrosses;
 	float mutationProbability;
-
+	int evaluationNumber;
 
 	//Initialization
 	GeneticAlgorithm();
@@ -24,7 +25,7 @@ protected:
 
 
 	//Algorithm execution
-	std::vector<int> executeGeneticAlgoritm(int numberOfParents, int crossingOperator);
+	std::vector<float> executeGeneticAlgoritm(int numberOfParents, int crossingOperator);
 
 
 	//Selections
@@ -43,7 +44,7 @@ protected:
 	void initializeFirstSegment(int r, int v, int firstParent, std::vector<int> & newDescendant);
 	void initializeSecondSegment(int r, int v, int firstParent, int secondParent, std::vector<int> & newDescendant);
 	void adjustParents(int & firstParent, int & secondParent);
-
+	
 
 	//Mutations
 	virtual void applyMutations();
@@ -58,6 +59,8 @@ protected:
 	void calculatePopulationFitness(std::vector<float> & fitnessVector);
 	int findCurrentBestCromosome();
 	int findCurrenIntermediateWorstCromosome();
+	float calculateShapingFitness(const std::vector<int> & shaping);
+
 
 	//Printers
 	void printPopulation();

@@ -12,4 +12,3 @@ public:
 	void initialize();
 	std::string algorithmError();
 };
-

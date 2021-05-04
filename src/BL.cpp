@@ -116,7 +116,7 @@ void BL::initializeClusters(vector<Cluster>& clusters, vector<int>& shaping) {
 
 
 //Local Search Algorithm
-vector<float> BL::executeBL() {
+vector<float> BL::execute() {
 	ExecutionParameters ep;
 	auto begin = std::chrono::high_resolution_clock::now();
 
@@ -131,7 +131,7 @@ vector<float> BL::executeBL() {
 	auto end = std::chrono::high_resolution_clock::now();
 	printSolution(clusters, shaping);
 	std::cout << "Tiempo de ejecucion: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
-	cout << "Numero de iteraciones: " << iters << endl;
+	//cout << "Numero de iteraciones: " << iters << endl;
 
 	//toBoxplot(clusters);
 

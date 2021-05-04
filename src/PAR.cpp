@@ -12,9 +12,9 @@ int PAR::K;
 float PAR::lambda;
 
 
-//PAR::PAR(){ Set_random((new ExecutionParameters)->seed); }
+PAR::PAR(){ Set_random((new ExecutionParameters)->seed); }
 
-vector<int> PAR::execute() { return {}; }
+vector<float> PAR::execute() { return {}; }
 
 
 //Calculates infeseability of a given point in a given cluster k under a certain configuration shaping
@@ -42,6 +42,31 @@ bool PAR::checkShaping(const vector<int>& shaping) {
 
 	return true;
 }
+
+
+//Changes a set of points from cluster until strong conditions are met
+void PAR::fixShaping(vector<int> & newDescendant)
+{
+	while (checkShaping(newDescendant) == false)
+		for (int i = 0; i < K; i++)
+			if (find(newDescendant.begin(), newDescendant.end(), i) == newDescendant.end())
+				newDescendant[Randint(0, pointsSize-1)] = i;
+}
+
+//void PAR::fixShaping(vector<int> & newDescendant)
+//{
+//	while (checkShaping(newDescendant) == false) {
+//		set<int> aux, missingClusters;
+//		for (int i = 0; i < K; i++)
+//			missingClusters.insert(i);
+//
+//		for (const int & i : newDescendant)
+//			aux.insert(i);
+//
+//		for (const auto & i : aux)
+//			missingClusters.erase(i);
+//	}
+//}
 
 
 //Calculates infeasibility of a given shaping
@@ -73,7 +98,7 @@ float PAR::calculateShapingFitness(const std::vector<int> & shaping)
 float PAR::calculateGeneralDeviation(const vector<Cluster>& clusters) {
 	float aux = 0;
 	for (int i = 0; i < K; i++)
-		aux += clusters[i].calculateIntraClusterMeanDeviation((new PAR)->g_points);
+		aux += clusters[i].calculateIntraClusterMeanDeviation(g_points);
 
 	return aux / K;
 }
@@ -170,10 +195,17 @@ void PAR::calculateLambda() {
 vector<float> PAR::createOutput(const vector<Cluster>& clusters, const vector<int>& shaping, float time) {
 	vector<float> sol;
 	sol.push_back((float)calculateShapingInfeasibility(shaping));
-	sol.push_back(calculateErrorDistance(clusters));
+	sol.push_back(calculateGeneralDeviation(clusters));
 	sol.push_back(calculateFitness(clusters, shaping));
 	sol.push_back(time);
 	return sol;
+}
+
+std::vector<float> PAR::createOutput(const std::vector<int> & shaping, float time)
+{
+	vector<Cluster> clusters;
+	fromShappingToClusters(shaping, clusters);
+	return createOutput(clusters, shaping, time);
 }
 
 

@@ -41,10 +41,10 @@ void AGG::applyMutations()
 //Replacement operation: Only the best is kept
 void AGG::applyPopulationReplacement()
 {
-	int currentBestCromosome = findCurrentBestCromosome(), currentWorstCromosome;
+	int currentBestCromosome = findCurrentBestCromosome(), currentIntermediateWorstCromosome;
 	if (find(intermediatePopulation.begin(), intermediatePopulation.end(), population[currentBestCromosome]) == intermediatePopulation.end()) {
-		currentWorstCromosome = findCurrenIntermediateWorstCromosome();
-		intermediatePopulation[currentWorstCromosome] = population[currentBestCromosome];
+		currentIntermediateWorstCromosome = findCurrenIntermediateWorstCromosome();
+		intermediatePopulation[currentIntermediateWorstCromosome] = population[currentBestCromosome];
 	}
 
 	population = intermediatePopulation;

@@ -23,7 +23,7 @@ void COPKM::calculateLowestInfeasibilityClusters(int p, vector<int>& liClusters,
 
 
 int COPKM::calculateClosestCluster(int p, const vector<int>& liClusters, const vector<Cluster>& clusters) {
-	float sum = 0.0, dist = 0.0, ldist = DBL_MAX;
+	float sum = 0.0, dist = 0.0, ldist = FLT_MAX;
 	int closestCluster = -1;
 	for (int i = 0; i < liClusters.size(); i++) {
 		sum = 0.0;
@@ -145,16 +145,14 @@ void COPKM::initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, 
 }
 
 
-vector<float> COPKM::executeCOPKM() {
-	ExecutionParameters ep;
+vector<float> COPKM::execute() {
 	auto begin = std::chrono::high_resolution_clock::now();
 
-	Set_random(ep.seed);
 	vector<Cluster> clusters;
 	vector<int> shaping(g_points.size(), -1);
 	bool key;
 
-	initializeClusters(clusters, shaping, ep.seed);
+	initializeClusters(clusters, shaping, (new ExecutionParameters())->seed);
 
 	bool repeat = true;
 	int iter = 1;

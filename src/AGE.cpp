@@ -63,7 +63,7 @@ void AGE::getTwoWorse(pair<int, float> & bestWorse, pair<int, float> & worseWors
 	vector<float> fitnessVector(intermediatePopulation.size());
 	calculatePopulationFitness(fitnessVector);
 
-	bestWorse.second = worseWorse.second = DBL_MAX;
+	bestWorse.second = worseWorse.second = FLT_MAX;
 
 	for (int i = 0; i < fitnessVector.size(); i++) {
 		float currentFitness = fitnessVector[i];

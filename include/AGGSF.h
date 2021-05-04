@@ -6,5 +6,5 @@
 class AGGSF : public AGG
 {
 public:
-	std::vector<int> execute();
+	std::vector<float> execute();
 };

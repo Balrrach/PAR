@@ -94,7 +94,7 @@
       <Filter>Header Files\P2\Genetics</Filter>
     </ClInclude>
     <ClInclude Include="include\AGE.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\P2\Genetics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

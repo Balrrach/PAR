@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cfloat>
-#include <chrono>
 #include <iostream>
 #include <vector>
 
@@ -21,5 +20,5 @@ public:
 	bool assignClusteredPoint(int p, std::vector<Cluster>& clusters, std::vector<int>& shaping);
 	bool realocatePointToBestCluster(int p, std::vector<Cluster>& clusters, std::vector<int>& shaping);
 	void initializeClusters(std::vector<Cluster>& clusters, std::vector<int>& shaping, int seed);
-	std::vector<float> executeCOPKM();
+	std::vector<float> execute();
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cfloat>
-#include <chrono>
 #include <iostream>
 #include <vector>
 
@@ -19,5 +18,5 @@ public:
 	void generateNeighbourhood(std::vector<std::pair<int, int>>& neighbourhood, const std::vector<int>& shaping);
 	int localSearch(std::vector<Cluster>& clusters, std::vector<int>& shaping, int seed, int maxIter);
 	void initializeClusters(std::vector<Cluster>& clusters, std::vector<int>& shaping);
-	std::vector<float> executeBL();
+	std::vector<float> execute();
 };
