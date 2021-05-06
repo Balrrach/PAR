@@ -26,7 +26,7 @@ public:
 	static int dimension;
 	static int K;
 	static float lambda;
-
+	std::mt19937 rng;
 
 	PAR();
 	void cleanGlobals();

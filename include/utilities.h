@@ -22,6 +22,7 @@ void initializeUniformInt(std::vector<int>& v, int a, int b);
 //Calculates standard distance between a and b
 float calculateDistance(const std::vector<float>& a, const std::vector<float>& b);
 
+//Transforms a string a_value to a value with precition n
 template <typename T>
 std::string toStringWithPrecision(const T a_value, const int n) {
 	std::ostringstream out;

@@ -28,13 +28,8 @@ void AGG::calculateNumberOfMutations()
 //Mutation based on number of mutations expectancy
 void AGG::applyMutations()
 {
-	int gen, cromosome;
-
-	for (int i = 0; i < numberOfMutations; i++) {
-		cromosome = Randint(0, intermediatePopulation.size()-1);
-		gen = Randint(0, pointsSize-1);
-		mutationOperator(cromosome, gen);
-	}
+	for (int i = 0; i < numberOfMutations; i++)
+		mutationOperator();
 }
 
 

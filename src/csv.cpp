@@ -103,7 +103,7 @@ void fetchRestrictions(string restrictionsPath) {
 
 
 string outputToString(vector<float> results) {
-	return "," + to_string((int)results[0]) + "," + toStringWithPrecision(results[1], 5) +
+	return "," + toStringWithPrecision(results[0],1) + "," + toStringWithPrecision(results[1], 5) +
 		"," + toStringWithPrecision(results[2], 5) + "," + to_string((int)results[3]);
 }
 

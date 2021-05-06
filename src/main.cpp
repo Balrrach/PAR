@@ -13,7 +13,6 @@
 using namespace std;
 
 
-
 void algortimExecution(int argc, char** argv) {
 	//Need 3 arguments (Points file, Restrictions file, Number of Clusters) to run, else exit
 	if (argc < 4)

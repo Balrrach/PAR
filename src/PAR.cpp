@@ -12,7 +12,10 @@ int PAR::K;
 float PAR::lambda;
 
 
-PAR::PAR(){ Set_random((new ExecutionParameters)->seed); }
+PAR::PAR(){ 
+	Set_random((new ExecutionParameters)->seed);
+	rng = mt19937((new ExecutionParameters)->seed);
+}
 
 vector<float> PAR::execute() { return {}; }
 
@@ -45,12 +48,12 @@ bool PAR::checkShaping(const vector<int>& shaping) {
 
 
 //Changes a set of points from cluster until strong conditions are met
-void PAR::fixShaping(vector<int> & newDescendant)
+void PAR::fixShaping(vector<int> & shaping)
 {
-	while (checkShaping(newDescendant) == false)
+	while (checkShaping(shaping) == false)
 		for (int i = 0; i < K; i++)
-			if (find(newDescendant.begin(), newDescendant.end(), i) == newDescendant.end())
-				newDescendant[Randint(0, pointsSize-1)] = i;
+			if (find(shaping.begin(), shaping.end(), i) == shaping.end())
+				shaping[Randint(0, pointsSize-1)] = i;
 }
 
 //void PAR::fixShaping(vector<int> & newDescendant)
@@ -132,7 +135,7 @@ void PAR::printSolution(const vector<Cluster>& clusters, const vector<int>& shap
 	cout << endl;
 
 	//Print solution
-	cout << "########################################################################################################################" << endl << endl;
+	cout << "#####################---Estadisticos---#####################" << endl;
 	cout << "Vector solution: (";
 	for (int i = 0; i < total_points - 1; i++)
 		cout << shaping[i] << ", ";
@@ -145,7 +148,7 @@ void PAR::printSolution(const vector<Cluster>& clusters, const vector<int>& shap
 	cout << "Infeasibility: " << infeasibility << endl;
 	cout << "Lambda: " << lambda << endl;
 	cout << "Fitness: " << generalDeviation + infeasibility * lambda << endl;
-	cout << "########################################################################################################################" << endl;
+	cout << "###########################################################" << endl;
 	cout << endl;
 }
 

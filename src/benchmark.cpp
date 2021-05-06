@@ -175,10 +175,10 @@ void p1Benchmark()
 //Benchmark Practica 2
 void p2Benchmark()
 {
-	benchmark("AGGUN");
-	benchmark("AGGSF");
-	benchmark("AGEUN");
-	benchmark("AGESF");
+	benchmark("AGG-UN");
+	//benchmark("AGG-SF");
+	//benchmark("AGE-UN");
+	//benchmark("AGE-SF");
 }
 
 
@@ -265,8 +265,9 @@ void operate(string algoritmo, int nexe, int estadisticos,
 		result = algorithmSelection(algoritmo);
 		table[i] += outputToString(result);
 
-		for (int j = 0; j < estadisticos; j++)
-			media[j] += result[j] / nexe;
+		for (int j = 0; j < estadisticos; j++) {
+			media[j] += (float)result[j] / (float)nexe;
+		}
 	}
 
 	string_Media += outputToString(media);
@@ -283,16 +284,16 @@ vector<float> algorithmSelection(string algoritm)
 	else if (algoritm == "BL")
 		return (new BL)->execute();
 
-	else if (algoritm == "AGGUN")
+	else if (algoritm == "AGG-UN")
 		return (new AGGUN)->execute();
 
-	else if (algoritm == "AGGSF")
+	else if (algoritm == "AGG-SF")
 		return (new AGGSF)->execute();
 
-	else if (algoritm == "AGEUN")
+	else if (algoritm == "AGE-UN")
 		return (new AGEUN)->execute();
 
-	else if (algoritm == "AGESF")
+	else if (algoritm == "AGE-SF")
 		return (new AGESF)->execute();
 
 	else{

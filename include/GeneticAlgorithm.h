@@ -17,6 +17,7 @@ protected:
 	int numberOfCrosses;
 	float mutationProbability;
 	int evaluationNumber;
+	int mutationsNumber;
 
 	//Initialization
 	GeneticAlgorithm();
@@ -28,7 +29,7 @@ protected:
 	std::vector<float> executeGeneticAlgoritm(int numberOfParents, int crossingOperator);
 
 
-	//Selections
+	//Selection
 	void applySelection(int numberOfParents);
 	int selectionOperator();
 	void getRandomCromosomes(int& first, int& second);
@@ -38,7 +39,7 @@ protected:
 
 	//Crossing
 	virtual void applyCrossing(int crossingOperator);
-	void generateIntermediatePopulation(void (GeneticAlgorithm:: * function)(int, std::vector<int> &));
+	void crossParents(void (GeneticAlgorithm:: * crossingOperator)(int, std::vector<int> &));
 	void uniformCrossingOperator(int firstParent, std::vector<int> & index);
 	void fixedSegmentCrossingOperator(int firstParent, std::vector<int> & index);
 	void initializeFirstSegment(int r, int v, int firstParent, std::vector<int> & newDescendant);
@@ -48,7 +49,7 @@ protected:
 
 	//Mutations
 	virtual void applyMutations();
-	void mutationOperator(int cromosome, int gen);
+	void mutationOperator();
 
 
 	//Replacements
@@ -56,12 +57,13 @@ protected:
 	
 
 	//Others
-	void calculatePopulationFitness(std::vector<float> & fitnessVector);
+	void calculatePopulationFitness(std::vector<float> & fitnessVector, const std::vector<std::vector<int>> & thePopulation);
 	int findCurrentBestCromosome();
 	int findCurrenIntermediateWorstCromosome();
 	float calculateShapingFitness(const std::vector<int> & shaping);
 
 
 	//Printers
-	void printPopulation();
+	void printPopulation(const std::vector<std::vector<int>> & thePopulation);
+	void printMeanPopulationFitness(const std::vector<std::vector<int>> & thePopulation);
 };

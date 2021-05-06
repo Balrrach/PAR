@@ -6,17 +6,18 @@ using namespace std;
 AGE::AGE() : GeneticAlgorithm()
 {
 	numberOfCrosses = 1;
-	mutationProbability = 0.1 / pointsSize;
+	mutationProbability = 0.1;
 }
 
 
 //Mutation based on probability
 void AGE::applyMutations()
 {
+	uniform_real_distribution<double> random(0, 1);
+
 	for (int i = 0; i < intermediatePopulation.size(); i++)
-		for(int j = 0; j < pointsSize; j++)
-		if (Rand() < mutationProbability)
-			mutationOperator(i, j);
+		if (random(rng) < mutationProbability)
+			mutationOperator();
 }
 
 
@@ -58,23 +59,26 @@ void AGE::orderCandidates(pair<int, float> & bestCandidate, pair<int, float> & w
 }
 
 
+//Get the two worst cromosomes in the current population
 void AGE::getTwoWorse(pair<int, float> & bestWorse, pair<int, float> & worseWorse)
 {
-	vector<float> fitnessVector(intermediatePopulation.size());
-	calculatePopulationFitness(fitnessVector);
+	vector<float> fitnessVector(populationSize);
+	calculatePopulationFitness(fitnessVector, population);
 
-	bestWorse.second = worseWorse.second = FLT_MAX;
+	bestWorse.second = worseWorse.second = FLT_MIN;
 
 	for (int i = 0; i < fitnessVector.size(); i++) {
 		float currentFitness = fitnessVector[i];
-		if (currentFitness < bestWorse.second) {
-			bestWorse.first = i;
-			bestWorse.second = currentFitness;
-		}
+		if (worseWorse.second < currentFitness) {
+			bestWorse = worseWorse;
 
-		else if (currentFitness < worseWorse.second) {
 			worseWorse.first = i;
 			worseWorse.second = currentFitness;
+		}
+
+		else if (bestWorse.second < currentFitness) {
+			bestWorse.first = i;
+			bestWorse.second = currentFitness;
 		}
 	}
 }
