@@ -4,36 +4,22 @@ using namespace std;
 
 
 GeneticAlgorithm::GeneticAlgorithm()
-{	
+{
 	populationSize = 50;
 	evaluationNumber = 0;
 	mutationsNumber = 0;
-
-	generatePopulation();
-}
-
-
-
-//Generates the initial population
-void GeneticAlgorithm::generatePopulation()
-{
-	bool repeat = true;
-
-	for (int i = 0; i < populationSize; i++) {
-		vector<int> cromosome(pointsSize);
-		initializeCromosome(cromosome);
-		population.push_back(cromosome);
-	}
 }
 
 //Initializes a cromosone checking strong restrictions are acomplished
-void GeneticAlgorithm::initializeCromosome(vector<int>& cromosome)
+void GeneticAlgorithm::initializeCromosome(pair<vector<int>, float > & cromosome)
 {
 	uniform_int_distribution<int> randomInt(0, K-1);
-	while (checkShaping(cromosome) == false)
-		for (auto & gen : cromosome)
+
+	while (checkShaping(cromosome.first) == false)
+		for (auto & gen : cromosome.first)
 			gen = randomInt(rng);
-	//printShaping(cromosome);
+
+	cromosome.second = PAR::calculateShapingFitness(cromosome.first);
 }
 
 
@@ -48,22 +34,23 @@ vector<float> GeneticAlgorithm::executeGeneticAlgoritm(int numberOfParents, int 
 	while (evaluationNumber < (new ExecutionParameters)->iters) {
 		//cout << endl << "---------------------" << endl;
 		//printPopulation(population);
-		//printMeanPopulationFitness(population);
+		//printPopulation(parentPopulation);
 		applySelection(numberOfParents);
-		//printMeanPopulationFitness(parentPopulation);
+		//printPopulation(parentPopulation);
 		applyCrossing(crossingOperator);
 		applyMutations();
-		//printMeanPopulationFitness(intermediatePopulation);
-		//printPopulation(population);
+		//printPopulation(parentPopulation);
+		fixAndEvaluateParentPopulation();
+		//printPopulation(parentPopulation);
 		applyPopulationReplacement();
-		//printPopulation(population);
-		//printf("Current best fitness %f \n", calculateShapingFitness(population[findCurrentBestCromosome()]));
+		//printMeanPopulationFitness(population);
+		//printf("Current best fitness %f \n", population[findCurrentBestCromosome()].second);
 		//printMeanPopulationFitness(population);
 		totalIterations++;
 	}
 
 	auto end = std::chrono::high_resolution_clock::now();
-	vector<int> solution = population[findCurrentBestCromosome()];
+	vector<int> solution = population[findCurrentBestCromosome()].first;
 	printSolution(solution);
 	std::cout << "Tiempo de ejecucion: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
 	cout << "Iteraciones bucle principal: " << totalIterations << endl;
@@ -106,16 +93,16 @@ void GeneticAlgorithm::getRandomCromosomes(int& first, int& second)
 }
 
 //Implements Binary Tournament
-int GeneticAlgorithm::binaryTournament(int first, int second)
+int GeneticAlgorithm::binaryTournament(int firstFighter, int secondFighter)
 {
-	float firstScore = calculateShapingFitness(population[first]);
-	float secondScore = calculateShapingFitness(population[second]);
+	float firstFighterScore = population[firstFighter].second;
+	float secondFighterScore = population[secondFighter].second;
 
-	if (firstScore < secondScore)
-		return first;
+	if (firstFighterScore < secondFighterScore)
+		return firstFighter;
 
 	else
-		return second;
+		return secondFighter;
 }
 
 //Makes sure a cromosome isn't repeated in the parents population
@@ -129,9 +116,7 @@ void GeneticAlgorithm::addParent(vector<int> parentsNumbers, int winner)
 
 //Crossing operation
 void GeneticAlgorithm::applyCrossing(int crossingOperator)
-{	
-	intermediatePopulation.clear();
-
+{
 	if (crossingOperator == 0)
 		crossParents(& GeneticAlgorithm::uniformCrossingOperator);
 
@@ -149,75 +134,79 @@ void GeneticAlgorithm::crossParents(void (GeneticAlgorithm::*crossingOperator)(i
 	for (int i = 0; i < numberOfCrosses; i += 1)
 		//2i because the crossing two cromosomes are needed to make a cross
 		(this->*crossingOperator)(2*i, index);
-
-	//Add parents until intermediate population is complete
-	for (int i = intermediatePopulation.size(); i < parentPopulation.size(); i++)
-		intermediatePopulation.push_back(parentPopulation[i]);
 }
 
 
 void GeneticAlgorithm::uniformCrossingOperator(int firstParent, vector<int> & index)
 {
 	int secondParent = firstParent + 1;
-	vector<int> newDescendant(pointsSize);
+	vector<pair<vector<int>, float>> newDescendants(2, make_pair(vector<int>(pointsSize, -1), -1));
 
 	//Repeat twice to obtain two descendants from two cromosomes
 	for (int t = 0; t < 2; t++) {
 		shuffle(index.begin(), index.end(), rng);
 
 		for (int i = 0; i < pointsSize / 2; i++)
-			newDescendant[index[i]] = parentPopulation[firstParent][index[i]];
+			newDescendants[t].first[index[i]] = (parentPopulation[firstParent].first)[index[i]];
 
 		for (int i = pointsSize / 2; i < pointsSize; i++)
-			newDescendant[index[i]] = parentPopulation[secondParent][index[i]];
-
-		fixShaping(newDescendant);
-		intermediatePopulation.push_back(newDescendant);
+			newDescendants[t].first[index[i]] = (parentPopulation[secondParent].first)[index[i]];
 	}
+
+	parentPopulation[firstParent] = newDescendants[0];
+	parentPopulation[secondParent] = newDescendants[1];
 }
 
 
 void GeneticAlgorithm::fixedSegmentCrossingOperator(int firstParent, vector<int> & index)
 {
 	//Se puede jugar con la selección del padre a desarrollar/heredar
-	vector<int> newDescendant(pointsSize);
+	vector<pair<vector<int>, float>> newDescendants(2, make_pair(vector<int>(pointsSize, -1), -1));
 	int secondParent = firstParent + 1;
-	int r = Randint(0, pointsSize - 1), v = Randint(0, pointsSize);
 	
 	//Alwais develop the best parent
 	adjustParents(firstParent, secondParent);
 
 	for (int t = 0; t < 2; t++) {
-		initializeFirstSegment(r, v, firstParent, newDescendant);
-		initializeSecondSegment(r, v, firstParent, secondParent, newDescendant);
+		int r = Randint(0, pointsSize - 1), v = Randint(0, pointsSize - 1);
 
-		fixShaping(newDescendant);
-		intermediatePopulation.push_back(newDescendant);
+		initializeFirstSegment(r, v, firstParent, newDescendants[t].first);
+		//printShaping(newDescendants[t].first);
+		initializeSecondSegment(r, v, firstParent, secondParent, newDescendants[t].first);
+		//printShaping(newDescendants[t].first);
 	}
+
+	parentPopulation[firstParent] = newDescendants[0];
+	parentPopulation[secondParent] = newDescendants[1];
 }
 
 //Initializes the first part of the new cromosome
 void GeneticAlgorithm::initializeFirstSegment(int r, int v, int firstParent, vector<int> & newDescendant)
 {
-	for (int i = r; i < v; i++)
-		newDescendant[i % pointsSize] = parentPopulation[firstParent][i % pointsSize];
+	int end = (pointsSize + (v - r)) % pointsSize;
+	int j = r;
+	for (int i = 0; i <= end; i++) {
+		newDescendant[j] = parentPopulation[firstParent].first[j];
+
+		j = (j + 1) % pointsSize;
+	}
 }
 
 //Initializes the second part of the new cromosome
 void GeneticAlgorithm::initializeSecondSegment(int r, int v, int firstParent, int secondParent, vector<int> & newDescendant)
 {
-	int remainigVector = pointsSize - (v - r);
+	int remainigVector = (pointsSize - (v - r) - 1) % pointsSize;
 	vector<int> randomVector(remainigVector);
 	fillWithRandom(randomVector, 2);
 
-	int j = v;
+	int j = (v+1)%pointsSize;
 	for (int i = 0; i < remainigVector; i++) {
 		if (randomVector[i] == 0)
-			newDescendant[j % pointsSize] = parentPopulation[firstParent][j % pointsSize];
+			newDescendant[j] = parentPopulation[firstParent].first[j];
 		else
-			newDescendant[j % pointsSize] = parentPopulation[secondParent][j % pointsSize];
+			newDescendant[j] = parentPopulation[secondParent].first[j];
 
-		j++;
+		j = (j+1) % pointsSize;
 	}
 }
 
@@ -232,56 +221,58 @@ void GeneticAlgorithm::adjustParents(int & firstParent, int & secondParent)
 
 
 
-//Implemented in the inheritant class
-void GeneticAlgorithm::applyMutations() {}
 
 //Mutation operation
 void GeneticAlgorithm::mutationOperator()
 {
-	uniform_int_distribution<int> randomCromosome(0, intermediatePopulation.size() - 1);
+	uniform_int_distribution<int> randomCromosome(0, parentPopulation.size() - 1);
 	uniform_int_distribution<int> randomGen(0, pointsSize - 1);
 	uniform_int_distribution<int> randomCluster(0, K - 1);
 	int cromosome = randomCromosome(rng);
 	int cluster = randomCluster(rng);
+	int gen = randomGen(rng);
 
-	bool repeat = true;
-	while (repeat) {
-		int gen = randomGen(rng);
-		int currentCluster = intermediatePopulation[cromosome][gen];
+	//bool repeat = true;
+	//while (repeat) {
+	//	int gen = randomGen(rng);
+	//	//int currentCluster = parentPopulation[cromosome].first[gen];
 
-		intermediatePopulation[cromosome][gen] = cluster;
-		if (find(intermediatePopulation.begin(), intermediatePopulation.end(), currentCluster) != intermediatePopulation.end())
-			repeat = false;
-	}
-
+	//	parentPopulation[cromosome].first[gen] = cluster;
+	//	//if (find(parentPopulation[cromosome].first.begin(), parentPopulation[cromosome].first.end(), currentCluster) != parentPopulation[cromosome].first.end()) {
+	//	//	parentPopulation[cromosome].first[gen] = currentCluster;
+	//	//	repeat = false;
+	//	//}
+	//}
+	parentPopulation[cromosome].first[gen] = cluster;
+	parentPopulation[cromosome].second = -1;
 	mutationsNumber++;
 }
 
 
 
-//Implemented in the inheritant class
-void GeneticAlgorithm::applyPopulationReplacement(){}
-
-
-
-void GeneticAlgorithm::calculatePopulationFitness(vector<float> & fitnessVector, const vector<vector<int>> & thePopulation)
+//Fix descendants and evaluate their fitness
+void GeneticAlgorithm::fixAndEvaluateParentPopulation()
 {
-	for (int i = 0; i < thePopulation.size(); i++)
-		fitnessVector[i] = calculateShapingFitness(thePopulation[i]);
+	for (auto & cromosome : parentPopulation)
+		if (cromosome.second == -1) {
+			fixShaping(cromosome.first);
+			cromosome.second = calculateShapingFitness(cromosome.first);
+		}
 }
+
 
 
 int GeneticAlgorithm::findCurrentBestCromosome()
 {
 	int bestCromosome = -1;
-	float lowestFitness = FLT_MAX, newFitness;
+	float lowestFitness = FLT_MAX, fitness;
 
 	for (int i = 0; i < populationSize; i++) {
-		newFitness = calculateShapingFitness(population[i]);
+		fitness = population[i].second;
 
-		if (newFitness < lowestFitness) {
+		if (fitness < lowestFitness) {
 			bestCromosome = i;
-			lowestFitness = newFitness;
+			lowestFitness = fitness;
 		}
 	}
 
@@ -289,17 +280,17 @@ int GeneticAlgorithm::findCurrentBestCromosome()
 }
 
 
-int GeneticAlgorithm::findCurrenIntermediateWorstCromosome()
+int GeneticAlgorithm::findCurrenWorstParent()
 {
 	int worstCromosome = -1;
-	float highiestFitness = FLT_MIN, newFitness;
+	float highiestFitness = FLT_MIN, fitness;
 
-	for (int i = 0; i < intermediatePopulation.size(); i++) {
-		newFitness = calculateShapingFitness(intermediatePopulation[i]);
+	for (int i = 0; i < parentPopulation.size(); i++) {
+		fitness = parentPopulation[i].second;
 
-		if (highiestFitness < newFitness) {
+		if (highiestFitness < fitness) {
 			worstCromosome = i;
-			highiestFitness = newFitness;
+			highiestFitness = fitness;
 		}
 	}
 
@@ -310,38 +301,42 @@ int GeneticAlgorithm::findCurrenIntermediateWorstCromosome()
 //Adds one to the number of evaluations
 float GeneticAlgorithm::calculateShapingFitness(const std::vector<int> & shaping)
 {
-	//evaluationNumber++;
+	evaluationNumber++;
 	return PAR::calculateShapingFitness(shaping);
 }
 
 
 
 //Prints every cromosome values
-void GeneticAlgorithm::printPopulation(const std::vector<std::vector<int>> & thePopulation)
+void GeneticAlgorithm::printPopulation(const std::vector<std::pair<std::vector<int>, float>> & thePopulation)
 {
-	cout << endl << "POPULATION: " << endl;
-	for (const auto & cromosone : thePopulation)
-		printShaping(cromosone);
-}
-
-
-void GeneticAlgorithm::printMeanPopulationFitness(const vector<vector<int>> & thePopulation)
-{
-	float meanFitness = 0;
-	//printPopulation(thePopulation);
-	vector<float> populationFitness(thePopulation.size());
 	string type;
 	if (thePopulation == population)
 		type = "MAIN ";
 	else if (thePopulation == parentPopulation)
 		type = "PARENT ";
-	else
-		type = "INTERMEDIATE ";
-	cout << endl << type << "POPULATION FITNESS: ";
-	calculatePopulationFitness(populationFitness, thePopulation);
 
-	for (const auto & i : populationFitness)
-		meanFitness += i;
+	cout << endl << type << "POPULATION: " << endl;
+	for (int i = 0; i < thePopulation.size(); i++) {
+		printShaping(thePopulation[i].first);
+		cout << "Fitness: " << thePopulation[i].second << ", identificador: " << i << endl;
+	}
+}
+
+
+void GeneticAlgorithm::printMeanPopulationFitness(const vector<pair<vector<int>, float>> & thePopulation)
+{
+	float meanFitness = 0;
+	string type;
+	if (thePopulation == population)
+		type = "MAIN ";
+	else if (thePopulation == parentPopulation)
+		type = "PARENT ";
+
+	cout << endl << type << "POPULATION FITNESS: ";
+
+	for (const auto & i : thePopulation)
+		meanFitness += i.second;
 
 	cout << meanFitness / thePopulation.size() << endl;
 }

@@ -9,7 +9,21 @@ AGG::AGG() : GeneticAlgorithm()
 	mutationProbability = 0.1 / pointsSize;
 	calculateNumberOfCrosses(crossingProbability);
 	calculateNumberOfMutations();
+	generatePopulation();
 }
+
+
+//Generates the initial population
+void AGG::generatePopulation()
+{
+	for (int i = 0; i < populationSize; i++) {
+		pair<vector<int>, float > cromosome(make_pair(vector<int>(pointsSize), 0));
+		initializeCromosome(cromosome);
+		population.push_back(cromosome);
+	}
+}
+
+
 
 //Calculates the expected number of crosses
 void AGG::calculateNumberOfCrosses(float crossingProbability)
@@ -36,11 +50,11 @@ void AGG::applyMutations()
 //Replacement operation: Only the best is kept
 void AGG::applyPopulationReplacement()
 {
-	int currentBestCromosome = findCurrentBestCromosome(), currentIntermediateWorstCromosome;
-	if (find(intermediatePopulation.begin(), intermediatePopulation.end(), population[currentBestCromosome]) == intermediatePopulation.end()) {
-		currentIntermediateWorstCromosome = findCurrenIntermediateWorstCromosome();
-		intermediatePopulation[currentIntermediateWorstCromosome] = population[currentBestCromosome];
+	int currentBestCromosome = findCurrentBestCromosome(), currentWorstParent;
+	if (find(parentPopulation.begin(), parentPopulation.end(), population[currentBestCromosome]) == parentPopulation.end()) {
+		currentWorstParent = findCurrenWorstParent();
+		parentPopulation[currentWorstParent] = population[currentBestCromosome];
 	}
 
-	population = intermediatePopulation;
+	population = parentPopulation;
 }

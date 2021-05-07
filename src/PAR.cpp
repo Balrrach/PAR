@@ -270,7 +270,7 @@ void PAR::updateShapping(int p, int newCluster, vector<int>& shaping)
 void PAR::fromShappingToClusters(const std::vector<int>& shapping, std::vector<Cluster>& clusters)
 {
 	createClusters(clusters);
-
+	int a = shapping[0];
 	for (int i = 0; i < pointsSize; i++)
 		clusters[shapping[i]].addPoint(i);
 

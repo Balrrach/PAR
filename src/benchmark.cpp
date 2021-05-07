@@ -175,10 +175,10 @@ void p1Benchmark()
 //Benchmark Practica 2
 void p2Benchmark()
 {
-	benchmark("AGG-UN");
-	//benchmark("AGG-SF");
-	//benchmark("AGE-UN");
-	//benchmark("AGE-SF");
+	//benchmark("AGG-UN");
+	benchmark("AGG-SF");
+	benchmark("AGE-UN");
+	benchmark("AGE-SF");
 }
 
 
@@ -186,7 +186,7 @@ void p2Benchmark()
 //Benchmark execution
 void benchmark(string algorithm)
 {
-	int nexe = 5, estadisticos = 4;
+	int nexe = 1, estadisticos = 4;
 	string points_file, restrictions_file, fileName;
 	vector<float> result, media_10(4, 0), media_20(4, 0);
 	string string_Media_10, string_Media_20;

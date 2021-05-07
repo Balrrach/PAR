@@ -18,7 +18,7 @@
 class PAR
 {
 public:
-	static std::map<int, std::vector <std::pair<int, int> > > restrictionsMap;
+	static std::map<int, std::vector <std::pair<int, int>>> restrictionsMap;
 	static std::vector<std::vector<int>> restrictionsList;
 	static std::vector<std::vector<float>> g_points;
 	static int pointsSize;

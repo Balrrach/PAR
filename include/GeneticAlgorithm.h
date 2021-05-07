@@ -11,9 +11,8 @@ class GeneticAlgorithm : public PAR
 {
 protected:
 	int populationSize;
-	std::vector<std::vector<int>> population;
-	std::vector<std::vector<int>> parentPopulation;
-	std::vector<std::vector<int>> intermediatePopulation;
+	std::vector<std::pair<std::vector<int>, float>> population;
+	std::vector<std::pair<std::vector<int>, float>> parentPopulation;
 	int numberOfCrosses;
 	float mutationProbability;
 	int evaluationNumber;
@@ -21,8 +20,8 @@ protected:
 
 	//Initialization
 	GeneticAlgorithm();
-	void generatePopulation();
-	void initializeCromosome(std::vector<int>& cromosone);
+	virtual void generatePopulation() = 0;
+	void initializeCromosome(std::pair<std::vector<int>, float> & cromosome);
 
 
 	//Algorithm execution
@@ -38,7 +37,7 @@ protected:
 
 
 	//Crossing
-	virtual void applyCrossing(int crossingOperator);
+	void applyCrossing(int crossingOperator);
 	void crossParents(void (GeneticAlgorithm:: * crossingOperator)(int, std::vector<int> &));
 	void uniformCrossingOperator(int firstParent, std::vector<int> & index);
 	void fixedSegmentCrossingOperator(int firstParent, std::vector<int> & index);
@@ -48,22 +47,25 @@ protected:
 	
 
 	//Mutations
-	virtual void applyMutations();
+	virtual void applyMutations() = 0;
 	void mutationOperator();
 
 
 	//Replacements
-	virtual void applyPopulationReplacement();
+	virtual void applyPopulationReplacement() = 0;
 	
 
-	//Others
-	void calculatePopulationFitness(std::vector<float> & fitnessVector, const std::vector<std::vector<int>> & thePopulation);
-	int findCurrentBestCromosome();
-	int findCurrenIntermediateWorstCromosome();
-	float calculateShapingFitness(const std::vector<int> & shaping);
+	//Evaluation
+	void fixAndEvaluateParentPopulation();
 
+
+	//Others
+	int findCurrentBestCromosome();
+	int findCurrenWorstParent();
+	float calculateShapingFitness(const std::vector<int> & shaping);
+	void checkPopulation();
 
 	//Printers
-	void printPopulation(const std::vector<std::vector<int>> & thePopulation);
-	void printMeanPopulationFitness(const std::vector<std::vector<int>> & thePopulation);
+	void printPopulation(const std::vector<std::pair<std::vector<int>, float>> & thePopulation);
+	void printMeanPopulationFitness(const std::vector<std::pair<std::vector<int>, float>> & thePopulation);
 };

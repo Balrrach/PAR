@@ -6,12 +6,13 @@
 class AGG : public GeneticAlgorithm
 {
 protected:
-	AGG();
-
 	int numberOfMutations;
 
-	virtual void calculateNumberOfCrosses(float crossingProbability);
-	virtual void calculateNumberOfMutations();
+	AGG();
+	void generatePopulation();
+
+	void calculateNumberOfCrosses(float crossingProbability);
+	void calculateNumberOfMutations();
 
 	void applyMutations();
 
