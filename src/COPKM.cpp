@@ -96,13 +96,13 @@ bool COPKM::realocatePointToBestCluster(int p, vector<Cluster>& clusters, vector
 }
 
 
-void COPKM::initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, int seed) {
+void COPKM::initializeClusters(vector<Cluster>& clusters, vector<int>& shaping) {
 
 	bool repeat = true;
 	vector<float> centroide(dimension);
 	vector<int> index;
 	initializeUniformInt(index, 0, g_points.size());
-	shuffle(index.begin(), index.end(), std::default_random_engine(seed));
+	shuffle(index.begin(), index.end(), rng);
 
 	while (repeat) {
 		repeat = false;
@@ -127,7 +127,7 @@ void COPKM::initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, 
 				clusters.clear();
 				for (int j = 0; j < shaping.size(); j++)
 					shaping[j] = -1;
-				shuffle(index.begin(), index.end(), std::default_random_engine(seed));
+				shuffle(index.begin(), index.end(), rng);
 				break;
 			}
 
@@ -139,7 +139,7 @@ void COPKM::initializeClusters(vector<Cluster>& clusters, vector<int>& shaping, 
 
 	//-----Recalculating the center of each cluster-----
 	for (int i = 0; i < K; i++)
-		clusters[i].calculateClusterCentroid((new PAR)->g_points);
+		clusters[i].calculateClusterCentroid();
 
 	cout << "Clusters initialized = " << clusters.size() << endl << endl;
 }
@@ -152,7 +152,7 @@ vector<float> COPKM::execute() {
 	vector<int> shaping(g_points.size(), -1);
 	bool key;
 
-	initializeClusters(clusters, shaping, (new ExecutionParameters())->seed);
+	initializeClusters(clusters, shaping);
 
 	bool repeat = true;
 	int iter = 1;
@@ -172,7 +172,7 @@ vector<float> COPKM::execute() {
 
 		// -----Recalculate the center of each cluster-----
 		for (int i = 0; i < K; i++)
-			clusters[i].calculateClusterCentroid((new PAR)->g_points);
+			clusters[i].calculateClusterCentroid();
 
 		iter++;
 	}

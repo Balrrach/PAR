@@ -15,19 +15,9 @@
 #include "utilities.h"
 
 
-class PAR
+class PAR : public ExecutionParameters
 {
 public:
-	static std::map<int, std::vector <std::pair<int, int>>> restrictionsMap;
-	static std::vector<std::vector<int>> restrictionsList;
-	static std::vector<std::vector<float>> g_points;
-	static int pointsSize;
-	static float optimumDistance;
-	static int dimension;
-	static int K;
-	static float lambda;
-	static std::mt19937 rng;
-
 	PAR();
 	void cleanGlobals();
 	void calculateLambda();

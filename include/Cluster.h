@@ -3,10 +3,10 @@
 #include <set>
 
 #include "utilities.h"
+#include "ExecutionParameters.h"
 
-
-class Cluster {
-
+class Cluster : public ExecutionParameters
+{
 private:
 	int clusterId;
 	std::vector<float> centroid;
@@ -31,10 +31,10 @@ public:
 	void setCentroidByPos(int pos, float val);
 	
 	//Others
-	void calculateClusterCentroid(const std::vector<std::vector<float>>& g_points);
+	void calculateClusterCentroid();
 
 	//Calculates intra cluster mean deviation
-	float calculateIntraClusterMeanDeviation(const std::vector<std::vector<float>>& g_points) const;
+	float calculateIntraClusterMeanDeviation() const;
 
 	//Printers
 	void printClusterCentroid(const int dimension) const;

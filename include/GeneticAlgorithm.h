@@ -12,13 +12,18 @@ class GeneticAlgorithm : virtual public PAR
 protected:
 	int populationSize;
 	std::vector<std::pair<std::vector<int>, float>> population;
-	std::vector<std::pair<std::vector<int>, float>> parentPopulation;
-	int numberOfCrosses;
-	float mutationProbability;
-	int evaluationNumber;
-	int mutationsNumber;
+	
 	int numberOfParents;
+	std::vector<std::pair<std::vector<int>, float>> parentPopulation;
+
+	int numberOfCrosses;
 	int crossingOperator;
+	
+	float mutationProbability;
+
+	int evaluationsCounter;
+	int mutationsCounter;
+
 
 	//Initialization
 	GeneticAlgorithm();

@@ -9,8 +9,8 @@ void BL::assignPointToCluster(int point, int newCluster, vector<int>& shaping, v
 	shaping[point] = newCluster;
 	clusters[currentCluster].removePoint(point);
 	clusters[newCluster].addPoint(point);
-	clusters[currentCluster].calculateClusterCentroid((new PAR)->g_points);
-	clusters[newCluster].calculateClusterCentroid((new PAR)->g_points);
+	clusters[currentCluster].calculateClusterCentroid();
+	clusters[newCluster].calculateClusterCentroid();
 }
 
 
@@ -23,7 +23,7 @@ void BL::generateNeighbourhood(vector<pair<int, int>>& neighbourhood, const vect
 
 
 //Local search algorithm
-int BL::localSearch(vector<Cluster>& clusters, vector<int>& shaping, int seed, int maxIter) {
+int BL::localSearch(vector<Cluster>& clusters, vector<int>& shaping) {
 	vector<pair<int, int>> neighbourhood;
 	generateNeighbourhood(neighbourhood, shaping);
 
@@ -40,12 +40,12 @@ int BL::localSearch(vector<Cluster>& clusters, vector<int>& shaping, int seed, i
 	bool bestNeightbourFound = false, betterNeighbourFound = false;
 
 
-	while (iters < maxIter && !bestNeightbourFound) {
-		shuffle(index.begin(), index.end(), std::default_random_engine(seed + iters));
+	while (iters < maxIters && !bestNeightbourFound) {
+		shuffle(index.begin(), index.end(), rng);
 		betterNeighbourFound = false;
 
 		for (int i = 0; i < index.size(); i++) {
-			if (iters == maxIter)
+			if (iters == maxIters)
 				break;
 			iters++;
 
@@ -109,7 +109,7 @@ void BL::initializeClusters(vector<Cluster>& clusters, vector<int>& shaping) {
 
 	//-----Recalculating the center of each cluster-----
 	for (int i = 0; i < K; i++)
-		clusters[i].calculateClusterCentroid((new PAR)->g_points);
+		clusters[i].calculateClusterCentroid();
 
 	cout << "Clusters initialized = " << clusters.size() << endl << endl;
 }
@@ -126,7 +126,7 @@ vector<float> BL::execute() {
 	vector<int> shaping(g_points.size());
 	initializeClusters(clusters, shaping);
 
-	iters = localSearch(clusters, shaping, ep.seed, ep.iters);
+	iters = localSearch(clusters, shaping);
 
 	auto end = std::chrono::high_resolution_clock::now();
 	printSolution(clusters, shaping);

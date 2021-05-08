@@ -6,8 +6,9 @@ using namespace std;
 GeneticAlgorithm::GeneticAlgorithm()
 {
 	populationSize = 50;
-	evaluationNumber = 0;
-	mutationsNumber = 0;
+
+	evaluationsCounter = 0;
+	mutationsCounter = 0;
 }
 
 //Initializes a cromosone checking strong restrictions are acomplished
@@ -31,7 +32,7 @@ vector<float> GeneticAlgorithm::executeGeneticAlgoritm()
 	int totalIterations = 0;
 
 	//printPopulation();
-	while (evaluationNumber < (new ExecutionParameters)->iters) {
+	while (evaluationsCounter < maxIters) {
 		//cout << endl << "---------------------" << endl;
 		//printPopulation(population);
 		//printPopulation(parentPopulation);
@@ -54,8 +55,8 @@ vector<float> GeneticAlgorithm::executeGeneticAlgoritm()
 	printSolution(solution);
 	std::cout << "Tiempo de ejecucion: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
 	cout << "Iteraciones bucle principal: " << totalIterations << endl;
-	cout << "Evaluaciones: " << evaluationNumber << endl;
-	cout << "Mutaciones: " << mutationsNumber << endl;
+	cout << "Evaluaciones: " << evaluationsCounter << endl;
+	cout << "Mutaciones: " << mutationsCounter << endl;
 	return createOutput(solution, std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
 }
 
@@ -246,7 +247,7 @@ void GeneticAlgorithm::mutationOperator()
 	//}
 	parentPopulation[cromosome].first[gen] = cluster;
 	parentPopulation[cromosome].second = -1;
-	mutationsNumber++;
+	mutationsCounter++;
 }
 
 
@@ -302,14 +303,14 @@ int GeneticAlgorithm::findCurrenWorstParent()
 //Adds one to the number of evaluations
 float GeneticAlgorithm::calculateShapingFitness(const std::vector<int> & shaping)
 {
-	evaluationNumber++;
+	evaluationsCounter++;
 	return PAR::calculateShapingFitness(shaping);
 }
 
 //Adds one to the number of evaluations
 float GeneticAlgorithm::calculateFitness(const vector<int> & shaping, const vector<Cluster> & clusters)
 {
-	evaluationNumber++;
+	evaluationsCounter++;
 	return PAR::calculateFitness(clusters, shaping);
 }
 

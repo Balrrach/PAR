@@ -2,16 +2,6 @@
 
 using namespace std;
 
-map<int, vector <pair<int, int> > > PAR::restrictionsMap;
-vector<vector<int>> PAR::restrictionsList;
-vector<vector<float>> PAR::g_points;
-int PAR::pointsSize;
-float PAR::optimumDistance;
-int PAR::dimension;
-int PAR::K;
-float PAR::lambda;
-std::mt19937 PAR::rng;
-
 
 PAR::PAR(){ 
 	Set_random((new ExecutionParameters)->seed);
@@ -102,7 +92,7 @@ float PAR::calculateShapingFitness(const std::vector<int> & shaping)
 float PAR::calculateGeneralDeviation(const vector<Cluster>& clusters) {
 	float aux = 0;
 	for (int i = 0; i < K; i++)
-		aux += clusters[i].calculateIntraClusterMeanDeviation(g_points);
+		aux += clusters[i].calculateIntraClusterMeanDeviation();
 
 	return aux / K;
 }
@@ -283,7 +273,7 @@ void PAR::fromShappingToClusters(const std::vector<int>& shapping, std::vector<C
 		clusters[shapping[i]].addPoint(i);
 
 	for (auto & c : clusters)
-		c.calculateClusterCentroid(g_points);
+		c.calculateClusterCentroid();
 }
 
 void PAR::createClusters(std::vector<Cluster> & clusters)

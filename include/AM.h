@@ -21,7 +21,8 @@ protected:
 
 	void modifiedBL(std::pair<std::vector<int>, float> & cromosome);
 	bool changePointToBestCluster(int p, std::pair<std::vector<int>, float> & cromosome);
-	
+	std::pair<int, float> getBestClusterAndFitness(int p, std::vector<int> & shaping);
+
 	void printPopulationToImprove();
 
 public:

@@ -19,6 +19,6 @@ public:
 	void assignUnclusteredPoint(int p, std::vector<Cluster>& clusters, std::vector<int>& shaping);
 	bool assignClusteredPoint(int p, std::vector<Cluster>& clusters, std::vector<int>& shaping);
 	bool realocatePointToBestCluster(int p, std::vector<Cluster>& clusters, std::vector<int>& shaping);
-	void initializeClusters(std::vector<Cluster>& clusters, std::vector<int>& shaping, int seed);
+	void initializeClusters(std::vector<Cluster>& clusters, std::vector<int>& shaping);
 	std::vector<float> execute();
 };

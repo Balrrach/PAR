@@ -75,7 +75,7 @@ void Cluster::setCentroidByPos(int pos, float val) {
 }
 
 
-void Cluster::calculateClusterCentroid(const vector<vector<float>>& g_points) {
+void Cluster::calculateClusterCentroid() {
 	int dimension = g_points[0].size();
 
 	for (int c = 0; c < dimension; c++) {
@@ -88,7 +88,7 @@ void Cluster::calculateClusterCentroid(const vector<vector<float>>& g_points) {
 }
 
 
-float Cluster::calculateIntraClusterMeanDeviation(const vector<vector<float>>& g_points) const {
+float Cluster::calculateIntraClusterMeanDeviation() const {
 	float meanDeviation = 0;
 	for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++)
 		meanDeviation += calculateDistance(g_points[*it], getCentroid());

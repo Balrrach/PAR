@@ -3,13 +3,23 @@
 using namespace std;
 
 int ExecutionParameters::seed;
-int ExecutionParameters::iters;
+int ExecutionParameters::maxIters;
+map<int, vector <pair<int, int> > > ExecutionParameters::restrictionsMap;
+vector<vector<int>> ExecutionParameters::restrictionsList;
+vector<vector<float>> ExecutionParameters::g_points;
+int ExecutionParameters::pointsSize;
+float ExecutionParameters::optimumDistance;
+int ExecutionParameters::dimension;
+int ExecutionParameters::K;
+float ExecutionParameters::lambda;
+std::mt19937 ExecutionParameters::rng;
 
 
+//Default execution parameters
 void ExecutionParameters::initialize()
 {
 	seed = 4;
-	iters = 100000;
+	maxIters = 100000;
 };
 
 

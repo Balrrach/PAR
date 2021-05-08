@@ -1,9 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <utility>
 #include <vector>
-#include <map>
 
 #include "ExecutionParameters.h"
 #include "DataSets.h"
@@ -18,23 +16,19 @@
 #include "AM-M.h"
 
 
+//Parameter sorting
+void algortimExecution(int argc, char ** argv);
+void benchmarkExecution(int argc, char ** argv);
+void uniqueBenchmarkExecution(int argc, char ** argv);
+
 //Benchmark function
-//void benchmark();
 void benchmark(std::string algorithm);
 void benchmarkSelector(int number);
 std::vector<float> algorithmSelection(std::string selector);
 
+//Compose benchmark
 void p1Benchmark();
 void p2Benchmark();
-
-
-//Encapsulates the execution of a given algorithm and dataset nexe times keeping the needed structure
-//to export the results to a csv file
-//void operate(int nexe, int estadisticos,
-//	std::vector<float> & result_COPKM, std::vector<float> & result_BL,
-//	std::vector<std::string> & table_COPKM, std::vector<std::string> & table_BL,
-//	std::vector<float> & media_COPKM, std::vector<float> & media_BL,
-//	std::string & string_Media_COPKM, std::string & string_Media_BL);
 
 void operate(std::string algoritmo, int nexe, int estadisticos,
 	std::vector<float> & result, std::vector<std::string> & table,

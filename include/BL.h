@@ -16,7 +16,7 @@ class BL : public PAR {
 public:
 	void assignPointToCluster(int point, int newCluster, std::vector<int>& shaping, std::vector<Cluster>& clusters);
 	void generateNeighbourhood(std::vector<std::pair<int, int>>& neighbourhood, const std::vector<int>& shaping);
-	int localSearch(std::vector<Cluster>& clusters, std::vector<int>& shaping, int seed, int maxIter);
+	int localSearch(std::vector<Cluster>& clusters, std::vector<int>& shaping);
 	void initializeClusters(std::vector<Cluster>& clusters, std::vector<int>& shaping);
 	std::vector<float> execute();
 };
