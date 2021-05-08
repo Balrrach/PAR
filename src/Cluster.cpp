@@ -32,6 +32,15 @@ void Cluster::removePoint(int pointId) {
 		cout << "Beware: Can't remove point " << pointId << "from cluster " << clusterId << "otherwise cluster would be empty" << endl;
 }
 
+void Cluster::forceRemovePoint(int pointId)
+{
+	set<int>::iterator it = clusterPoints.find(pointId);
+	if (it == clusterPoints.end())
+		cout << "Beware: Removals" << endl;
+
+	else
+		clusterPoints.erase(it);
+}
 
 int Cluster::getClusterId() const {
 	return clusterId;

@@ -10,6 +10,7 @@ float PAR::optimumDistance;
 int PAR::dimension;
 int PAR::K;
 float PAR::lambda;
+std::mt19937 PAR::rng;
 
 
 PAR::PAR(){ 
@@ -257,6 +258,13 @@ void PAR::printShaping(const std::vector<int>& shaping)
 void PAR::transferPoint(int p, int currentCluster, int newCluster, vector<Cluster>& clusters)
 {
 	clusters[currentCluster].removePoint(p);
+	clusters[newCluster].addPoint(p);
+}
+
+
+void PAR::forceTransferPoint(int p, int currentCluster, int newCluster, vector<Cluster> & clusters)
+{
+	clusters[currentCluster].forceRemovePoint(p);
 	clusters[newCluster].addPoint(p);
 }
 

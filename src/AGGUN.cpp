@@ -1,3 +1,6 @@
 #include "AGGUN.h"
 
-std::vector<float> AGGUN::execute() { return executeGeneticAlgoritm(populationSize, 0); }
+
+AGGUN::AGGUN() { crossingOperator = 0; }
+
+std::vector<float> AGGUN::execute() { return executeGeneticAlgoritm(); }

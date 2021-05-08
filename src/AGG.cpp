@@ -7,6 +7,8 @@ AGG::AGG() : GeneticAlgorithm()
 {
 	float crossingProbability = 0.7;
 	mutationProbability = 0.1 / pointsSize;
+	numberOfParents = populationSize;
+
 	calculateNumberOfCrosses(crossingProbability);
 	calculateNumberOfMutations();
 	generatePopulation();

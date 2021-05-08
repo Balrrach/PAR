@@ -7,6 +7,8 @@ AGE::AGE() : GeneticAlgorithm()
 {
 	numberOfCrosses = 1;
 	mutationProbability = 0.1;
+	numberOfParents = 2;
+
 	generatePopulation();
 }
 

@@ -7,7 +7,7 @@
 #include "PAR.h"
 
 
-class GeneticAlgorithm : public PAR
+class GeneticAlgorithm : virtual public PAR
 {
 protected:
 	int populationSize;
@@ -17,6 +17,8 @@ protected:
 	float mutationProbability;
 	int evaluationNumber;
 	int mutationsNumber;
+	int numberOfParents;
+	int crossingOperator;
 
 	//Initialization
 	GeneticAlgorithm();
@@ -25,11 +27,11 @@ protected:
 
 
 	//Algorithm execution
-	std::vector<float> executeGeneticAlgoritm(int numberOfParents, int crossingOperator);
+	std::vector<float> executeGeneticAlgoritm();
 
 
 	//Selection
-	void applySelection(int numberOfParents);
+	void applySelection();
 	int selectionOperator();
 	void getRandomCromosomes(int& first, int& second);
 	int binaryTournament(int first, int second);
@@ -37,7 +39,7 @@ protected:
 
 
 	//Crossing
-	void applyCrossing(int crossingOperator);
+	void applyCrossing();
 	void crossParents(void (GeneticAlgorithm:: * crossingOperator)(int, std::vector<int> &));
 	void uniformCrossingOperator(int firstParent, std::vector<int> & index);
 	void fixedSegmentCrossingOperator(int firstParent, std::vector<int> & index);
@@ -60,10 +62,14 @@ protected:
 
 
 	//Others
+	virtual void geneticCore(int iters);
 	int findCurrentBestCromosome();
 	int findCurrenWorstParent();
 	float calculateShapingFitness(const std::vector<int> & shaping);
+	void orderPopulation(std::vector<std::pair<std::vector<int>, float>> & thePopulation);
+	static bool sortingFunction(const std::pair<std::vector<int>, float > & i, const std::pair<std::vector<int>, float > & j);
 	void checkPopulation();
+	float calculateFitness(const std::vector<int> & shaping, const std::vector<Cluster> & clusters);
 
 	//Printers
 	void printPopulation(const std::vector<std::pair<std::vector<int>, float>> & thePopulation);

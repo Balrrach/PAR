@@ -156,6 +156,10 @@
     <ClInclude Include="include\AGG.h" />
     <ClInclude Include="include\AGGSF.h" />
     <ClInclude Include="include\AGGUN.h" />
+    <ClInclude Include="include\AM-C.h" />
+    <ClInclude Include="include\AM-M.h" />
+    <ClInclude Include="include\AM-P.h" />
+    <ClInclude Include="include\AM.h" />
     <ClInclude Include="include\benchmark.h" />
     <ClInclude Include="include\BL.h" />
     <ClInclude Include="include\Cluster.h" />
@@ -175,6 +179,10 @@
     <ClCompile Include="src\AGG.cpp" />
     <ClCompile Include="src\AGGSF.cpp" />
     <ClCompile Include="src\AGGUN.cpp" />
+    <ClCompile Include="src\AM-C.cpp" />
+    <ClCompile Include="src\AM-M.cpp" />
+    <ClCompile Include="src\AM-P.cpp" />
+    <ClCompile Include="src\AM.cpp" />
     <ClCompile Include="src\benchmark.cpp" />
     <ClCompile Include="src\BL.cpp" />
     <ClCompile Include="src\Cluster.cpp" />

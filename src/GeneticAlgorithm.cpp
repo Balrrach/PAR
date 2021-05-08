@@ -25,7 +25,7 @@ void GeneticAlgorithm::initializeCromosome(pair<vector<int>, float > & cromosome
 
 
 //Genetic Algorithm execution
-vector<float> GeneticAlgorithm::executeGeneticAlgoritm(int numberOfParents, int crossingOperator)
+vector<float> GeneticAlgorithm::executeGeneticAlgoritm()
 {
 	auto begin = std::chrono::high_resolution_clock::now();
 	int totalIterations = 0;
@@ -35,9 +35,9 @@ vector<float> GeneticAlgorithm::executeGeneticAlgoritm(int numberOfParents, int 
 		//cout << endl << "---------------------" << endl;
 		//printPopulation(population);
 		//printPopulation(parentPopulation);
-		applySelection(numberOfParents);
+		applySelection();
 		//printPopulation(parentPopulation);
-		applyCrossing(crossingOperator);
+		applyCrossing();
 		applyMutations();
 		//printPopulation(parentPopulation);
 		fixAndEvaluateParentPopulation();
@@ -62,7 +62,7 @@ vector<float> GeneticAlgorithm::executeGeneticAlgoritm(int numberOfParents, int 
 
 
 //Selection operation
-void GeneticAlgorithm::applySelection(int numberOfParents)
+void GeneticAlgorithm::applySelection()
 {
 	parentPopulation.clear();
 
@@ -85,11 +85,11 @@ int GeneticAlgorithm::selectionOperator()
 //Provides two different cromosomes
 void GeneticAlgorithm::getRandomCromosomes(int& first, int& second)
 {
-	uniform_int_distribution<int> randomInt(0, populationSize - 1);
-	first = randomInt(rng);
-	second = randomInt(rng);
+	uniform_int_distribution<int> randomCromosome(0, populationSize - 1);
+	first = randomCromosome(rng);
+	second = randomCromosome(rng);
 	while(first == second)
-		second = randomInt(rng);
+		second = randomCromosome(rng);
 }
 
 //Implements Binary Tournament
@@ -115,7 +115,7 @@ void GeneticAlgorithm::addParent(vector<int> parentsNumbers, int winner)
 
 
 //Crossing operation
-void GeneticAlgorithm::applyCrossing(int crossingOperator)
+void GeneticAlgorithm::applyCrossing()
 {
 	if (crossingOperator == 0)
 		crossParents(& GeneticAlgorithm::uniformCrossingOperator);
@@ -145,7 +145,8 @@ void GeneticAlgorithm::uniformCrossingOperator(int firstParent, vector<int> & in
 	//Repeat twice to obtain two descendants from two cromosomes
 	for (int t = 0; t < 2; t++) {
 		shuffle(index.begin(), index.end(), rng);
-
+		int a = index[0];
+		int b = (parentPopulation[firstParent].first)[index[0]];
 		for (int i = 0; i < pointsSize / 2; i++)
 			newDescendants[t].first[index[i]] = (parentPopulation[firstParent].first)[index[i]];
 
@@ -303,6 +304,36 @@ float GeneticAlgorithm::calculateShapingFitness(const std::vector<int> & shaping
 {
 	evaluationNumber++;
 	return PAR::calculateShapingFitness(shaping);
+}
+
+//Adds one to the number of evaluations
+float GeneticAlgorithm::calculateFitness(const vector<int> & shaping, const vector<Cluster> & clusters)
+{
+	evaluationNumber++;
+	return PAR::calculateFitness(clusters, shaping);
+}
+
+
+void GeneticAlgorithm::orderPopulation(vector<pair<vector<int>, float>> & thePopulation)
+{
+	sort(thePopulation.begin(), thePopulation.end(), GeneticAlgorithm::sortingFunction);
+}
+
+bool GeneticAlgorithm::sortingFunction(const pair<vector<int>, float > & i, const pair<vector<int>, float > & j)
+{
+	return (i.second < j.second);
+}
+
+//Core of a genetic algorithm
+void GeneticAlgorithm::geneticCore(int iters)
+{
+	for (int i = 0; i < iters; i++) {
+		applySelection();
+		applyCrossing();
+		applyMutations();
+		fixAndEvaluateParentPopulation();
+		applyPopulationReplacement();
+	}
 }
 
 

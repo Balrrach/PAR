@@ -175,10 +175,13 @@ void p1Benchmark()
 //Benchmark Practica 2
 void p2Benchmark()
 {
-	//benchmark("AGG-UN");
+	benchmark("AGG-UN");
 	benchmark("AGG-SF");
 	benchmark("AGE-UN");
 	benchmark("AGE-SF");
+	benchmark("AM-P");
+	benchmark("AM-C");
+	benchmark("AM-M");
 }
 
 
@@ -186,7 +189,7 @@ void p2Benchmark()
 //Benchmark execution
 void benchmark(string algorithm)
 {
-	int nexe = 1, estadisticos = 4;
+	int nexe = 5, estadisticos = 4;
 	string points_file, restrictions_file, fileName;
 	vector<float> result, media_10(4, 0), media_20(4, 0);
 	string string_Media_10, string_Media_20;
@@ -295,6 +298,15 @@ vector<float> algorithmSelection(string algoritm)
 
 	else if (algoritm == "AGE-SF")
 		return (new AGESF)->execute();
+
+	else if (algoritm == "AM-C")
+		return (new AMC)->execute();
+
+	else if (algoritm == "AM-P")
+		return (new AMP)->execute();
+
+	else if (algoritm == "AM-M")
+		return (new AMM)->execute();
 
 	else{
 		cout << (new ExecutionParameters)->algorithmError();

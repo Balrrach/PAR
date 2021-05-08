@@ -1,3 +1,6 @@
 #include "AGGSF.h"
 
-std::vector<float> AGGSF::execute() { return executeGeneticAlgoritm(populationSize, 1); }
+
+AGGSF::AGGSF() { crossingOperator = 1; }
+
+std::vector<float> AGGSF::execute() { return executeGeneticAlgoritm(); }

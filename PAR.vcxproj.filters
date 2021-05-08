@@ -96,6 +96,18 @@
     <ClInclude Include="include\AGE.h">
       <Filter>Header Files\P2\Genetics</Filter>
     </ClInclude>
+    <ClInclude Include="include\AM-P.h">
+      <Filter>Header Files\P2\Memetics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AM.h">
+      <Filter>Header Files\P2\Memetics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AM-C.h">
+      <Filter>Header Files\P2\Memetics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\AM-M.h">
+      <Filter>Header Files\P2\Memetics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\csv.cpp">
@@ -151,6 +163,18 @@
     </ClCompile>
     <ClCompile Include="src\AGGSF.cpp">
       <Filter>Source Files\P2\Genetics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AM-P.cpp">
+      <Filter>Source Files\P2\Memetics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AM.cpp">
+      <Filter>Source Files\P2\Memetics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AM-C.cpp">
+      <Filter>Source Files\P2\Memetics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AM-M.cpp">
+      <Filter>Source Files\P2\Memetics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

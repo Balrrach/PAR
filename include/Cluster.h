@@ -19,6 +19,7 @@ public:
 	//Point related
 	void addPoint(int pointId);
 	void removePoint(int pointId);
+	void forceRemovePoint(int pointId);
 
 	//Getters
 	int getClusterId() const;

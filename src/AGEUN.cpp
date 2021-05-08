@@ -1,3 +1,6 @@
 #include "AGEUN.h"
 
-std::vector<float> AGEUN::execute() { return executeGeneticAlgoritm(2, 0); }
+
+AGEUN::AGEUN() { crossingOperator = 0; }
+
+std::vector<float> AGEUN::execute() { return executeGeneticAlgoritm(); }

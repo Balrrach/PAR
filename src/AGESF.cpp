@@ -1,3 +1,6 @@
 #include "AGESF.h"
 
-std::vector<float> AGESF::execute() { return executeGeneticAlgoritm(2, 1); }
+
+AGESF::AGESF() { crossingOperator = 1; }
+
+std::vector<float> AGESF::execute() { return executeGeneticAlgoritm(); }

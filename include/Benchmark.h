@@ -13,6 +13,9 @@
 #include "AGGSF.h"
 #include "AGEUN.h"
 #include "AGESF.h"
+#include "AM-C.h"
+#include "AM-P.h"
+#include "AM-M.h"
 
 
 //Benchmark function

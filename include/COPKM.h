@@ -10,7 +10,7 @@
 #include "csv.h"
 
 
-class COPKM : public PAR {
+class COPKM : virtual public PAR {
 
 public:
 	void calculateLowestInfeasibilityClusters(int p, std::vector<int>& liClusters, const std::vector<int>& shaping);

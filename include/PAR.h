@@ -26,7 +26,7 @@ public:
 	static int dimension;
 	static int K;
 	static float lambda;
-	std::mt19937 rng;
+	static std::mt19937 rng;
 
 	PAR();
 	void cleanGlobals();
@@ -39,11 +39,12 @@ public:
 
 	//Cluster related
 	void createClusters(std::vector<Cluster> & clusters);
+	float calculateClustersFitness(const std::vector<Cluster> & clusters);
 	float calculateGeneralDeviation(const std::vector<Cluster>& clusters);
-	float calculateFitness(const std::vector<Cluster>& clusters, const std::vector<int>& shaping);
 	float calculateErrorDistance(const std::vector<Cluster>& clusters);
 	void transferPoint(int point, int currentCluster, int newCluster, std::vector<Cluster>& clusters);
-	
+	void forceTransferPoint(int p, int currentCluster, int newCluster, std::vector<Cluster> & clusters);
+
 	
 	//Shaping Related
 	bool checkShaping(const std::vector<int>& shaping);
@@ -62,4 +63,7 @@ public:
 	void printPoints();
 	std::vector<float> createOutput(const std::vector<Cluster> & clusters, const std::vector<int> & shaping, float time);
 	std::vector<float> createOutput(const std::vector<int> & shaping, float time);
+
+	//Others
+	float calculateFitness(const std::vector<Cluster> & clusters, const std::vector<int> & shaping);
 };
