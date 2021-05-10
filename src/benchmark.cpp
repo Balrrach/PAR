@@ -92,10 +92,10 @@ void p1Benchmark()
 //Benchmark Practica 2
 void p2Benchmark()
 {
-	benchmark("AGG-UN");
-	benchmark("AGG-SF");
-	benchmark("AGE-UN");
-	benchmark("AGE-SF");
+	//benchmark("AGG-UN");
+	//benchmark("AGG-SF");
+	//benchmark("AGE-UN");
+	//benchmark("AGE-SF");
 	benchmark("AM-P");
 	benchmark("AM-C");
 	benchmark("AM-M");

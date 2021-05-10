@@ -146,8 +146,7 @@ void GeneticAlgorithm::uniformCrossingOperator(int firstParent, vector<int> & in
 	//Repeat twice to obtain two descendants from two cromosomes
 	for (int t = 0; t < 2; t++) {
 		shuffle(index.begin(), index.end(), rng);
-		int a = index[0];
-		int b = (parentPopulation[firstParent].first)[index[0]];
+
 		for (int i = 0; i < pointsSize / 2; i++)
 			newDescendants[t].first[index[i]] = (parentPopulation[firstParent].first)[index[i]];
 
@@ -172,9 +171,9 @@ void GeneticAlgorithm::fixedSegmentCrossingOperator(int firstParent, vector<int>
 	for (int t = 0; t < 2; t++) {
 		int r = Randint(0, pointsSize - 1), v = Randint(0, pointsSize - 1);
 
-		initializeFirstSegment(r, v, firstParent, newDescendants[t].first);
+		initializeFixedSegment(r, v, firstParent, newDescendants[t].first);
 		//printShaping(newDescendants[t].first);
-		initializeSecondSegment(r, v, firstParent, secondParent, newDescendants[t].first);
+		initializeRandomSegment(r, v, firstParent, secondParent, newDescendants[t].first);
 		//printShaping(newDescendants[t].first);
 	}
 
@@ -183,7 +182,7 @@ void GeneticAlgorithm::fixedSegmentCrossingOperator(int firstParent, vector<int>
 }
 
 //Initializes the first part of the new cromosome
-void GeneticAlgorithm::initializeFirstSegment(int r, int v, int firstParent, vector<int> & newDescendant)
+void GeneticAlgorithm::initializeFixedSegment(int r, int v, int firstParent, vector<int> & newDescendant)
 {
 	int end = (pointsSize + (v - r)) % pointsSize;
 	int j = r;
@@ -195,7 +194,7 @@ void GeneticAlgorithm::initializeFirstSegment(int r, int v, int firstParent, vec
 }
 
 //Initializes the second part of the new cromosome
-void GeneticAlgorithm::initializeSecondSegment(int r, int v, int firstParent, int secondParent, vector<int> & newDescendant)
+void GeneticAlgorithm::initializeRandomSegment(int r, int v, int firstParent, int secondParent, vector<int> & newDescendant)
 {
 	int remainigVector = (pointsSize - (v - r) - 1) % pointsSize;
 	vector<int> randomVector(remainigVector);

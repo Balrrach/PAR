@@ -3,11 +3,11 @@
 #include <vector>
 
 #include "COPKM.h"
-#include "AGESF.h"
+#include "AGGUN.h"
 #include "Cluster.h"
 
 
-class AM : public AGESF
+class AM : public AGGUN
 {
 protected:
 	int cicleLength;
@@ -19,9 +19,14 @@ protected:
 
 	virtual void selectPopulationtoImprove() = 0;
 
+	void softBL(std::pair<std::vector<int>, float> & cromosome);
+	bool changePointToBestCluster(int p, std::pair<std::vector<int>, float> & cromosome, std::vector<Cluster> & clusters);
+	int getBestCluster(int p, std::pair<std::vector<int>, float> & cromosome, std::vector<Cluster> & clusters);
+	int getBestClusterAndFitness(int p, std::pair<std::vector<int>, float> & cromosome, std::vector<Cluster> & clusters, float & fitness);
+
 	void modifiedBL(std::pair<std::vector<int>, float> & cromosome);
 	bool changePointToBestCluster(int p, std::pair<std::vector<int>, float> & cromosome);
-	std::pair<int, float> getBestClusterAndFitness(int p, std::vector<int> & shaping);
+	int evalBL;
 
 	void printPopulationToImprove();
 

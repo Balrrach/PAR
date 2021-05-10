@@ -6,6 +6,7 @@ using namespace std;
 void AMM::selectPopulationtoImprove()
 {
 	populationToImprove.clear();
+	orderPopulation(population);
 
 	int numberToImprove = 0.1 * populationSize;
 

@@ -48,8 +48,8 @@ protected:
 	void crossParents(void (GeneticAlgorithm:: * crossingOperator)(int, std::vector<int> &));
 	void uniformCrossingOperator(int firstParent, std::vector<int> & index);
 	void fixedSegmentCrossingOperator(int firstParent, std::vector<int> & index);
-	void initializeFirstSegment(int r, int v, int firstParent, std::vector<int> & newDescendant);
-	void initializeSecondSegment(int r, int v, int firstParent, int secondParent, std::vector<int> & newDescendant);
+	void initializeFixedSegment(int r, int v, int firstParent, std::vector<int> & newDescendant);
+	void initializeRandomSegment(int r, int v, int firstParent, int secondParent, std::vector<int> & newDescendant);
 	void adjustParents(int & firstParent, int & secondParent);
 	
 

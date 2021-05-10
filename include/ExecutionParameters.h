@@ -20,7 +20,6 @@ public:
 	static int seed;
 	static int maxIters;
 
-	ExecutionParameters() {};
 	void initialize();
 	std::string algorithmError();
 };
