@@ -12,6 +12,7 @@ AGG::AGG() : GeneticAlgorithm()
 	calculateNumberOfCrosses(crossingProbability);
 	calculateNumberOfMutations();
 	generatePopulation();
+	initializeGenerators();
 }
 
 

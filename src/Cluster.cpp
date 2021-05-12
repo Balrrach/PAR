@@ -3,25 +3,27 @@
 using namespace std;
 
 
-Cluster::Cluster(vector<float> centroid, int clusterId) {
+Cluster::Cluster(vector<float> centroid, int clusterId)
+{
 	this->clusterId = clusterId;
-
-	for (int i = 0; i < centroid.size(); i++)
-		this->centroid.push_back(centroid[i]);
+	this->centroid = centroid;
+	clusterPoints.reserve(100);
 }
 
 
-void Cluster::addPoint(int pointId) {
-	set<int>::iterator it = clusterPoints.find(pointId);
-	if (it == clusterPoints.end())
-		clusterPoints.insert(pointId);
+void Cluster::addPoint(int pointId)
+{
+	if (find(clusterPoints.begin(), clusterPoints.end(), pointId) == clusterPoints.end())
+		clusterPoints.push_back(pointId);
 
 	else
 		cout << "Beware: Inserctions" << endl;
 }
 
-void Cluster::removePoint(int pointId) {
-	set<int>::iterator it = clusterPoints.find(pointId);
+void Cluster::removePoint(int pointId)
+{
+	auto it = find(clusterPoints.begin(), clusterPoints.end(), pointId);
+
 	if (it == clusterPoints.end())
 		cout << "Beware: Removals" << endl;
 
@@ -34,7 +36,8 @@ void Cluster::removePoint(int pointId) {
 
 void Cluster::forceRemovePoint(int pointId)
 {
-	set<int>::iterator it = clusterPoints.find(pointId);
+	auto it = find(clusterPoints.begin(), clusterPoints.end(), pointId);
+
 	if (it == clusterPoints.end())
 		cout << "Beware: Removals" << endl;
 
@@ -80,7 +83,7 @@ void Cluster::calculateClusterCentroid() {
 
 	for (int c = 0; c < dimension; c++) {
 		float sum = 0.0;
-		for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++)
+		for (auto it = clusterPoints.begin(); it != clusterPoints.end(); it++)
 			sum += g_points[*it][c];
 
 		setCentroidByPos(c, sum / getClusterSize());
@@ -90,8 +93,8 @@ void Cluster::calculateClusterCentroid() {
 
 float Cluster::calculateIntraClusterMeanDeviation() const {
 	float meanDeviation = 0;
-	for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++)
-		meanDeviation += calculateDistance(g_points[*it], getCentroid());
+	for (auto it = clusterPoints.begin(); it != clusterPoints.end(); it++)
+		meanDeviation += calculateDistance(g_points[*it], centroid);
 
 	return meanDeviation / getClusterSize();
 }
@@ -106,7 +109,7 @@ void Cluster::printClusterCentroid(const int dimension) const {
 
 void Cluster::printClusterPoints() const {
 	cout << "Points: ";
-	for (set<int>::iterator it = clusterPoints.begin(); it != clusterPoints.end(); it++) {
+	for (auto it = clusterPoints.begin(); it != clusterPoints.end(); it++) {
 		cout << *it << " ";
 	}
 	cout << endl << endl;

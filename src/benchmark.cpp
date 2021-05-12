@@ -92,10 +92,10 @@ void p1Benchmark()
 //Benchmark Practica 2
 void p2Benchmark()
 {
-	//benchmark("AGG-UN");
-	//benchmark("AGG-SF");
-	//benchmark("AGE-UN");
-	//benchmark("AGE-SF");
+	benchmark("AGG-UN");
+	benchmark("AGG-SF");
+	benchmark("AGE-UN");
+	benchmark("AGE-SF");
 	benchmark("AM-P");
 	benchmark("AM-C");
 	benchmark("AM-M");
@@ -111,7 +111,7 @@ void benchmark(string algorithm)
 	vector<float> result, media_10(4, 0), media_20(4, 0);
 	string string_Media_10, string_Media_20;
 	//string dataset = ",Zoo,,,,Glass,,,,Bupa,,,";
-	string headers = ",Inf,GDeviation,Fitness,Time,Inf,GDeviation,Fitness,Time,Inf,GDeviation,Fitness,Time";
+	string headers = ",Inf,GDev,Fitness,Time,Inf,GDev,Fitness,Time,Inf,GDev,Fitness,Time";
 	vector<string> table_10(5, "Exe"), table_20(5, "Exe");
 	string path = "..\\results\\";
 

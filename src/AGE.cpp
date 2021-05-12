@@ -10,6 +10,7 @@ AGE::AGE() : GeneticAlgorithm()
 	numberOfParents = 2;
 
 	generatePopulation();
+	initializeGenerators();
 }
 
 

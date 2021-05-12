@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <set>
 
 #include "utilities.h"
@@ -10,7 +11,7 @@ class Cluster : public ExecutionParameters
 private:
 	int clusterId;
 	std::vector<float> centroid;
-	std::set<int> clusterPoints;
+	std::vector<int> clusterPoints;
 
 public:
 	//Constructor

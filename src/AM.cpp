@@ -6,7 +6,7 @@ using namespace std;
 AM::AM()
 {
 	cicleLength = 10;
-	allowedFailures = 0.1 * populationSize;
+	allowedFailures = 0.1 * pointsSize;
 	initializeUniformInt(index, 0, pointsSize);
 }
 
@@ -17,29 +17,12 @@ vector<float> AM::execute()
 
 	while (evaluationsCounter < maxIters) {
 		geneticCore(cicleLength);
-		
-		//cout << "Evaluaciones en core: " << evaluationsCounter << endl;
 
 		selectPopulationtoImprove();
-
-		//printPopulation(population);
-		//printPopulationToImprove();
-		//printMeanPopulationFitness(population);
-
-		evalBL = 0;
-		for (auto & cromosome : populationToImprove) {
-			//printShaping(cromosome->first);
+		for (auto & cromosome : populationToImprove)
 			softBL(*cromosome);
-			//printShaping(cromosome->first);
-		}
-
-		//cout << "Evaluaciones en BL: " << evalBL << endl;
-		//cout << "Evaluaciones totales: " << evaluationsCounter << endl << endl;
 
 		orderPopulation(population);
-		//printPopulationToImprove();
-		//printPopulation(population);
-		//printMeanPopulationFitness(population);
 
 		totalIterations += 1;
 	}
@@ -61,7 +44,6 @@ void AM::softBL(pair<vector<int>, float> & cromosome)
 	int failures = 0, pos = 0;
 	bool mejora = true;
 
-	pair<vector<int>, float> copy = cromosome;
 	vector<Cluster> clusters;
 	fromShappingToClusters(shaping, clusters);
 
@@ -75,8 +57,8 @@ void AM::softBL(pair<vector<int>, float> & cromosome)
 		pos++;
 	}
 
-	//evalBL += pos*K;
 	fixShaping(cromosome.first);
+	cromosome.second = calculateFitness(cromosome.first, clusters);
 }
 
 bool AM::changePointToBestCluster(int p, pair<vector<int>, float> & cromosome, vector<Cluster> & clusters)

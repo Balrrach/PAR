@@ -114,9 +114,10 @@ float PAR::calculateErrorDistance(const vector<Cluster>& clusters) {
 
 
 //Prints the final solution
-void PAR::printSolution(const vector<Cluster>& clusters, const vector<int>& shaping) {
-	int total_points = g_points.size();
-
+void PAR::printSolution(const vector<Cluster>& clusters, const vector<int>& shaping)
+{
+	cout << endl;
+	cout << "--->Cluster's shaping:" << endl;
 	for (int i = 0; i < K; i++) {
 		//Print cluster centroid
 		clusters[i].printClusterCentroid(dimension);
@@ -126,11 +127,11 @@ void PAR::printSolution(const vector<Cluster>& clusters, const vector<int>& shap
 	cout << endl;
 
 	//Print solution
-	cout << "#####################---Estadisticos---#####################" << endl;
-	cout << "Vector solution: (";
-	for (int i = 0; i < total_points - 1; i++)
+	cout << "--->Estadisticos:" << endl;
+	/*cout << "Vector solution: (";
+	for (int i = 0; i < pointsSize - 1; i++)
 		cout << shaping[i] << ", ";
-	cout << shaping[total_points - 1] << ")" << endl;
+	cout << shaping[pointsSize - 1] << ")" << endl;*/
 
 	float generalDeviation = calculateGeneralDeviation(clusters);
 	int infeasibility = calculateShapingInfeasibility(shaping);
@@ -139,8 +140,9 @@ void PAR::printSolution(const vector<Cluster>& clusters, const vector<int>& shap
 	cout << "Infeasibility: " << infeasibility << endl;
 	cout << "Lambda: " << lambda << endl;
 	cout << "Fitness: " << generalDeviation + infeasibility * lambda << endl;
-	cout << "###########################################################" << endl;
-	cout << endl;
+	cout << endl << endl;
+
+	cout << "--->Aditional Information:" << endl;
 }
 
 

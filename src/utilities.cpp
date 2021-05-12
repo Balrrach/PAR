@@ -16,11 +16,10 @@ void initializeUniformInt(vector<int>& v, int a, int b) {
 
 float calculateDistance(const vector<float>& a, const vector<float>& b) {
 	float sum = 0;
-	for (int c = 0; c < a.size(); c++) {
-		sum += pow(a[c] - b[c], 2.0);
-	}
+	for (int c = 0; c < a.size(); c++)
+		sum += (a[c] - b[c]) * (a[c] - b[c]);
 
-	return sqrt(sum);
+	return sqrtf(sum);
 }
 
 

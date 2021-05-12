@@ -21,6 +21,10 @@ protected:
 	
 	float mutationProbability;
 
+	std::uniform_int_distribution<int> randomCromosome;
+	std::uniform_int_distribution<int> randomGen;
+	std::uniform_int_distribution<int> randomCluster;
+
 	int evaluationsCounter;
 	int mutationsCounter;
 
@@ -29,6 +33,7 @@ protected:
 	GeneticAlgorithm();
 	virtual void generatePopulation() = 0;
 	void initializeCromosome(std::pair<std::vector<int>, float> & cromosome);
+	void initializeGenerators();
 
 
 	//Algorithm execution

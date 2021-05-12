@@ -23,6 +23,12 @@ void GeneticAlgorithm::initializeCromosome(pair<vector<int>, float > & cromosome
 	cromosome.second = PAR::calculateShapingFitness(cromosome.first);
 }
 
+void GeneticAlgorithm::initializeGenerators()
+{
+	randomCromosome = uniform_int_distribution<int>(0, numberOfParents - 1);
+	randomGen = uniform_int_distribution<int>(0, pointsSize - 1);
+	randomCluster = uniform_int_distribution<int>(0, K - 1);
+}
 
 
 //Genetic Algorithm execution
@@ -31,22 +37,13 @@ vector<float> GeneticAlgorithm::executeGeneticAlgoritm()
 	auto begin = std::chrono::high_resolution_clock::now();
 	int totalIterations = 0;
 
-	//printPopulation();
 	while (evaluationsCounter < maxIters) {
-		//cout << endl << "---------------------" << endl;
-		//printPopulation(population);
-		//printPopulation(parentPopulation);
 		applySelection();
-		//printPopulation(parentPopulation);
 		applyCrossing();
 		applyMutations();
-		//printPopulation(parentPopulation);
 		fixAndEvaluateParentPopulation();
-		//printPopulation(parentPopulation);
 		applyPopulationReplacement();
-		//printMeanPopulationFitness(population);
-		//printf("Current best fitness %f \n", population[findCurrentBestCromosome()].second);
-		//printMeanPopulationFitness(population);
+
 		totalIterations++;
 	}
 
@@ -172,9 +169,7 @@ void GeneticAlgorithm::fixedSegmentCrossingOperator(int firstParent, vector<int>
 		int r = Randint(0, pointsSize - 1), v = Randint(0, pointsSize - 1);
 
 		initializeFixedSegment(r, v, firstParent, newDescendants[t].first);
-		//printShaping(newDescendants[t].first);
 		initializeRandomSegment(r, v, firstParent, secondParent, newDescendants[t].first);
-		//printShaping(newDescendants[t].first);
 	}
 
 	parentPopulation[firstParent] = newDescendants[0];
@@ -225,31 +220,39 @@ void GeneticAlgorithm::adjustParents(int & firstParent, int & secondParent)
 
 //Mutation operation
 void GeneticAlgorithm::mutationOperator()
-{
-	uniform_int_distribution<int> randomCromosome(0, parentPopulation.size() - 1);
-	uniform_int_distribution<int> randomGen(0, pointsSize - 1);
-	uniform_int_distribution<int> randomCluster(0, K - 1);
+{	
 	int cromosome = randomCromosome(rng);
 	int cluster = randomCluster(rng);
 	int gen = randomGen(rng);
 
-	//bool repeat = true;
-	//while (repeat) {
-	//	int gen = randomGen(rng);
-	//	//int currentCluster = parentPopulation[cromosome].first[gen];
-
-	//	parentPopulation[cromosome].first[gen] = cluster;
-	//	//if (find(parentPopulation[cromosome].first.begin(), parentPopulation[cromosome].first.end(), currentCluster) != parentPopulation[cromosome].first.end()) {
-	//	//	parentPopulation[cromosome].first[gen] = currentCluster;
-	//	//	repeat = false;
-	//	//}
-	//}
 	parentPopulation[cromosome].first[gen] = cluster;
 	parentPopulation[cromosome].second = -1;
 	mutationsCounter++;
 }
 
 
+////Mutation operation
+//void GeneticAlgorithm::alternativeMutationOperator()
+//{
+//	uniform_int_distribution<int> randomCromosome(0, parentPopulation.size() - 1);
+//	uniform_int_distribution<int> randomGen(0, pointsSize - 1);
+//	uniform_int_distribution<int> randomCluster(0, K - 1);
+//	int cromosome = randomCromosome(rng);
+//	int cluster = randomCluster(rng);
+//	int gen = randomGen(rng);
+//
+//	//bool repeat = true;
+//	//while (repeat) {
+//	//	int gen = randomGen(rng);
+//	//	//int currentCluster = parentPopulation[cromosome].first[gen];
+//
+//	//	parentPopulation[cromosome].first[gen] = cluster;
+//	//	//if (find(parentPopulation[cromosome].first.begin(), parentPopulation[cromosome].first.end(), currentCluster) != parentPopulation[cromosome].first.end()) {
+//	//	//	parentPopulation[cromosome].first[gen] = currentCluster;
+//	//	//	repeat = false;
+//	//	//}
+//	//}
+//}
 
 //Fix descendants and evaluate their fitness
 void GeneticAlgorithm::fixAndEvaluateParentPopulation()
