@@ -32,25 +32,25 @@ void readRestrictions(ifstream& restrictionsFile) {
 
 			if (i < j) {
 				if (stoi(aux[j]) == -1)
-					(new PAR)->restrictionsList.push_back(vector<int>{-1, i, j});
+					(new ExecutionParameters)->restrictionsList.push_back(vector<int>{-1, i, j});
 				if (stoi(aux[j]) == 1)
-					(new PAR)->restrictionsList.push_back(vector<int>{1, i, j});
+					(new ExecutionParameters)->restrictionsList.push_back(vector<int>{1, i, j});
 			}
 
 			if (i != j) {
 				if (stoi(aux[j]) == -1)
-					(new PAR)->restrictionsMap[i].push_back(pair<int, int>{-1, j});
+					(new ExecutionParameters)->restrictionsMap[i].push_back(pair<int, int>{-1, j});
 				if (stoi(aux[j]) == 1)
-					(new PAR)->restrictionsMap[i].push_back(pair<int, int>{1, j});
+					(new ExecutionParameters)->restrictionsMap[i].push_back(pair<int, int>{1, j});
 			}
 		}
 
 		i++;
 	}
 
-	cout << "Number of restrictions: " << (new PAR)->restrictionsList.size() << endl;
+	cout << "Number of restrictions: " << (new ExecutionParameters)->restrictionsList.size() << endl;
 
-	(new PAR)->calculateLambda();
+	(new ExecutionParameters)->calculateLambda();
 }
 
 
@@ -68,12 +68,12 @@ void readPoints(ifstream& pointsFile) {
 		for (auto i : aux)
 			coordenates.push_back(stof(i));
 
-		(new PAR)->g_points.push_back(coordenates);
+		(new ExecutionParameters)->g_points.push_back(coordenates);
 	}
-	cout << "Number of points: " << (new PAR)->g_points.size() << endl;
+	cout << "Number of points: " << (new ExecutionParameters)->g_points.size() << endl;
 
-	(new PAR)->dimension = (new PAR)->g_points[0].size();
-	(new PAR)->pointsSize = (new PAR)->g_points.size();
+	(new ExecutionParameters)->dimension = (new ExecutionParameters)->g_points[0].size();
+	(new ExecutionParameters)->pointsSize = (new ExecutionParameters)->g_points.size();
 }
 
 
@@ -124,21 +124,21 @@ void toBoxplot(const vector<Cluster>& clusters) {
 	ofstream myfile;
 	string fileName;
 
-	if ((new PAR)->dimension == 16)
+	if ((new ExecutionParameters)->dimension == 16)
 		fileName = "..\\..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\zoo.csv";
 
-	else if ((new PAR)->dimension == 9)
+	else if ((new ExecutionParameters)->dimension == 9)
 		fileName = "..\\..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\glass.csv";
 
 	else
 		fileName = "..\\..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\bupa.csv";
 
 	myfile.open(fileName);
-	for (int i = 0; i < (new PAR)->K; i++) {
-		for (int j = 0; j < (new PAR)->dimension - 1; j++)
+	for (int i = 0; i < (new ExecutionParameters)->K; i++) {
+		for (int j = 0; j < (new ExecutionParameters)->dimension - 1; j++)
 			myfile << clusters[i].getCentroidByPos(j) << ", ";
 
-		myfile << clusters[i].getCentroidByPos((new PAR)->dimension - 1) << endl;
+		myfile << clusters[i].getCentroidByPos((new ExecutionParameters)->dimension - 1) << endl;
 	}
 
 	myfile.close();

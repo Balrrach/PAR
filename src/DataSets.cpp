@@ -25,7 +25,7 @@ DataSets::DataSets(const string& _dataSet, const string& _restrictionsNumber) {
 
 //Reads all data that algorithms need to work
 void readData(const string& dataSet, const string& restrictionsNumber) {
-	(new PAR)->cleanGlobals();
+	(new ExecutionParameters)->cleanGlobals();
 
 	if (dataSet == "zoo")
 		new Zoo(restrictionsNumber);
@@ -41,6 +41,6 @@ void readData(const string& dataSet, const string& restrictionsNumber) {
 
 
 	//Exception if there are less points than clusters
-	if ((new PAR)->g_points.size() < (new PAR)->K)
+	if ((new ExecutionParameters)->g_points.size() < (new ExecutionParameters)->K)
 		throw "Error: Number of clusters greater than number of points";
 }

@@ -40,4 +40,7 @@ public:
 	//Printers
 	void printClusterCentroid(const int dimension) const;
 	void printClusterPoints() const;
+
+	//Checker
+	void commitPoints(std::vector<int> & keeper) const;
 };

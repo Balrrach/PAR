@@ -72,6 +72,10 @@ void benchmarkSelector(int number)
 		p2Benchmark();
 		break;
 
+	case 3:
+		p3Benchmark();
+		break;
+
 	default:
 		cout << "Wrong benchmark specification";
 		throw "Error: command-line argument mismatch";
@@ -101,6 +105,15 @@ void p2Benchmark()
 	benchmark("AM-M");
 }
 
+
+//Benchmark Practica 3
+void p3Benchmark()
+{
+	benchmark("BMB");
+	benchmark("ES");
+	benchmark("ILS");
+	benchmark("ILS-ES");
+}
 
 
 //Benchmark execution
@@ -224,6 +237,18 @@ vector<float> algorithmSelection(string algoritm)
 
 	else if (algoritm == "AM-M")
 		return (new AMM)->execute();
+
+	else if (algoritm == "BMB")
+		return (new BMB)->execute();
+
+	else if (algoritm == "ES")
+		return (new ES)->execute();
+
+	else if (algoritm == "ILS")
+		return (new ILS)->execute();
+
+	else if (algoritm == "ILS-ES")
+		return (new ILSES)->execute();
 
 	else{
 		cout << (new ExecutionParameters)->algorithmError();

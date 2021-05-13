@@ -58,7 +58,7 @@ void AM::softBL(pair<vector<int>, float> & cromosome)
 	}
 
 	fixShaping(cromosome.first);
-	cromosome.second = calculateFitness(cromosome.first, clusters);
+	cromosome.second = calculateFitness(clusters, cromosome.first);
 }
 
 bool AM::changePointToBestCluster(int p, pair<vector<int>, float> & cromosome, vector<Cluster> & clusters)
@@ -101,7 +101,7 @@ int AM::getBestClusterAndFitness(int p, pair<vector<int>, float> & cromosome, ve
 		forceTransferPoint(p, shaping[p], i, clusters);
 		shaping[p] = i;
 
-		fitness = calculateFitness(shaping, clusters);
+		fitness = calculateFitness(clusters, shaping);
 		if (fitness < bestFitness) {
 			bestCluster = i;
 			bestFitness = fitness;

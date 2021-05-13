@@ -8,33 +8,35 @@
 #include <random>
 #include <utility>
 #include <vector>
+#include <math.h>
 
 #include "Cluster.h"
 #include "ExecutionParameters.h"
 #include "random.h"
-#include "utilities.h"
 
 
 class PAR : public ExecutionParameters
 {
-public:
-	PAR();
-	void cleanGlobals();
-	void calculateLambda();
+protected:
+	int evaluationsCounter;
+	std::uniform_int_distribution<int> randomPoint;
+	std::uniform_int_distribution<int> randomCluster;
 
+	PAR();
 
 	//Execute
 	virtual std::vector<float> execute();
 
+	//Initializer
+	void initializeRandomSolution(std::vector<Cluster> & clusters, std::vector<int> & shaping);
 
 	//Cluster related
 	void createClusters(std::vector<Cluster> & clusters);
-	float calculateClustersFitness(const std::vector<Cluster> & clusters);
 	float calculateGeneralDeviation(const std::vector<Cluster>& clusters);
 	float calculateErrorDistance(const std::vector<Cluster>& clusters);
 	void transferPoint(int point, int currentCluster, int newCluster, std::vector<Cluster>& clusters);
 	void forceTransferPoint(int p, int currentCluster, int newCluster, std::vector<Cluster> & clusters);
-
+	void checkClusters(const std::vector<Cluster> & clusters);
 	
 	//Shaping Related
 	bool checkShaping(const std::vector<int>& shaping);

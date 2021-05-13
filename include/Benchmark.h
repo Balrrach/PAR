@@ -14,7 +14,10 @@
 #include "AM-C.h"
 #include "AM-P.h"
 #include "AM-M.h"
-
+#include "BMB.h"
+#include "ES.h"
+#include "ILS.h"
+#include "ILS-ES.h"
 
 //Parameter sorting
 void algortimExecution(int argc, char ** argv);
@@ -29,7 +32,9 @@ std::vector<float> algorithmSelection(std::string selector);
 //Compose benchmark
 void p1Benchmark();
 void p2Benchmark();
+void p3Benchmark();
 
+//Auxiliary function
 void operate(std::string algoritmo, int nexe, int estadisticos,
 	std::vector<float> & result, std::vector<std::string> & table,
 	std::vector<float> & media, std::string & string_Media);

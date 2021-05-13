@@ -114,3 +114,10 @@ void Cluster::printClusterPoints() const {
 	}
 	cout << endl << endl;
 }
+
+
+void Cluster::commitPoints(std::vector<int> & keeper) const
+{
+	for (auto i : clusterPoints)
+		keeper.push_back(i);
+}

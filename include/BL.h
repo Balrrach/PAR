@@ -14,9 +14,25 @@
 class BL : public PAR {
 
 public:
-	void assignPointToCluster(int point, int newCluster, std::vector<int>& shaping, std::vector<Cluster>& clusters);
-	void generateNeighbourhood(std::vector<std::pair<int, int>>& neighbourhood, const std::vector<int>& shaping);
-	int localSearch(std::vector<Cluster>& clusters, std::vector<int>& shaping);
-	void initializeClusters(std::vector<Cluster>& clusters, std::vector<int>& shaping);
 	std::vector<float> execute();
+
+protected:
+	int BLCurrentIfs;
+
+	void assignPointToCluster(int point, int newCluster, std::vector<int>& shaping, std::vector<Cluster>& clusters);
+	void initializeNeighbourhood(const std::vector<int>& shaping);
+	int localSearch(std::vector<Cluster>& clusters, std::vector<int>& shaping);
+	
+	void initializeIfs(const std::vector<int> & shaping);
+	void updateIfs(int newIfs);
+	float saveNeighbourFitness(std::vector<Cluster> & currentClusters, std::vector<int> & currentShaping, int & point, int & newCluster, int & newIfs);
+
+	float BLCore(std::vector<Cluster> & clusters, std::vector<int> & shaping);
+
+private:
+	std::uniform_int_distribution<int> randomNeighbour;
+	std::vector<std::pair<int, int>> neighbourhood;
+	std::vector<int> index;
+	int calculateNewFitness(std::vector<Cluster> & currentClusters, std::vector<int> & currentShaping, int point, int newCluster, int oldCluster, float & newFitness);
+
 };

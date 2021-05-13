@@ -43,6 +43,12 @@
     <Filter Include="Source Files\P2\Memetics">
       <UniqueIdentifier>{81971001-d13d-4818-ae7c-cd5e18f602bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\P3">
+      <UniqueIdentifier>{b422d2fd-c5bc-486f-93b6-e7a08640e483}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\P3">
+      <UniqueIdentifier>{6684be84-a9ee-4ddb-a2fe-72fa0d238abf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\AGG.h">
@@ -107,6 +113,21 @@
     </ClInclude>
     <ClInclude Include="include\AM-M.h">
       <Filter>Header Files\P2\Memetics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ILS-ES.h">
+      <Filter>Header Files\P3</Filter>
+    </ClInclude>
+    <ClInclude Include="include\BMB.h">
+      <Filter>Header Files\P3</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ES.h">
+      <Filter>Header Files\P3</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ILS-BL.h">
+      <Filter>Header Files\P3</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ILS.h">
+      <Filter>Header Files\P3</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +196,21 @@
     </ClCompile>
     <ClCompile Include="src\AM-M.cpp">
       <Filter>Source Files\P2\Memetics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ILS-ES.cpp">
+      <Filter>Source Files\P3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BMB.cpp">
+      <Filter>Source Files\P3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ES.cpp">
+      <Filter>Source Files\P3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ILS-BL.cpp">
+      <Filter>Source Files\P3</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ILS.cpp">
+      <Filter>Source Files\P3</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -6,6 +6,9 @@
 #include <map>
 #include <random>
 
+#include "utilities.h"
+
+
 class ExecutionParameters {
 public:
 	static std::map<int, std::vector <std::pair<int, int>>> restrictionsMap;
@@ -21,5 +24,9 @@ public:
 	static int maxIters;
 
 	void initialize();
+
+	void cleanGlobals();
+	void calculateLambda();
+
 	std::string algorithmError();
 };

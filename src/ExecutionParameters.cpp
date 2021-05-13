@@ -23,6 +23,40 @@ void ExecutionParameters::initialize()
 };
 
 
+//Cleans global variables
+void ExecutionParameters::cleanGlobals()
+{
+	g_points.clear();
+	restrictionsMap.clear();
+	restrictionsList.clear();
+	dimension = 0;
+	K = 0;
+	lambda = 0;
+	optimumDistance = 0;
+}
+
+
+//Calculates lambda value
+void ExecutionParameters::calculateLambda()
+{
+	//Maximum distance calculation
+	float max = 0.0, dist;
+
+	for (int i = 0; i < g_points.size(); i++) {
+		for (int j = 0; j < g_points.size(); j++) {
+			if (j > i) {
+				dist = calculateDistance(g_points[i], g_points[j]);;
+
+				if (max < dist)
+					max = dist;
+			}
+		}
+	}
+
+	lambda = max / restrictionsList.size();
+}
+
+
 string ExecutionParameters::algorithmError()
 {
 	string errorMessage = "\nError: Wrong Algorithm. Options are: \n";

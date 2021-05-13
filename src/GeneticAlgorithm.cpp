@@ -14,20 +14,19 @@ GeneticAlgorithm::GeneticAlgorithm()
 //Initializes a cromosone checking strong restrictions are acomplished
 void GeneticAlgorithm::initializeCromosome(pair<vector<int>, float > & cromosome)
 {
-	uniform_int_distribution<int> randomInt(0, K-1);
+	uniform_int_distribution<int> randomCluster(0, K-1);
 
 	while (checkShaping(cromosome.first) == false)
 		for (auto & gen : cromosome.first)
-			gen = randomInt(rng);
+			gen = randomCluster(rng);
 
-	cromosome.second = PAR::calculateShapingFitness(cromosome.first);
+	cromosome.second = calculateShapingFitness(cromosome.first);
+	evaluationsCounter--;
 }
 
 void GeneticAlgorithm::initializeGenerators()
 {
 	randomCromosome = uniform_int_distribution<int>(0, numberOfParents - 1);
-	randomGen = uniform_int_distribution<int>(0, pointsSize - 1);
-	randomCluster = uniform_int_distribution<int>(0, K - 1);
 }
 
 
@@ -223,7 +222,7 @@ void GeneticAlgorithm::mutationOperator()
 {	
 	int cromosome = randomCromosome(rng);
 	int cluster = randomCluster(rng);
-	int gen = randomGen(rng);
+	int gen = randomPoint(rng);
 
 	parentPopulation[cromosome].first[gen] = cluster;
 	parentPopulation[cromosome].second = -1;
@@ -301,20 +300,6 @@ int GeneticAlgorithm::findCurrenWorstParent()
 	return worstCromosome;
 }
 
-
-//Adds one to the number of evaluations
-float GeneticAlgorithm::calculateShapingFitness(const std::vector<int> & shaping)
-{
-	evaluationsCounter++;
-	return PAR::calculateShapingFitness(shaping);
-}
-
-//Adds one to the number of evaluations
-float GeneticAlgorithm::calculateFitness(const vector<int> & shaping, const vector<Cluster> & clusters)
-{
-	evaluationsCounter++;
-	return PAR::calculateFitness(clusters, shaping);
-}
 
 
 void GeneticAlgorithm::orderPopulation(vector<pair<vector<int>, float>> & thePopulation)

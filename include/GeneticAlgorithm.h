@@ -22,10 +22,7 @@ protected:
 	float mutationProbability;
 
 	std::uniform_int_distribution<int> randomCromosome;
-	std::uniform_int_distribution<int> randomGen;
-	std::uniform_int_distribution<int> randomCluster;
 
-	int evaluationsCounter;
 	int mutationsCounter;
 
 
@@ -75,11 +72,9 @@ protected:
 	virtual void geneticCore(int iters);
 	int findCurrentBestCromosome();
 	int findCurrenWorstParent();
-	float calculateShapingFitness(const std::vector<int> & shaping);
 	void orderPopulation(std::vector<std::pair<std::vector<int>, float>> & thePopulation);
 	static bool sortingFunction(const std::pair<std::vector<int>, float > & i, const std::pair<std::vector<int>, float > & j);
 	void checkPopulation();
-	float calculateFitness(const std::vector<int> & shaping, const std::vector<Cluster> & clusters);
 
 	//Printers
 	void printPopulation(const std::vector<std::pair<std::vector<int>, float>> & thePopulation);

@@ -6,9 +6,45 @@ using namespace std;
 PAR::PAR(){ 
 	Set_random((new ExecutionParameters)->seed);
 	rng = mt19937((new ExecutionParameters)->seed);
+	randomPoint = uniform_int_distribution<int>(0, pointsSize - 1);
+	randomCluster = uniform_int_distribution<int>(0, K - 1);
+
+	evaluationsCounter = 0;
 }
 
 vector<float> PAR::execute() { return {}; }
+
+
+void PAR::initializeRandomSolution(vector<Cluster> & clusters, vector<int> & shaping)
+{
+	shaping = vector<int>(pointsSize);
+	clusters.clear();
+
+	bool repeat = true;
+	while (repeat) {
+		//-----Asociate each point to a random Cluster-----
+		for (int p = 0; p < g_points.size(); p++)
+			shaping[p] = Randint(0, K - 1);
+
+		//-----Checking that all clusters are associated with at least one point-----
+		if (checkShaping(shaping)) {
+			repeat = false;
+		}
+	}
+
+	//-----Initializing clusters-----
+	vector<float> centroid(dimension, 0);
+	for (int i = 0; i < K; i++)
+		clusters.push_back(Cluster(centroid, i));
+
+	//-----Adding points to clusters-----
+	for (int p = 0; p < g_points.size(); p++)
+		clusters[shaping[p]].addPoint(p);
+
+	//-----Recalculating the center of each cluster-----
+	for (int i = 0; i < K; i++)
+		clusters[i].calculateClusterCentroid();
+}
 
 
 //Calculates infeseability of a given point in a given cluster k under a certain configuration shaping
@@ -100,6 +136,8 @@ float PAR::calculateGeneralDeviation(const vector<Cluster>& clusters) {
 
 //Calculates fitness of a given shaping
 float PAR::calculateFitness(const vector<Cluster>& clusters, const vector<int>& shaping) {
+	evaluationsCounter++;
+
 	float generalDeviation = calculateGeneralDeviation(clusters);
 	int infeasibility = calculateShapingInfeasibility(shaping);
 
@@ -136,13 +174,15 @@ void PAR::printSolution(const vector<Cluster>& clusters, const vector<int>& shap
 	float generalDeviation = calculateGeneralDeviation(clusters);
 	int infeasibility = calculateShapingInfeasibility(shaping);
 
-	cout << "General deviation: " << generalDeviation << endl;
-	cout << "Infeasibility: " << infeasibility << endl;
 	cout << "Lambda: " << lambda << endl;
+	cout << "Infeasibility: " << infeasibility << endl;
+	cout << "General deviation: " << generalDeviation << endl;
 	cout << "Fitness: " << generalDeviation + infeasibility * lambda << endl;
 	cout << endl << endl;
 
 	cout << "--->Aditional Information:" << endl;
+
+	checkClusters(clusters);
 }
 
 
@@ -153,38 +193,6 @@ void PAR::printSolution(const std::vector<int> & shaping)
 	printSolution(clusters, shaping);
 }
 
-
-
-//Cleans global variables
-void PAR::cleanGlobals() {
-	g_points.clear();
-	restrictionsMap.clear();
-	restrictionsList.clear();
-	dimension = 0;
-	K = 0;
-	lambda = 0;
-	optimumDistance = 0;
-}
-
-
-//Calculates lambda value
-void PAR::calculateLambda() {
-	//Maximum distance calculation
-	float max = 0.0, dist;
-
-	for (int i = 0; i < g_points.size(); i++) {
-		for (int j = 0; j < g_points.size(); j++) {
-			if (j > i) {
-				dist = calculateDistance(g_points[i], g_points[j]);;
-
-				if (max < dist)
-					max = dist;
-			}
-		}
-	}
-
-	lambda = max / restrictionsList.size();
-}
 
 
 //Creates the output data
@@ -259,6 +267,22 @@ void PAR::forceTransferPoint(int p, int currentCluster, int newCluster, vector<C
 	clusters[currentCluster].forceRemovePoint(p);
 	clusters[newCluster].addPoint(p);
 }
+
+void PAR::checkClusters(const std::vector<Cluster> & clusters)
+{
+	vector<int> keeper;
+	for (const auto c : clusters) {
+		if (c.getClusterSize() == 0)
+			throw "FATAL ERROR: EMPTY CLUSTER";
+
+		c.commitPoints(keeper);
+	}
+
+	for(int i=0; i < pointsSize; i++)
+		if(find(keeper.begin(), keeper.end(), i) == keeper.end())
+			throw "FATAL ERROR: POINT MISSING";
+}
+
 
 
 void PAR::updateShapping(int p, int newCluster, vector<int>& shaping)

@@ -3,8 +3,59 @@
 using namespace std;
 
 
+
+void BL::initializeIfs(const vector<int> & shaping)
+{
+	BLCurrentIfs = calculateShapingInfeasibility(shaping);
+}
+
+void BL::updateIfs(int newIfs)
+{
+	BLCurrentIfs = newIfs;
+}
+
+
+//Prev: CALL initializeIfs(...)
+float BL::saveNeighbourFitness(vector<Cluster> & clusters, vector<int> & shaping, int & point, int & newCluster, int & newIfs)
+{
+	evaluationsCounter++;
+
+	int oldCluster;
+	float newFitness;
+
+	do {
+		point = randomPoint(rng);
+		newCluster = randomCluster(rng);
+		oldCluster = shaping[point];
+	} while (oldCluster == newCluster || clusters[oldCluster].getClusterSize() == 1);
+
+	newIfs = calculateNewFitness(clusters, shaping, point, newCluster, oldCluster, newFitness);
+	
+	return newFitness;
+}
+
+
+int BL::calculateNewFitness(vector<Cluster> & clusters, vector<int> & shaping, int point, int newCluster, int oldCluster, float & newFitness)
+{
+	int currentIncrementIfs, newIncrementIfs;
+	currentIncrementIfs = calculateIncrementInfeseability(point, oldCluster, shaping);
+	newIncrementIfs = calculateIncrementInfeseability(point, newCluster, shaping);
+	int newIfs = BLCurrentIfs + newIncrementIfs - currentIncrementIfs;
+
+	assignPointToCluster(point, newCluster, shaping, clusters);
+	float newGeneralDeviation;
+	newGeneralDeviation = calculateGeneralDeviation(clusters);
+	assignPointToCluster(point, oldCluster, shaping, clusters);
+	
+	newFitness = newGeneralDeviation + (lambda * newIfs);
+
+	return newIfs;
+}
+
+
 //Assigns a point to a cluster removing it from its current cluster and updating centroids
-void BL::assignPointToCluster(int point, int newCluster, vector<int>& shaping, vector<Cluster>& clusters) {
+void BL::assignPointToCluster(int point, int newCluster, vector<int>& shaping, vector<Cluster>& clusters)
+{
 	int currentCluster = shaping[point];
 	shaping[point] = newCluster;
 	clusters[currentCluster].removePoint(point);
@@ -14,20 +65,21 @@ void BL::assignPointToCluster(int point, int newCluster, vector<int>& shaping, v
 }
 
 
-void BL::generateNeighbourhood(vector<pair<int, int>>& neighbourhood, const vector<int>& shaping) {
-	for (int p = 0; p < g_points.size(); p++)
+void BL::initializeNeighbourhood(const vector<int>& shaping)
+{
+	for (int p = 0; p < pointsSize; p++)
 		for (int k = 0; k < K; k++)
 			if (k != shaping[p])
 				neighbourhood.push_back(pair<int, int>{p, k});
+
+	randomNeighbour = uniform_int_distribution<int>(0, neighbourhood.size() - 1);
 }
 
 
 //Local search algorithm
-int BL::localSearch(vector<Cluster>& clusters, vector<int>& shaping) {
-	vector<pair<int, int>> neighbourhood;
-	generateNeighbourhood(neighbourhood, shaping);
-
-	vector<int> index;
+int BL::localSearch(vector<Cluster>& clusters, vector<int>& shaping)
+{
+	initializeNeighbourhood(shaping);
 	initializeUniformInt(index, 0, neighbourhood.size());
 
 	int iters = 0;
@@ -84,56 +136,34 @@ int BL::localSearch(vector<Cluster>& clusters, vector<int>& shaping) {
 }
 
 
-void BL::initializeClusters(vector<Cluster>& clusters, vector<int>& shaping) {
-
-	bool repeat = true;
-	while (repeat) {
-		//-----Asociate each point to a random Cluster-----
-		for (int p = 0; p < g_points.size(); p++)
-			shaping[p] = Randint(0, K - 1);
-
-		//-----Checking that all clusters are associated with at least one point-----
-		if (checkShaping(shaping)) {
-			repeat = false;
-		}
-	}
-
-	//-----Initializing clusters-----
-	vector<float> centroid(dimension, 0);
-	for (int i = 0; i < K; i++)
-		clusters.push_back(Cluster(centroid, i));
-
-	//-----Adding points to clusters-----
-	for (int p = 0; p < g_points.size(); p++)
-		clusters[shaping[p]].addPoint(p);
-
-	//-----Recalculating the center of each cluster-----
-	for (int i = 0; i < K; i++)
-		clusters[i].calculateClusterCentroid();
-
-	cout << "Clusters initialized = " << clusters.size() << endl << endl;
-}
-
-
 //Local Search Algorithm
-vector<float> BL::execute() {
+vector<float> BL::execute()
+{
 	ExecutionParameters ep;
 	auto begin = std::chrono::high_resolution_clock::now();
 
 	int iters;
 	Set_random(ep.seed);
 	vector<Cluster> clusters;
-	vector<int> shaping(g_points.size());
-	initializeClusters(clusters, shaping);
+	vector<int> shaping;
+	initializeRandomSolution(clusters, shaping);
 
 	iters = localSearch(clusters, shaping);
 
 	auto end = std::chrono::high_resolution_clock::now();
 	printSolution(clusters, shaping);
 	std::cout << "Tiempo de ejecucion: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
-	//cout << "Numero de iteraciones: " << iters << endl;
+	cout << "Numero de iteraciones: " << iters << endl;
 
 	//toBoxplot(clusters);
 
 	return createOutput(clusters, shaping, std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
+}
+
+
+
+float BL::BLCore(std::vector<Cluster> & clusters, std::vector<int> & shaping)
+{
+	localSearch(clusters, shaping);
+	return calculateFitness(clusters, shaping);
 }

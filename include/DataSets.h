@@ -21,8 +21,8 @@ class Zoo : public DataSets {
 public:
 	//Zoo() {};
 	Zoo(std::string _restrictionsNumber) : DataSets("zoo", _restrictionsNumber) {
-		(new PAR)->K = 7;
-		(new PAR)->optimumDistance = 0.904799856193481;
+		(new ExecutionParameters)->K = 7;
+		(new ExecutionParameters)->optimumDistance = 0.904799856193481;
 	};
 };
 
@@ -30,8 +30,8 @@ class Glass : public DataSets {
 public:
 	//Glass() {};
 	Glass(std::string _restrictionsNumber) : DataSets("glass", _restrictionsNumber) {
-		(new PAR)->K = 7;
-		(new PAR)->optimumDistance = 0.364290281975566;
+		(new ExecutionParameters)->K = 7;
+		(new ExecutionParameters)->optimumDistance = 0.364290281975566;
 	};
 };
 
@@ -39,8 +39,8 @@ class Bupa : public DataSets {
 public:
 	//Bupa() {};
 	Bupa(const std::string& _restrictionsNumber) : DataSets("bupa", _restrictionsNumber) {
-		(new PAR)->K = 16;
-		(new PAR)->optimumDistance = 0.220423749236422;
+		(new ExecutionParameters)->K = 16;
+		(new ExecutionParameters)->optimumDistance = 0.220423749236422;
 	};
 };
 
