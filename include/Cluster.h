@@ -23,13 +23,8 @@ public:
 	void forceRemovePoint(int pointId);
 
 	//Getters
-	int getClusterId() const;
 	int getClusterSize() const;
-	std::vector<float> getCentroid() const;
 	float getCentroidByPos(int pos) const;
-
-	//Setters
-	void setCentroidByPos(int pos, float val);
 	
 	//Others
 	void calculateClusterCentroid();

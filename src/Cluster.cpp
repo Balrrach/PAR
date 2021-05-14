@@ -45,18 +45,6 @@ void Cluster::forceRemovePoint(int pointId)
 		clusterPoints.erase(it);
 }
 
-int Cluster::getClusterId() const {
-	return clusterId;
-}
-
-
-/*
-int getPoint(int pos) const {	//CUIDADO
-	set<int>::iterator it = pos;
-	return clusterPoints[it];
-}
-*/
-
 
 int Cluster::getClusterSize() const {
 	return clusterPoints.size();
@@ -68,16 +56,6 @@ float Cluster::getCentroidByPos(int pos) const {
 }
 
 
-vector<float> Cluster::getCentroid() const {
-	return centroid;
-}
-
-
-void Cluster::setCentroidByPos(int pos, float val) {
-	this->centroid[pos] = val;
-}
-
-
 void Cluster::calculateClusterCentroid() {
 	int dimension = g_points[0].size();
 
@@ -86,7 +64,7 @@ void Cluster::calculateClusterCentroid() {
 		for (auto it = clusterPoints.begin(); it != clusterPoints.end(); it++)
 			sum += g_points[*it][c];
 
-		setCentroidByPos(c, sum / getClusterSize());
+		centroid[c] = sum / clusterPoints.size();
 	}
 }
 
@@ -101,7 +79,7 @@ float Cluster::calculateIntraClusterMeanDeviation() const {
 
 
 void Cluster::printClusterCentroid(const int dimension) const {
-	cout << "Cluster " << getClusterId() + 1 << ": " << endl << "Centroid: ";
+	cout << "Cluster " << clusterId + 1 << ": " << endl << "Centroid: ";
 	for (int i = 0; i < dimension; i++)
 		cout << getCentroidByPos(i) << " ";
 	cout << endl;

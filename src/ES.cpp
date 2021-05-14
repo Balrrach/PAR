@@ -5,8 +5,8 @@ using namespace std;
 
 ES::ES()
 {
-	maxNeighbours = 0.1 * pointsSize;
-	maxSuccess = 0.1 * maxNeighbours;
+	maxNeighbours = 10 * pointsSize;
+	maxSuccess = pointsSize;
 	M = maxIters / maxNeighbours;
 	mu = phi = 0.3;
 	U = uniform_real_distribution<float>(0, 1);
@@ -30,8 +30,7 @@ vector<float> ES::execute()
 
 	printSolution(bestClusters, bestShaping);
 	std::cout << "Tiempo de ejecucion: " << time << endl;
-	cout << "Numero de sustituciones: " << Counter << endl;
-
+	cout << "Iterations: " << Counter << endl;
 	return createOutput(bestClusters, bestShaping, time);
 }
 
@@ -57,11 +56,9 @@ float ES::ESCore(vector<Cluster> & givenClusters, vector<int> & givenShaping)
 			ESiters++;
 		} while (neighboursCounter < maxNeighbours && successCounter < maxSuccess);
 
-		//printShaping(currentShaping);
 		updateTemperature();
 
-	} while (ESiters < maxIters);
-	//&& successCounter != 0
+	} while (ESiters < maxIters && successCounter != 0);
 
 	givenClusters = bestClusters;
 	givenShaping = bestShaping;
@@ -82,6 +79,12 @@ void ES::initializeTemperatures(float initialFitness)
 		throw "Initial Temperature is lower than Ending Temperature";
 }
 
+float ES::calculateBeta()
+{
+	return (initialTemperature - endingTemperature) / (M * initialTemperature * endingTemperature);
+}
+
+
 void ES::resetCounters()
 {
 	neighboursCounter = 0;
@@ -97,26 +100,21 @@ float ES::obtainLimit(float fitnessDifference)
 
 void ES::updateTemperature()
 {
-	//QUE SIGNIFICA LA K EN LAS TRANSPARENCIAS???
 	currentTemperature = currentTemperature / (1 + (beta * currentTemperature));
 	//currentTemperature = 0.999*currentTemperature;
 }
 
 
-float ES::calculateBeta()
-{
-	return (initialTemperature - endingTemperature) / (M * initialTemperature * endingTemperature);
-}
+
 
 
 void ES::tryImproveSolution()
 {
 	neighboursCounter++;
+	Counter++;
 
 	int point, newCluster, newIfs;
 	float neighbourFitness = exploreNeighbour(currentClusters, currentShaping, point, newCluster, newIfs);
-	//cout << "Tried point : " << point << " in cluster: " << newCluster << endl;
-	//cout << "NewFitness: " << currentFitness << endl;
 
 	float fitnessDifference = neighbourFitness - currentFitness;
 	float a = U(rng), b = obtainLimit(fitnessDifference);
@@ -126,20 +124,13 @@ void ES::tryImproveSolution()
 		assignPointToCluster(point, newCluster, currentShaping, currentClusters);
 		currentFitness = neighbourFitness;
 		updateIfs(newIfs);
-		
-		//printShaping(currentShaping);
-		//cout << "New Fitness: " << currentFitness << endl;
-		//cout << "New Ifs: " << newIfs << endl;
-		Counter++;
+		successCounter++;
 		
 		if (currentFitness < bestFitness) {
 			bestShaping = currentShaping;
 			bestClusters = currentClusters;
-			//cout << endl << "Punto: " << point << endl;
-			//cout << "New Fitness: " << calculateShapingFitness(bestShaping) << endl;
 
-			bestFitness = currentFitness;
-			successCounter++;
+			bestFitness = currentFitness;	
 		}
 	}
 }
