@@ -25,7 +25,7 @@ protected:
 	
 	void initializeIfs(const std::vector<int> & shaping);
 	void updateIfs(int newIfs);
-	float saveNeighbourFitness(std::vector<Cluster> & currentClusters, std::vector<int> & currentShaping, int & point, int & newCluster, int & newIfs);
+	float exploreNeighbour(std::vector<Cluster> & currentClusters, std::vector<int> & currentShaping, int & point, int & newCluster, int & newIfs);
 
 	float BLCore(std::vector<Cluster> & clusters, std::vector<int> & shaping);
 

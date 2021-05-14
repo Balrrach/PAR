@@ -33,11 +33,10 @@ vector<float> ILS::execute()
 			bestFitness = currentFitness;
 		}
 
-		//Parto del mejor o del actual???
-		/*currentShaping = bestShaping;
+		currentShaping = bestShaping;
 		currentClusters = bestClusters;
 
-		currentFitness = bestFitness;*/
+		currentFitness = bestFitness;
 	}
 	
 	auto end = std::chrono::high_resolution_clock::now();

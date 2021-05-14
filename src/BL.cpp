@@ -16,7 +16,7 @@ void BL::updateIfs(int newIfs)
 
 
 //Prev: CALL initializeIfs(...)
-float BL::saveNeighbourFitness(vector<Cluster> & clusters, vector<int> & shaping, int & point, int & newCluster, int & newIfs)
+float BL::exploreNeighbour(vector<Cluster> & clusters, vector<int> & shaping, int & point, int & newCluster, int & newIfs)
 {
 	evaluationsCounter++;
 

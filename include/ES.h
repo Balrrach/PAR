@@ -9,6 +9,7 @@ public:
 	std::vector<float> execute();
 
 protected:
+	int ESiters;
 	int maxNeighbours;
 	int neighboursCounter;
 	int maxSuccess;
@@ -21,6 +22,9 @@ protected:
 	float endingTemperature;
 	float mu;
 	float phi;
+	float beta;
+
+	int Counter;
 
 	float ESCore(std::vector<Cluster> & clusters, std::vector<int> & shaping);
 
@@ -29,6 +33,13 @@ protected:
 	float obtainLimit(float fitnessDifference);
 	void updateTemperature();
 	float calculateBeta();
-	void tryImproveSolution(std::vector<Cluster> & bestClusters, std::vector<int> & bestShaping, float & bestFitness,
-		std::vector<Cluster> & currentClusters, std::vector<int> & currentShaping);
+	void tryImproveSolution();
+
+private:
+	std::vector<Cluster> bestClusters;
+	std::vector<int> bestShaping;
+	float bestFitness;
+	std::vector<Cluster> currentClusters;
+	std::vector<int> currentShaping;
+	float currentFitness;
 };

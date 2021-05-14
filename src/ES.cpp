@@ -18,11 +18,11 @@ vector<float> ES::execute()
 	auto begin = std::chrono::high_resolution_clock::now();
 
 	//-----------
-	vector<int> bestShaping(pointsSize);
-	vector<Cluster> bestClusters;
+	vector<int> shaping(pointsSize);
+	vector<Cluster> clusters;
 
-	initializeRandomSolution(bestClusters, bestShaping);
-	ESCore(bestClusters, bestShaping);
+	initializeRandomSolution(clusters, shaping);
+	ESCore(clusters, shaping);
 	//-----------
 
 	auto end = std::chrono::high_resolution_clock::now();
@@ -30,35 +30,42 @@ vector<float> ES::execute()
 
 	printSolution(bestClusters, bestShaping);
 	std::cout << "Tiempo de ejecucion: " << time << endl;
+	cout << "Numero de sustituciones: " << Counter << endl;
 
 	return createOutput(bestClusters, bestShaping, time);
 }
 
 
-float ES::ESCore(vector<Cluster> & bestClusters, vector<int> & bestShaping)
+float ES::ESCore(vector<Cluster> & givenClusters, vector<int> & givenShaping)
 {
-	vector<int> currentShaping = bestShaping;
-	vector<Cluster> currentClusters = bestClusters;
+	ESiters = 0;
 
+	currentClusters = givenClusters;
+	currentShaping = givenShaping;
+	currentFitness = calculateFitness(currentClusters, currentShaping);
 	initializeIfs(currentShaping);
-	float bestFitness = calculateFitness(currentClusters, currentShaping);
+	initializeTemperatures(currentFitness);
 
-	initializeTemperatures(bestFitness);
+	bestFitness = FLT_MAX;
+	Counter = 0;
 
 	do {
 		resetCounters();
 
 		do {
-			tryImproveSolution(bestClusters, bestShaping, bestFitness, currentClusters, currentShaping);
-		
+			tryImproveSolution();
+			ESiters++;
 		} while (neighboursCounter < maxNeighbours && successCounter < maxSuccess);
 
 		//printShaping(currentShaping);
 		updateTemperature();
 
-	} while (evaluationsCounter < maxIters );
+	} while (ESiters < maxIters);
 	//&& successCounter != 0
-	cout << "Numero de evaluaciones: " << evaluationsCounter << endl;
+
+	givenClusters = bestClusters;
+	givenShaping = bestShaping;
+
 	return bestFitness;
 }
 
@@ -69,6 +76,7 @@ void ES::initializeTemperatures(float initialFitness)
 	initialTemperature = mu * initialFitness / -log(phi);
 	currentTemperature = initialTemperature;
 	endingTemperature = 0.001;
+	beta = calculateBeta();
 
 	if (initialTemperature < endingTemperature)
 		throw "Initial Temperature is lower than Ending Temperature";
@@ -83,15 +91,15 @@ void ES::resetCounters()
 
 float ES::obtainLimit(float fitnessDifference)
 {
-	return 1 / exp(fitnessDifference / currentTemperature);
+	return 1 / exp(fitnessDifference / (currentTemperature));
 }
 
 
 void ES::updateTemperature()
 {
-	float beta = calculateBeta();
-	//currentTemperature = currentTemperature / (1 + (beta * currentTemperature));
-	currentTemperature = 0.999*currentTemperature;
+	//QUE SIGNIFICA LA K EN LAS TRANSPARENCIAS???
+	currentTemperature = currentTemperature / (1 + (beta * currentTemperature));
+	//currentTemperature = 0.999*currentTemperature;
 }
 
 
@@ -101,73 +109,37 @@ float ES::calculateBeta()
 }
 
 
-//void ES::tryImproveSolution
-//	(vector<Cluster> & bestClusters, vector<int> & bestShaping, float & bestFitness, 
-//	vector<Cluster> & currentClusters, vector<int> & currentShaping)
-//{
-//	neighboursCounter++;
-//
-//	int point, newCluster, newIfs;
-//	float currentFitness = saveNeighbourFitness(currentClusters, currentShaping, point, newCluster, newIfs);
-//	//cout << "Intente: " << point << endl;
-//	//cout << "NewFitness: " << currentFitness << endl;
-//
-//	float fitnessDifference = currentFitness - bestFitness;
-//	float a = U(rng), b = obtainLimit(fitnessDifference);
-//
-//	if (a < b) {
-//		cout << "NewFitness: " << currentFitness << endl;
-//
-//		//Update vectors
-//		assignPointToCluster(point, newCluster, currentShaping, currentClusters);
-//		updateIfs(newIfs);
-//
-//		if (fitnessDifference < 0) {
-//			assignPointToCluster(point, newCluster, bestShaping, bestClusters);
-//			//cout << endl << "Punto: " << point << endl;
-//
-//			bestFitness = currentFitness;
-//			successCounter++;
-//		}
-//	}
-//
-//	/*cout << "Diferencia de fitness: " << fitnessDifference << endl;
-//	cout << "Current fitness: " << currentFitness << endl;
-//	cout << "Best fitness: " << bestFitness << endl;
-//	cout << "a: " << a << " b: " << b << endl << endl;*/
-//}
-
-
-void ES::tryImproveSolution
-(vector<Cluster> & bestClusters, vector<int> & bestShaping, float & bestFitness,
-	vector<Cluster> & currentClusters, vector<int> & currentShaping)
+void ES::tryImproveSolution()
 {
 	neighboursCounter++;
 
 	int point, newCluster, newIfs;
-	float currentFitness = saveNeighbourFitness(currentClusters, currentShaping, point, newCluster, newIfs);
+	float neighbourFitness = exploreNeighbour(currentClusters, currentShaping, point, newCluster, newIfs);
 	//cout << "Tried point : " << point << " in cluster: " << newCluster << endl;
 	//cout << "NewFitness: " << currentFitness << endl;
 
-	float fitnessDifference = currentFitness - bestFitness;
+	float fitnessDifference = neighbourFitness - currentFitness;
 	float a = U(rng), b = obtainLimit(fitnessDifference);
 
-	if (currentFitness < bestFitness) {
+	if (a < b || fitnessDifference < 0) {
+		//El vecino se convierte en la solucion actual
 		assignPointToCluster(point, newCluster, currentShaping, currentClusters);
-
+		currentFitness = neighbourFitness;
+		updateIfs(newIfs);
+		
+		//printShaping(currentShaping);
 		//cout << "New Fitness: " << currentFitness << endl;
 		//cout << "New Ifs: " << newIfs << endl;
-		updateIfs(newIfs);
-		assignPointToCluster(point, newCluster, bestShaping, bestClusters);
-		//cout << endl << "Punto: " << point << endl;
+		Counter++;
+		
+		if (currentFitness < bestFitness) {
+			bestShaping = currentShaping;
+			bestClusters = currentClusters;
+			//cout << endl << "Punto: " << point << endl;
+			//cout << "New Fitness: " << calculateShapingFitness(bestShaping) << endl;
 
-		bestFitness = currentFitness;
-		successCounter++;
+			bestFitness = currentFitness;
+			successCounter++;
+		}
 	}
-	
-
-	/*cout << "Diferencia de fitness: " << fitnessDifference << endl;
-	cout << "Current fitness: " << currentFitness << endl;
-	cout << "Best fitness: " << bestFitness << endl;
-	cout << "a: " << a << " b: " << b << endl << endl;*/
 }

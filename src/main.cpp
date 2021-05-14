@@ -20,4 +20,6 @@ int main(int argc, char** argv) {
 
 	else
 		algortimExecution(argc, argv);
+
+	cout << endl;
 }

@@ -4,8 +4,10 @@ using namespace std;
 
 
 void DataSets::fetch(const string& pointsPath, const string& restrictionsPath) {
+	cout << endl << "--->Dataset:" << endl;
 	fetchPoints(pointsPath);
 	fetchRestrictions(restrictionsPath);
+	cout << endl;
 }
 
 
