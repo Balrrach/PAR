@@ -15,8 +15,10 @@ class BL : public PAR {
 
 public:
 	std::vector<float> execute();
+	BL();
 
 protected:
+	int BLMaxIters;
 	int BLCurrentIfs;
 
 	void assignPointToCluster(int point, int newCluster, std::vector<int>& shaping, std::vector<Cluster>& clusters);
@@ -34,5 +36,4 @@ private:
 	std::vector<std::pair<int, int>> neighbourhood;
 	std::vector<int> index;
 	int calculateNewFitness(std::vector<Cluster> & currentClusters, std::vector<int> & currentShaping, int point, int newCluster, int oldCluster, float & newFitness);
-
 };

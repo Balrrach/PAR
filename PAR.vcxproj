@@ -169,7 +169,6 @@
     <ClInclude Include="include\DataSets.h" />
     <ClInclude Include="include\ES.h" />
     <ClInclude Include="include\ExecutionParameters.h" />
-    <ClInclude Include="include\ILS-BL.h" />
     <ClInclude Include="include\ILS-ES.h" />
     <ClInclude Include="include\ILS.h" />
     <ClInclude Include="include\PAR.h" />
@@ -198,7 +197,6 @@
     <ClCompile Include="src\ES.cpp" />
     <ClCompile Include="src\ExecutionParameters.cpp" />
     <ClCompile Include="src\GeneticAlgorithm.cpp" />
-    <ClCompile Include="src\ILS-BL.cpp" />
     <ClCompile Include="src\ILS-ES.cpp" />
     <ClCompile Include="src\ILS.cpp" />
     <ClCompile Include="src\main.cpp" />

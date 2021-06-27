@@ -5,7 +5,7 @@ using namespace std;
 
 BMB::BMB() : NCandidates(10)
 {
-	maxIters = 10000;
+	BLMaxIters = 10000;
 }
 
 

@@ -312,6 +312,8 @@ bool GeneticAlgorithm::sortingFunction(const pair<vector<int>, float > & i, cons
 	return (i.second < j.second);
 }
 
+
+
 //Core of a genetic algorithm
 void GeneticAlgorithm::geneticCore(int iters)
 {

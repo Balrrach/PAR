@@ -3,11 +3,10 @@
 using namespace std;
 
 
-ES::ES()
+ES::ES() : ESMaxIters(maxIters)
 {
 	maxNeighbours = 10 * pointsSize;
 	maxSuccess = pointsSize;
-	M = maxIters / maxNeighbours;
 	mu = phi = 0.3;
 	U = uniform_real_distribution<float>(0, 1);
 }
@@ -30,14 +29,14 @@ vector<float> ES::execute()
 
 	printSolution(bestClusters, bestShaping);
 	std::cout << "Tiempo de ejecucion: " << time << endl;
-	cout << "Iterations: " << Counter << endl;
+
 	return createOutput(bestClusters, bestShaping, time);
 }
 
 
 float ES::ESCore(vector<Cluster> & givenClusters, vector<int> & givenShaping)
 {
-	ESiters = 0;
+	int itersCounter = 0;
 
 	currentClusters = givenClusters;
 	currentShaping = givenShaping;
@@ -48,17 +47,19 @@ float ES::ESCore(vector<Cluster> & givenClusters, vector<int> & givenShaping)
 	bestFitness = FLT_MAX;
 	Counter = 0;
 
-	do {
+	do
+	{
 		resetCounters();
 
-		do {
+		do 
+		{
 			tryImproveSolution();
-			ESiters++;
+			itersCounter++;
 		} while (neighboursCounter < maxNeighbours && successCounter < maxSuccess);
 
 		updateTemperature();
 
-	} while (ESiters < maxIters && successCounter != 0);
+	} while (itersCounter < ESMaxIters && successCounter != 0);
 
 	givenClusters = bestClusters;
 	givenShaping = bestShaping;
@@ -70,6 +71,7 @@ float ES::ESCore(vector<Cluster> & givenClusters, vector<int> & givenShaping)
 
 void ES::initializeTemperatures(float initialFitness)
 {
+	M = ESMaxIters / maxNeighbours;
 	initialTemperature = mu * initialFitness / -log(phi);
 	currentTemperature = initialTemperature;
 	endingTemperature = 0.001;
@@ -103,8 +105,6 @@ void ES::updateTemperature()
 	currentTemperature = currentTemperature / (1 + (beta * currentTemperature));
 	//currentTemperature = 0.999*currentTemperature;
 }
-
-
 
 
 

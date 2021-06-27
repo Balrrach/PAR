@@ -25,13 +25,10 @@ El programa diseñado para soportar dos casos de uso:
     (c) Algoritmo:
         GREEDY: Para ejecutar greedy
         BL: Para ejecutar búsqueda local
-        AGG-UN: Para ejecutar el algoritmo genético generacional con operador de cruce uniforme
-        AGG-SF: Para ejecutar el algoritmo genético generacional con operador de cruce por segmento fijo
-        AGE-UN: Para ejecutar el algoritmo genético estacionario con operador de cruce uniforme
-        AGE-SF: Para ejecutar el algoritmo genético estacionario con operador de cruce por segmento fijo
-        AM-C: Para ejecutar el algoritmo memético con búsqueda local sobre la población completa(AM(10,1.0))
-        AM-P: Para ejecutar el algoritmo memético con búsqueda local sobre un porcentaje de la población(AM(10,0.1))
-        AM-M: Para ejecutar el algoritmo memético con búsqueda local sobre un porcentaje de los mejores(AM(10,0.1mej))
+        BMB: Para ejecutar el algoritmo de Búsqueda Multiarranque Básica
+        ES: Para ejecutar el algoritmo de Enfriamiento Simulado
+        ILS: Para ejecutar el algoritmo de Búsqueda Local Reiterada clásico
+        ILS-ES: Para ejecutar el algoritmo de Busqueda Local Reiterada con Enfriamiento Simulado
 
     2. Benchmark: En caso de querer ejecutar los casos de uso de los que se han extraído los resultados expuestos en las tablas 
     más adelante hay que pasar como primer argumento la letra: 'B' y como segundo argumento el número de la práctica asociada con dichos algoritmos.

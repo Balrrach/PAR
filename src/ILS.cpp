@@ -5,7 +5,7 @@ using namespace std;
 
 ILS::ILS(): NCandidates(9)
 {
-	maxIters = 10000;
+	BLMaxIters = 10000;
 }
 
 

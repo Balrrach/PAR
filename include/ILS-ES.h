@@ -6,6 +6,7 @@
 class ILSES : public ILS, public ES
 {
 public:
+	ILSES();
 	std::vector<float> execute();
 
 protected:

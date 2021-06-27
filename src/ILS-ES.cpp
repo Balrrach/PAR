@@ -1,6 +1,12 @@
 #include "ILS-ES.h"
 
 
+ILSES::ILSES()
+{
+	ESMaxIters = 10000;
+}
+
+
 std::vector<float> ILSES::execute() { return ILS::execute(); }
 
 

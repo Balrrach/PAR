@@ -9,7 +9,7 @@ public:
 	std::vector<float> execute();
 
 protected:
-	int ESiters;
+	int ESMaxIters;
 	int maxNeighbours;
 	int neighboursCounter;
 	int maxSuccess;

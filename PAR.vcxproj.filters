@@ -123,9 +123,6 @@
     <ClInclude Include="include\ES.h">
       <Filter>Header Files\P3</Filter>
     </ClInclude>
-    <ClInclude Include="include\ILS-BL.h">
-      <Filter>Header Files\P3</Filter>
-    </ClInclude>
     <ClInclude Include="include\ILS.h">
       <Filter>Header Files\P3</Filter>
     </ClInclude>
@@ -204,9 +201,6 @@
       <Filter>Source Files\P3</Filter>
     </ClCompile>
     <ClCompile Include="src\ES.cpp">
-      <Filter>Source Files\P3</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ILS-BL.cpp">
       <Filter>Source Files\P3</Filter>
     </ClCompile>
     <ClCompile Include="src\ILS.cpp">

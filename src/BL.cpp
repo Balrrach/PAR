@@ -3,6 +3,10 @@
 using namespace std;
 
 
+BL::BL() : BLMaxIters(maxIters)
+{}
+
+
 
 void BL::initializeIfs(const vector<int> & shaping)
 {
@@ -92,12 +96,12 @@ int BL::localSearch(vector<Cluster>& clusters, vector<int>& shaping)
 	bool bestNeightbourFound = false, betterNeighbourFound = false;
 
 
-	while (iters < maxIters && !bestNeightbourFound) {
+	while (iters < BLMaxIters && !bestNeightbourFound) {
 		shuffle(index.begin(), index.end(), rng);
 		betterNeighbourFound = false;
 
 		for (int i = 0; i < index.size(); i++) {
-			if (iters == maxIters)
+			if (iters == BLMaxIters)
 				break;
 			iters++;
 
@@ -153,7 +157,7 @@ vector<float> BL::execute()
 	auto end = std::chrono::high_resolution_clock::now();
 	printSolution(clusters, shaping);
 	std::cout << "Tiempo de ejecucion: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << endl;
-	cout << "Numero de iteraciones: " << iters << endl;
+	cout << "Numero de iteraciones realizadas: " << iters << endl;
 
 	//toBoxplot(clusters);
 

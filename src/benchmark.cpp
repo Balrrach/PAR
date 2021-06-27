@@ -190,17 +190,16 @@ void operate(string algoritmo, int nexe, int estadisticos,
 	vector<float> & media, string & string_Media)
 {
 	(new ExecutionParameters())->initialize();
-	(new ExecutionParameters())->seed -= 1;
 
 	for (int i = 0; i < nexe; i++) {
-		(new ExecutionParameters())->seed += 1;
-
 		result = algorithmSelection(algoritmo);
 		table[i] += outputToString(result);
 
 		for (int j = 0; j < estadisticos; j++) {
 			media[j] += (float)result[j] / (float)nexe;
 		}
+
+		(new ExecutionParameters())->seed += 1;
 	}
 
 	string_Media += outputToString(media);
