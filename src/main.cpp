@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "benchmark.h"
+#include "Benchmark.h"
 #include "ExecutionParameters.h"
 
 using namespace std;

@@ -12,7 +12,7 @@
 
 #include "Cluster.h"
 #include "ExecutionParameters.h"
-#include "random.h"
+#include "Random.h"
 
 
 class PAR : public ExecutionParameters

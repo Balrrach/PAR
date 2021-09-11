@@ -7,8 +7,8 @@
 #include "ExecutionParameters.h"
 #include "Cluster.h"
 #include "PAR.h"
-#include "csv.h"
-#include "random.h"
+#include "CSV.h"
+#include "Random.h"
 
 
 class BL : public PAR {

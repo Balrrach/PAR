@@ -5,7 +5,7 @@
 #include <math.h>
 #include <vector>
 
-#include "random.h"
+#include "Random.h"
 
 //Ptins elements of a vector vec
 template<typename T>

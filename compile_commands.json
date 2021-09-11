@@ -1,0 +1,132 @@
+[
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/AGE.cpp.o -c /home/balrrach/Documents/PAR/src/AGE.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/AGE.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/AGESF.cpp.o -c /home/balrrach/Documents/PAR/src/AGESF.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/AGESF.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/AGEUN.cpp.o -c /home/balrrach/Documents/PAR/src/AGEUN.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/AGEUN.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/AGG.cpp.o -c /home/balrrach/Documents/PAR/src/AGG.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/AGG.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/AGGSF.cpp.o -c /home/balrrach/Documents/PAR/src/AGGSF.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/AGGSF.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/AGGUN.cpp.o -c /home/balrrach/Documents/PAR/src/AGGUN.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/AGGUN.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/AM-C.cpp.o -c /home/balrrach/Documents/PAR/src/AM-C.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/AM-C.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/AM-M.cpp.o -c /home/balrrach/Documents/PAR/src/AM-M.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/AM-M.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/AM-P.cpp.o -c /home/balrrach/Documents/PAR/src/AM-P.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/AM-P.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/AM.cpp.o -c /home/balrrach/Documents/PAR/src/AM.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/AM.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/BL.cpp.o -c /home/balrrach/Documents/PAR/src/BL.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/BL.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/BMB.cpp.o -c /home/balrrach/Documents/PAR/src/BMB.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/BMB.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/COPKM.cpp.o -c /home/balrrach/Documents/PAR/src/COPKM.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/COPKM.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/Cluster.cpp.o -c /home/balrrach/Documents/PAR/src/Cluster.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/Cluster.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/DataSets.cpp.o -c /home/balrrach/Documents/PAR/src/DataSets.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/DataSets.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/ES.cpp.o -c /home/balrrach/Documents/PAR/src/ES.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/ES.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/ExecutionParameters.cpp.o -c /home/balrrach/Documents/PAR/src/ExecutionParameters.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/ExecutionParameters.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/GeneticAlgorithm.cpp.o -c /home/balrrach/Documents/PAR/src/GeneticAlgorithm.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/GeneticAlgorithm.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/ILS-ES.cpp.o -c /home/balrrach/Documents/PAR/src/ILS-ES.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/ILS-ES.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/ILS.cpp.o -c /home/balrrach/Documents/PAR/src/ILS.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/ILS.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/PAR.cpp.o -c /home/balrrach/Documents/PAR/src/PAR.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/PAR.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/Random.cpp.o -c /home/balrrach/Documents/PAR/src/Random.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/Random.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/benchmark.cpp.o -c /home/balrrach/Documents/PAR/src/benchmark.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/benchmark.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/csv.cpp.o -c /home/balrrach/Documents/PAR/src/csv.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/csv.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/main.cpp.o -c /home/balrrach/Documents/PAR/src/main.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/main.cpp"
+},
+{
+  "directory": "/home/balrrach/Documents/PAR/build/debug",
+  "command": "/usr/bin/c++  -I/home/balrrach/Documents/PAR/include -Wall -Wextra -Ofast -w -o CMakeFiles/PAR.dir/src/utilities.cpp.o -c /home/balrrach/Documents/PAR/src/utilities.cpp",
+  "file": "/home/balrrach/Documents/PAR/src/utilities.cpp"
+}
+]

@@ -1,4 +1,4 @@
-#include "benchmark.h"
+#include "Benchmark.h"
 
 using namespace std;
 

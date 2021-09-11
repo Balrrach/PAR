@@ -1,5 +1,5 @@
 #include <math.h>
-#include "random.h"
+#include "Random.h"
 
 unsigned long Seed = 0L;
 
