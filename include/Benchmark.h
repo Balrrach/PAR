@@ -34,7 +34,11 @@ void p1Benchmark();
 void p2Benchmark();
 void p3Benchmark();
 
+//Reads all data that algorithms need
+void readData(const std::string& dataSet, const std::string& restrictionsNumber);
+
 //Auxiliary function
 void operate(std::string algoritmo, int nexe, int estadisticos,
 	std::vector<float> & result, std::vector<std::string> & table,
 	std::vector<float> & media, std::string & string_Media);
+

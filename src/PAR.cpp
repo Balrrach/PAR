@@ -84,21 +84,6 @@ void PAR::fixShaping(vector<int> &shaping)
 				shaping[Randint(0, pointsSize - 1)] = i;
 }
 
-//void PAR::fixShaping(vector<int> & newDescendant)
-//{
-//	while (checkShaping(newDescendant) == false) {
-//		set<int> aux, missingClusters;
-//		for (int i = 0; i < K; i++)
-//			missingClusters.insert(i);
-//
-//		for (const int & i : newDescendant)
-//			aux.insert(i);
-//
-//		for (const auto & i : aux)
-//			missingClusters.erase(i);
-//	}
-//}
-
 //Calculates infeasibility of a given shaping
 int PAR::calculateShapingInfeasibility(const vector<int> &shaping)
 {

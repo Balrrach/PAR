@@ -1,5 +1,7 @@
 #include "CSV.h"
+#include <filesystem>
 
+namespace fs = std::filesystem;
 using namespace std;
 
 
@@ -90,6 +92,7 @@ ifstream openFile(const string& filename) {
 
 void fetchPoints(const string& pointsPath) {
 	ifstream pointsFile = openFile(pointsPath);
+	cout << "Voy bien";
 	readPoints(pointsFile);
 	pointsFile.close();
 }
@@ -122,18 +125,20 @@ void writeOutput(const string& fileName, const string& headers, int nexe, const 
 
 void toBoxplot(const vector<Cluster>& clusters) {
 	ofstream myfile;
-	string fileName;
+	fs::path filePath;
+	filePath /= ".."; filePath /= ".."; filePath /= "Practica 1";
+	filePath /= "Memoria"; filePath /= "boxplots"; filePath /= "clusters";
 
 	if ((new ExecutionParameters)->dimension == 16)
-		fileName = "..\\..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\zoo.csv";
+		filePath /= "zoo.csv";
 
 	else if ((new ExecutionParameters)->dimension == 9)
-		fileName = "..\\..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\glass.csv";
+		filePath /= "glass.csv";
 
 	else
-		fileName = "..\\..\\..\\Practica 1\\Memoria\\boxplots\\clusters\\bupa.csv";
+		filePath /= "bupa.csv";
 
-	myfile.open(fileName);
+	myfile.open(filePath);
 	for (int i = 0; i < (new ExecutionParameters)->K; i++) {
 		for (int j = 0; j < (new ExecutionParameters)->dimension - 1; j++)
 			myfile << clusters[i].getCentroidByPos(j) << ", ";

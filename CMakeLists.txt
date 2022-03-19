@@ -3,6 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
 
 #Project name
 PROJECT(PAR)
+SET(CMAKE_CXX_STANDARD 17)
 
 #Executables can be added one by one
 #ADD_EXECUTABLE(PAR "src/main.cpp" "src/Random.cpp")
@@ -16,7 +17,7 @@ ADD_EXECUTABLE(PAR ${PAR_SRC})
 INCLUDE_DIRECTORIES("include")
 
 #Libraries used(m for math)
-TARGET_LINK_LIBRARIES(PAR m)
+TARGET_LINK_LIBRARIES(PAR m stdc++fs)
 
 #Para compilar con -O3 por defecto
 if(NOT CMAKE_BUILD_TYPE)
