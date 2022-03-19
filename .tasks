@@ -1,10 +1,16 @@
-[project-init]
+[init]
 command=mkdir build build/debug build/realease && cd build/debug && cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ../.. && cp compile_commands.json ../..
 cwd=<root>
 errorformat=
 
-[project-build-debug]
+[build-debug]
 command=cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ../.. && cp compile_commands.json ../..
 command=make
 cwd=<root>/build/debug
 errorformat=%f:%l:%m
+
+[run-debug]
+command=./PAR B 1
+cwd=<root>/build/debug
+errorformat=%f:%l:%m
+
