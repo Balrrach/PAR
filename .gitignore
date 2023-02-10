@@ -5,6 +5,7 @@
 
 compile_commands.json
 build
+documentation
 
 # User-specific files
 *.rsuser
