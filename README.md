@@ -1,6 +1,7 @@
+# Description
 Solution to the problem of clustering with constrains using different metaheuristics.
 
-##############################################################-----CMAKE-----##############################################################
+# CMAKE
 Para facilitar la portabilidad a otros sistemas operativos se entrega junto a la practica un fichero CMakeLists.txt con el que 
 se puede elaborar un archivo tipo makefile válido para el sistema operativo deseado. A modo de prueba se ha creado en un archivo 
 tipo minGW Makefile válido para Windows. Para poder crear este fichero o ejecutarlo hay que tener instaladas las herramientas 
@@ -13,7 +14,7 @@ Es muy importante que el programa se ejecute desde el directorio /bin y que no s
 de lo contrario la lectura de los datos o la salida producida al ejecutar el benchmark podrían fallar.
 
 
-############################################################-----PARAMETROS-----###########################################################
+# Parameters
 El programa diseñado para soportar dos casos de uso:
     1. Algoritmo y dataset específicos: En el caso de querer ejecutar un algoritmo concreto con un dataset bajo un conjunto de 
     restricciones concretas hay que pasar exactamente los siguientes argumentos:
@@ -38,7 +39,7 @@ El programa diseñado para soportar dos casos de uso:
 En caso la semilla se puede especificar como último parámetro y en el caso del benchmark las ejecuciones se realizaran utilizando dicha semila y las cuatro posteoriores.
 
 
-##############################################################-----SALIDA-----#############################################################
+# Output
 Si el programa se ejecuta en modo benchmark entonces, al terminar la ejecución, se generarán un conjunto de archivos en el directorio 
 /results en formato CSV en los que se muestran todos los resultados en forma de tabla. Incido, para que la generación de los archivos 
 se realice de forma correcta es necesario que se mantenga la estructura de directorios tal y como ha sido proporcionada.
