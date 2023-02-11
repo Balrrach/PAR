@@ -6,7 +6,7 @@ should be created.
 4. Cromosome shall be model as a class called shaped that must be responsable of calculating the
 a configuration fitness by means of clusters.
 5. The only inheritance relation to keep is the GeneticAlgorithm branch. GeneticAlgorithm must be an
-abstract class. Regarding ES and BL: the only functions that ES legitimatly uses from BL are
+abstract class. Regarding ES and BL: the only functions that ES legitimately uses from BL are
 initializeIfs, updateIfs. Although exploreNeighbourhud is defined in BL, it is actually never used
 in BL, it's only used in ES. The rest are functions related to shaping and clusters. Thus, they are
 not of the same type. On the other hand, ILS and ILSES are the same thing although their
