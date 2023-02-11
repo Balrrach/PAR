@@ -31,7 +31,7 @@ El programa diseñado para soportar dos casos de uso:
         BMB: Para ejecutar el algoritmo de Búsqueda Multiarranque Básica
         ES: Para ejecutar el algoritmo de Enfriamiento Simulado
         ILS: Para ejecutar el algoritmo de Búsqueda Local Reiterada clásico
-        ILS-ES: Para ejecutar el algoritmo de Busqueda Local Reiterada con Enfriamiento Simulado
+        ILS-ES: Para ejecutar el algoritmo de Búsqueda Local Reiterada con Enfriamiento Simulado
 
     2. Benchmark: En caso de querer ejecutar los casos de uso de los que se han extraído los resultados expuestos en las tablas 
     más adelante hay que pasar como primer argumento la letra: 'B' y como segundo argumento el número de la práctica asociada con dichos algoritmos.
