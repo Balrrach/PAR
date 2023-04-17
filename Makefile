@@ -1,17 +1,21 @@
 RELEASEDIR := build/release
 DEBUGDIR := build/debug
 
-default: make-release
+default: debug
 
-make-release: create-release-directory
-	cd ${RELEASEDIR}; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ../../CMakeLists.txt; cp compile_commands.json ../..
+release: create-build
+	cd ${RELEASEDIR}; \
+	cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ../../CMakeLists.txt; \
+	cp compile_commands.json ../..; \
+	make
 
-make-debug: create-debud-directory
-	cd ${DEBUGDIRia}; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ../../CMakeLists.txt; cp compile_commands.json ../..
+debug: create-build
+	cd ${DEBUGDIR}; \
+	cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ../../CMakeLists.txt; \
+	cp compile_commands.json ../..; \
+	make
 
-create-release-directory:
-	mkdir -p ${RELEASEDIR}
-
-create-debud-directory:
+create-build:
+	mkdir -p ${RELEASEDIR}; \
 	mkdir -p ${DEBUGDIR}
 

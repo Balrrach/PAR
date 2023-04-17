@@ -5,11 +5,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
 PROJECT(PAR)
 SET(CMAKE_CXX_STANDARD 17)
 
-#Executables can be added one by one
-#ADD_EXECUTABLE(PAR "src/main.cpp" "src/Random.cpp")
-#Executables can be added making a recursive search from the project folder
-#file(GLOB_RECURSE source_list "*.cpp" "*.hpp")
-#Executables can be added specifying a directory
+#Source files
 file(GLOB_RECURSE PAR_SRC "src/*.cpp")
 ADD_EXECUTABLE(PAR ${PAR_SRC})
 
@@ -21,11 +17,13 @@ TARGET_LINK_LIBRARIES(PAR m stdc++fs)
 
 #Para compilar con -O3 por defecto
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
+	set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(CMAKE_CXX_FLAGS "-Wall -Wextra")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-#set(CMAKE_CXX_FLAGS_RELEASE "-O3 -w -g") Para debuggear
-#set(CMAKE_CXX_FLAGS_RELEASE "-O3 -w")
-set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -w")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+	set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -w")
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	set(CMAKE_CXX_FLAGS "-Wall -Wextra -g")
+endif()
